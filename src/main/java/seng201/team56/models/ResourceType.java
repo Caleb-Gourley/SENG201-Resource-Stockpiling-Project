@@ -1,5 +1,5 @@
 package seng201.team56.models;
 
-public enum ResourceTypes {
+public enum ResourceType {
     BCO_QUICHE, BOUILLABAISSE, GRUYER_CHEESE_SOUFFLE,CREME_BRULEE,NICOISE_SALAD,COQ_A_VIN
 }
