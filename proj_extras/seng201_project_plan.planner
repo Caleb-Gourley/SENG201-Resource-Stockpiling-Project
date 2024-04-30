@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<project name="SENG201 Project" company="" manager="" phase="" project-start="20240423T000000Z" mrproject-version="2" calendar="1">
+  <properties/>
+  <phases/>
+  <calendars>
+    <day-types>
+      <day-type id="0" name="Working" description="A default working day"/>
+      <day-type id="1" name="Nonworking" description="A default non working day"/>
+      <day-type id="2" name="Use base" description="Use day from base calendar"/>
+    </day-types>
+    <calendar id="1" name="Default">
+      <default-week mon="0" tue="0" wed="0" thu="0" fri="0" sat="1" sun="1"/>
+      <overridden-day-types>
+        <overridden-day-type id="0">
+          <interval start="0800" end="1200"/>
+          <interval start="1300" end="1700"/>
+        </overridden-day-type>
+      </overridden-day-types>
+      <days/>
+    </calendar>
+  </calendars>
+  <tasks>
+    <task id="1" name="SENG201 Project" note="" work="310500" duration="694800" start="20240423T000000Z" end="20240527T090000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+      <task id="2" name="Project Management" note="" work="18000" start="20240423T000000Z" end="20240524T170000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+        <task id="3" name="Identify main milestones" note="" work="3600" duration="3600" start="20240423T000000Z" end="20240423T090000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+        <task id="4" name="Create a plan" note="" work="7200" duration="7200" start="20240423T090000Z" end="20240423T110000Z" work-start="20240423T090000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-duration">
+          <predecessors>
+            <predecessor id="1" predecessor-id="3" type="FS"/>
+          </predecessors>
+        </task>
+        <task id="5" name="Organize tasks" note="" work="3600" duration="3600" start="20240423T110000Z" end="20240423T120000Z" work-start="20240423T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <predecessors>
+            <predecessor id="1" predecessor-id="4" type="FS"/>
+          </predecessors>
+        </task>
+        <task id="6" name="Track daily effort" note="" work="1800" duration="691200" start="20240423T000000Z" end="20240524T170000Z" work-start="20240423T080000Z" percent-complete="40" priority="0" type="normal" scheduling="fixed-duration"/>
+        <task id="7" name="Record weekly effort" note="" work="1800" duration="691200" start="20240423T000000Z" end="20240524T170000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+      </task>
+      <task id="8" name="Requirements specification" note="" work="12600" start="20240423T000000Z" end="20240423T110000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+        <task id="9" name="Understand project specification" note="" work="0" duration="0" start="20240423T000000Z" end="20240423T080000Z" work-start="20240423T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-duration"/>
+        <task id="10" name="Draft use case diagram" note="" work="10800" duration="10800" start="20240423T000000Z" end="20240423T110000Z" work-start="20240423T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-duration"/>
+        <task id="11" name="Clarify doubts" note="" work="1800" duration="1800" start="20240423T000000Z" end="20240423T083000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+      </task>
+      <task id="12" name="Software design" note="" work="54000" start="20240423T000000Z" end="20240501T170000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+        <task id="13" name="Discuss design decisions" note="" work="7200" duration="28800" start="20240423T000000Z" end="20240423T170000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+        <task id="14" name="Draft class diagram" note="" work="14400" duration="57600" start="20240423T110000Z" end="20240425T110000Z" work-start="20240423T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <predecessors>
+            <predecessor id="1" predecessor-id="13" type="SS"/>
+            <predecessor id="1" predecessor-id="10" type="FS"/>
+          </predecessors>
+        </task>
+        <task id="15" name="Define the modules/packages required" note="" work="10800" duration="1800" start="20240423T000000Z" end="20240423T083000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+        <task id="16" name="Desing gui in scenebuilder" note="" work="21600" duration="57600" start="20240430T000000Z" end="20240501T170000Z" work-start="20240430T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <constraint type="start-no-earlier-than" time="20240430T000000Z"/>
+          <predecessors>
+            <predecessor id="1" predecessor-id="14" type="FS"/>
+          </predecessors>
+        </task>
+      </task>
+      <task id="17" name="Construction" note="" work="176700" start="20240423T000000Z" end="20240521T140000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+        <task id="18" name="Set up git repo" note="" work="300" duration="300" start="20240423T000000Z" end="20240423T080500Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+        <task id="19" name="Implement each class" note="" work="104400" start="20240425T110000Z" end="20240520T110000Z" work-start="20240425T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+          <predecessors>
+            <predecessor id="1" predecessor-id="15" type="FS"/>
+            <predecessor id="1" predecessor-id="14" type="FS"/>
+          </predecessors>
+          <task id="20" name="Model classes" note="" work="36000" duration="201600" start="20240425T110000Z" end="20240506T110000Z" work-start="20240425T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+          <task id="21" name="Service classes" note="" work="36000" duration="288000" start="20240506T110000Z" end="20240520T110000Z" work-start="20240506T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+            <constraint type="start-no-earlier-than" time="20240430T000000Z"/>
+            <predecessors>
+              <predecessor id="1" predecessor-id="20" type="FS"/>
+            </predecessors>
+          </task>
+          <task id="22" name="javafx classes" note="" work="32400" duration="288000" start="20240501T170000Z" end="20240515T170000Z" work-start="20240502T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+            <predecessors>
+              <predecessor id="1" predecessor-id="16" type="FS"/>
+            </predecessors>
+          </task>
+        </task>
+        <task id="23" name="Write unit tests" note="" work="28800" start="20240513T110000Z" end="20240520T110000Z" work-start="20240513T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+          <predecessors>
+            <predecessor id="1" predecessor-id="19" type="FF"/>
+          </predecessors>
+          <task id="24" name="Model classes" note="" work="14400" duration="144000" start="20240513T110000Z" end="20240520T110000Z" work-start="20240513T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+          <task id="25" name="Service classes" note="" work="14400" duration="144000" start="20240513T110000Z" end="20240520T110000Z" work-start="20240513T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+        </task>
+        <task id="26" name="Correct bugs" note="" work="28800" start="20240520T110000Z" end="20240521T110000Z" work-start="20240520T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+          <predecessors>
+            <predecessor id="1" predecessor-id="25" type="FS"/>
+          </predecessors>
+        </task>
+        <task id="27" name="Documentation" note="" work="14400" duration="392400" start="20240501T170000Z" end="20240521T140000Z" work-start="20240502T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <predecessors>
+            <predecessor id="1" predecessor-id="22" type="SS"/>
+          </predecessors>
+        </task>
+      </task>
+      <task id="28" name="Testing" note="" work="19800" start="20240425T110000Z" end="20240502T110000Z" work-start="20240425T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+        <predecessors>
+          <predecessor id="1" predecessor-id="19" type="SS"/>
+        </predecessors>
+        <task id="29" name="Create test cases" note="" work="10800" duration="86400" start="20240425T110000Z" end="20240430T110000Z" work-start="20240425T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+        <task id="30" name="Execute test cases" note="" work="3600" duration="28800" start="20240430T110000Z" end="20240501T110000Z" work-start="20240430T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <predecessors>
+            <predecessor id="1" predecessor-id="29" type="FS"/>
+          </predecessors>
+        </task>
+        <task id="31" name="Record the defects found" note="" work="1800" duration="28800" start="20240501T110000Z" end="20240502T110000Z" work-start="20240501T110000Z" percent-complete="25" priority="0" type="normal" scheduling="fixed-duration">
+          <predecessors>
+            <predecessor id="1" predecessor-id="30" type="FS"/>
+          </predecessors>
+        </task>
+        <task id="32" name="Perform user acceptance testing" note="" work="3600" duration="28800" start="20240425T110000Z" end="20240426T110000Z" work-start="20240425T110000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration"/>
+      </task>
+      <task id="33" name="Delivery" note="" work="24000" start="20240423T000000Z" end="20240524T170000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+        <task id="34" name="Choose a timeslot for the demo" note="" work="300" start="20240522T000000Z" end="20240522T080500Z" work-start="20240522T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+          <constraint type="start-no-earlier-than" time="20240522T000000Z"/>
+        </task>
+        <task id="35" name="Create a README" note="" work="1800" start="20240423T000000Z" end="20240423T083000Z" work-start="20240423T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+        <task id="36" name="Write the report" note="" work="14400" duration="28800" start="20240520T000000Z" end="20240520T170000Z" work-start="20240520T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <constraint type="start-no-earlier-than" time="20240520T000000Z"/>
+        </task>
+        <task id="37" name="Prepare submission package" note="" work="1800" duration="1800" start="20240521T140000Z" end="20240521T143000Z" work-start="20240521T140000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <predecessors>
+            <predecessor id="1" predecessor-id="17" type="FS"/>
+            <predecessor id="1" predecessor-id="31" type="FS"/>
+            <predecessor id="1" predecessor-id="32" type="FS"/>
+          </predecessors>
+        </task>
+        <task id="38" name="Upload the submission package to LEARN" note="" work="300" duration="300" start="20240521T143000Z" end="20240521T143500Z" work-start="20240521T143000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <predecessors>
+            <predecessor id="1" predecessor-id="37" type="FS"/>
+          </predecessors>
+        </task>
+        <task id="39" name="Prepare the demo" note="" work="3600" duration="28800" start="20240521T143500Z" end="20240522T143500Z" work-start="20240521T143500Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <constraint type="start-no-earlier-than" time="20240520T000000Z"/>
+          <predecessors>
+            <predecessor id="1" predecessor-id="38" type="FS"/>
+          </predecessors>
+        </task>
+        <task id="40" name="Attend the demo" note="" work="1800" duration="28800" start="20240524T000000Z" end="20240524T170000Z" work-start="20240524T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <constraint type="must-start-on" time="20240524T000000Z"/>
+          <predecessors>
+            <predecessor id="1" predecessor-id="39" type="FF"/>
+          </predecessors>
+        </task>
+      </task>
+      <task id="41" name="Closure" note="" work="5400" start="20240524T170000Z" end="20240527T090000Z" work-start="20240527T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+        <predecessors>
+          <predecessor id="1" predecessor-id="40" type="FS"/>
+        </predecessors>
+        <task id="42" name="Hold a retrospective meeting" note="" work="3600" duration="3600" start="20240524T170000Z" end="20240527T090000Z" work-start="20240527T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <constraint type="start-no-earlier-than" time="20240524T000000Z"/>
+        </task>
+        <task id="43" name="Discuss lessons learned" note="" work="1800" duration="1800" start="20240524T170000Z" end="20240527T083000Z" work-start="20240527T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+          <constraint type="start-no-earlier-than" time="20240524T000000Z"/>
+        </task>
+      </task>
+    </task>
+  </tasks>
+  <resource-groups/>
+  <resources>
+    <resource id="1" name="Sean" short-name="" type="1" units="0" email="sre114@uclive.ac.nz" note="" std-rate="0"/>
+    <resource id="2" name="Caleb" short-name="" type="1" units="0" email="cgo80@uclive.ac.nz" note="" std-rate="0"/>
+  </resources>
+  <allocations/>
+</project>
