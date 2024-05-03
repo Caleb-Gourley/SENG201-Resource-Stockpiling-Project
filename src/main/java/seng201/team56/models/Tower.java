@@ -10,7 +10,8 @@ public class Tower {
     private float reloadSpeed;
     private ResourceType resourceType;
     private int level;
-    private double cost;
+    private int cost;
+    private String name;
 
     /**
      * Constructor
@@ -20,7 +21,7 @@ public class Tower {
      * @param speed the reload speed of the tower
      * @param cost the tower's cost
      */
-    public Tower(ResourceType type, int amount, float speed, double cost) {
+    public Tower(ResourceType type, int amount, float speed, int cost) {
         this.resourceType = type;
         this.resourceFullAmount = amount;
         this.reloadSpeed = speed;
@@ -32,8 +33,22 @@ public class Tower {
      * Getter for cost
      * @return cost
      */
-    public double getCost() {
+    public int getBuyPrice() {
         return cost;
+    }
+
+    /**
+     * Returns the sell price of the tower. At this stage this is simply the value of cost but we
+     * could implement depreciation to make it more interesting.
+     * @return cost
+     */
+    public int getSellPrice(){
+        return cost;
+    }
+
+    public String getDescription() {
+        return String.format("%s: A %s restaurant with reload speed: %f, capacity: %d. The chef has %d years experience.",
+                name,resourceType.getName(),reloadSpeed,resourceFullAmount,level);
     }
 
     /**
