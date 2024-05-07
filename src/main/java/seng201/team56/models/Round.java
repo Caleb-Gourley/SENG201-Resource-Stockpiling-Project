@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Round {
 
-    private ArrayList<Object> carts = new ArrayList<>();
+    private ArrayList<Cart> carts = new ArrayList<>();
     private double trackDistance;
     private int roundNumber;
 
@@ -27,7 +27,7 @@ public class Round {
      * Getter for carts
      * @return carts
      */
-    public ArrayList<Object> getCarts() { return carts; }
+    public ArrayList<Cart> getCarts() { return carts; }
 
     /**
      * Adds Cart objects to carts ArrayList for that round
