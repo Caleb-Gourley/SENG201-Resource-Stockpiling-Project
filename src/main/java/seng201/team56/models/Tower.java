@@ -2,7 +2,7 @@ package seng201.team56.models;
 
 /**
  * Represents an in-game tower.
- * @author sean
+ * @author Sean Reitsma
  */
 public class Tower implements Purchasable{
     private int resourceFullAmount;

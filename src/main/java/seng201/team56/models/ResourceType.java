@@ -2,7 +2,7 @@ package seng201.team56.models;
 
 /**
  * ResourceType options (to be used for carts and towers)
- * @author sean
+ * @author Sean Reitsma
  */
 public enum ResourceType {
     /**

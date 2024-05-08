@@ -2,7 +2,7 @@ package seng201.team56.models;
 
 /**
  * Represents an in-game cart
- * @author sean
+ * @author Sean Reitsma
  */
 public class Cart {
     private float speed;
@@ -30,6 +30,22 @@ public class Cart {
      */
     public int getResourceAmount() {
         return resourceAmount;
+    }
+
+    /**
+     * Getter for size
+     * @return size
+     */
+    public int getSize() {
+        return size;
+    }
+
+    /**
+     * Convenience method which returns true if the cart is full, false otherwise
+     * @return resourceAmount == size
+     */
+    public boolean isFull() {
+        return resourceAmount == size;
     }
 
     /**
