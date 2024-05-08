@@ -4,13 +4,13 @@ package seng201.team56.models;
  * Represents an in-game tower.
  * @author sean
  */
-public class Tower {
+public class Tower implements Purchasable{
     private int resourceFullAmount;
     private int resourceAmount;
     private float reloadSpeed;
     private ResourceType resourceType;
     private int level;
-    private int cost;
+    private double cost;
     private String name;
 
     /**
@@ -33,7 +33,8 @@ public class Tower {
      * Getter for cost
      * @return cost
      */
-    public int getBuyPrice() {
+    @Override
+    public double getBuyPrice() {
         return cost;
     }
 
@@ -42,10 +43,16 @@ public class Tower {
      * could implement depreciation to make it more interesting.
      * @return cost
      */
-    public int getSellPrice(){
+    @Override
+    public double getSellPrice(){
         return cost;
     }
 
+    /**
+     * Returns a user-friendly description of the Tower.
+     * @return A formatted string containing the stats of the Tower which can then be displayed to the user
+     */
+    @Override
     public String getDescription() {
         return String.format("%s: A %s restaurant with reload speed: %f, capacity: %d. The chef has %d years experience.",
                 name,resourceType.getName(),reloadSpeed,resourceFullAmount,level);
