@@ -91,7 +91,7 @@ public class Tower {
      * Reload the tower back to the full resource amount
      */
     public void reload() {
-        //TODO implement reloading, making use of reload speed
+        //Delegate responsibility of reloadSpeed logic to the relevant service class
         resourceAmount = resourceFullAmount;
     }
 
