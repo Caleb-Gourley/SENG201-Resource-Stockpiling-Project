@@ -10,11 +10,9 @@ group = 'seng201.team56'
 version = '1.0-SNAPSHOT'
 mainClassName = 'seng201.team56.App'
 
-def javaVersion = '17'
+def javaVersion = 17
 def javafxVersion = '21.0.2'
 
-sourceCompatibility = "${javaVersion}"
-targetCompatibility = "${javaVersion}"
 
 repositories {
     mavenCentral()
@@ -32,12 +30,20 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
 }
 
 application {
     // Define the main class for the application.
     mainClass = "${mainClassName}"
+}
+
+//Toolchains is now the preferred method to set a language version
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(javaVersion)
+    }
 }
 
 javafx {
