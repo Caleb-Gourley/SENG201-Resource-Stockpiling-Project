@@ -1,5 +1,8 @@
 package seng201.team56.models;
 
+import java.util.List;
+import java.util.Random;
+
 /**
  * ResourceType options (to be used for carts and towers)
  * @author Sean Reitsma
@@ -38,11 +41,17 @@ public enum ResourceType {
     COQ_A_VIN ("Coq au Vin");
 
     private final String name;
+    private static final List<ResourceType> VALUES = List.of(values());
+    private static final int SIZE = VALUES.size();
+    private static final Random RANDOM = new Random();
     ResourceType(String name) {
         this.name = name;
     }
 
     String getName() {
         return name;
+    }
+    public static ResourceType randomResourceType() {
+        return VALUES.get(RANDOM.nextInt(SIZE));
     }
 }
