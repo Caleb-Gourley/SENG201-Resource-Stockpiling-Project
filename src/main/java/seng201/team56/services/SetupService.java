@@ -10,7 +10,7 @@ import java.util.Random;
  * @author Sean Reitsma
  */
 public class SetupService {
-    private Player player;
+    private final Player player;
 
     /**
      * Constructor
