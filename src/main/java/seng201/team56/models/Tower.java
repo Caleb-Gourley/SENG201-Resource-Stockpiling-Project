@@ -18,10 +18,10 @@ public class Tower implements Purchasable{
      * Sets the default level to 0
      * @param type the ResourceType of the new Tower
      * @param amount the amount the tower fills each reload
-     * @param speed the reload speed of the tower
+     * @param speed the reload speed of the tower (time between reloads in seconds)
      * @param cost the tower's cost
      */
-    public Tower(ResourceType type, int amount, float speed, int cost) {
+    public Tower(ResourceType type, int amount, float speed, double cost) {
         this.resourceType = type;
         this.resourceFullAmount = amount;
         this.reloadSpeed = speed;
