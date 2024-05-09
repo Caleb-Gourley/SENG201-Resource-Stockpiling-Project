@@ -20,7 +20,7 @@ public class SetupService {
      * @param difficulty the player's chosen difficulty.
      * @param startTowers an ArrayList of the player's chosen starting towers.
      */
-    public SetupService(String name, Difficulty difficulty, ArrayList<Tower> startTowers) throws IllegalArgumentException{
+    public SetupService(String name, Difficulty difficulty, ArrayList<Tower> startTowers, int maxRoundNum) throws IllegalArgumentException{
         Inventory inventory = new Inventory();
         if (startTowers.size() == 3) {
             for (Tower tower : startTowers) {
@@ -29,7 +29,7 @@ public class SetupService {
         } else {
             throw new IllegalArgumentException("startTowers must contain 3 elements");
         }
-        this.player = new Player(name,difficulty,inventory);
+        this.player = new Player(name,difficulty,inventory, maxRoundNum);
     }
 
     /**
@@ -45,7 +45,7 @@ public class SetupService {
             int amount = rng.nextInt(5,30);
             float speed = rng.nextFloat(1.5f,3);
             //Starting towers are cheap as chips
-            double cost = 0.5;
+            int cost = 1;
             Tower tower = new Tower(type, amount, speed, cost);
             towers.add(tower);
         }

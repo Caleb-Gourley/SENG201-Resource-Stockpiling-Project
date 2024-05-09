@@ -8,8 +8,13 @@ public class Player {
     private String name;
     private Inventory inventory;
     private Difficulty difficulty;
+    private int maxRounds;
     private double money;
     private int xp;
+
+    public int getMaxRounds() {
+        return maxRounds;
+    }
 
     /**
      * Constructor
@@ -18,10 +23,11 @@ public class Player {
      * @param difficulty
      * @param startInventory
      */
-    public Player(String name, Difficulty difficulty, Inventory startInventory) {
+    public Player(String name, Difficulty difficulty, Inventory startInventory, int maxRounds) {
         this.name = name;
         this.difficulty = difficulty;
         this.inventory = startInventory;
+        this.maxRounds = maxRounds;
         this.money = 0;
         this.xp = 0;
     }
@@ -72,6 +78,14 @@ public class Player {
      */
     public void addMoney(double amount) {
         money += amount;
+    }
+
+    public void addItem(Purchasable item) {
+        if (item.getClass() == Tower.class) {
+            inventory.addTower((Tower) item);
+        } else if (item.getClass() == Upgrade.class) {
+            inventory.addUpgrade((Upgrade) item);
+        }
     }
 
     /**
