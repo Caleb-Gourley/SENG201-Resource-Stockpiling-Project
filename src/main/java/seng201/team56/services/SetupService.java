@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * A service to initialise the game setup
+ * A service to initialise the game setup. The main role of this service is simply to create a player object once the
+ * user has submitted all the required info on the setup screen. Also provides a static method getTowersToChoose()
+ * to generate a list of 6 random towers.
  * @author Sean Reitsma
  */
 public class SetupService {
@@ -23,6 +25,14 @@ public class SetupService {
     public SetupService(String name, Difficulty difficulty, ArrayList<Tower> startTowers, int maxRoundNum) {
         Inventory inventory = new Inventory(startTowers);
         this.player = new Player(name,difficulty,inventory, maxRoundNum);
+    }
+
+    /**
+     * Get the created player object to be used by other Services
+     * @return player
+     */
+    public Player getPlayer() {
+        return player;
     }
 
     /**
