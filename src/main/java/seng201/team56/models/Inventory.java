@@ -8,9 +8,20 @@ import java.util.ArrayList;
  */
 public class Inventory {
 
-    private ArrayList<Tower> towers = new ArrayList<>();
-    private ArrayList<Upgrade> upgrades = new ArrayList<>();
-    private ArrayList<Tower> fieldTowers = new ArrayList<>();
+    private final ArrayList<Tower> towers;
+    private final ArrayList<Upgrade> upgrades;
+    private final ArrayList<Tower> fieldTowers;
+
+    /**
+     * Initialises an Inventory object with a list of starting towers
+     * @param startTowers
+     */
+    public Inventory(ArrayList<Tower> startTowers) {
+        this.towers = new ArrayList<>();
+        this.towers.addAll(startTowers);
+        this.upgrades = new ArrayList<>();
+        this.fieldTowers = new ArrayList<>();
+    }
 
     /**
      * Adds tower objects to towers ArrayList that are in the players inventory

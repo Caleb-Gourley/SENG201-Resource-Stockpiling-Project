@@ -15,20 +15,13 @@ public class SetupService {
     /**
      * Constructor
      * Initialises the player.
-     * @throws IllegalArgumentException if startTowers does not have exactly 3 towers.
+     *
      * @param name the player's chosen name.
      * @param difficulty the player's chosen difficulty.
      * @param startTowers an ArrayList of the player's chosen starting towers.
      */
-    public SetupService(String name, Difficulty difficulty, ArrayList<Tower> startTowers, int maxRoundNum) throws IllegalArgumentException{
-        Inventory inventory = new Inventory();
-        if (startTowers.size() == 3) {
-            for (Tower tower : startTowers) {
-                inventory.addTower(tower);
-            }
-        } else {
-            throw new IllegalArgumentException("startTowers must contain 3 elements");
-        }
+    public SetupService(String name, Difficulty difficulty, ArrayList<Tower> startTowers, int maxRoundNum) {
+        Inventory inventory = new Inventory(startTowers);
         this.player = new Player(name,difficulty,inventory, maxRoundNum);
     }
 
