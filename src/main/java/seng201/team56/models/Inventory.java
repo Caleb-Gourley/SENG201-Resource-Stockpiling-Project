@@ -14,7 +14,7 @@ public class Inventory {
 
     /**
      * Initialises an Inventory object with a list of starting towers
-     * @param startTowers
+     * @param startTowers the list of starting towers
      */
     public Inventory(ArrayList<Tower> startTowers) {
         this.towers = new ArrayList<>();
