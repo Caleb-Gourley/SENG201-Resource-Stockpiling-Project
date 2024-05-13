@@ -80,6 +80,11 @@ public class Player {
         money += amount;
     }
 
+    /**
+     * Add an item to the player's inventory.
+     * Determine whether the item is an upgrade or a tower and add it to the appropriate inventory list.
+     * @param item a {@link Purchasable} to add to the player's inventory
+     */
     public void addItem(Purchasable item) {
         if (item.getClass() == Tower.class) {
             inventory.addTower((Tower) item);
@@ -88,6 +93,10 @@ public class Player {
         }
     }
 
+    /**
+     * Getter for Inventory
+     * @return inventory
+     */
     public Inventory getInventory() {
         return inventory;
     }
