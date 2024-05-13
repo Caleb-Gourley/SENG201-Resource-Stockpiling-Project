@@ -3,6 +3,7 @@ package seng201.team56.services;
 import seng201.team56.models.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,7 +23,7 @@ public class SetupService {
      * @param difficulty the player's chosen difficulty.
      * @param startTowers an ArrayList of the player's chosen starting towers.
      */
-    public SetupService(String name, Difficulty difficulty, ArrayList<Tower> startTowers, int maxRoundNum) {
+    public SetupService(String name, Difficulty difficulty, List<Tower> startTowers, int maxRoundNum) {
         Inventory inventory = new Inventory(startTowers);
         this.player = new Player(name,difficulty,inventory, maxRoundNum);
     }
@@ -41,7 +42,7 @@ public class SetupService {
      */
     public static ArrayList<Tower> getTowersToChoose() {
         Random rng = new Random();
-        ArrayList<Tower> towers = new ArrayList<Tower>(6);
+        ArrayList<Tower> towers = new ArrayList<>(6);
         for (int i = 0; i < 6; i++) {
             ResourceType type = ResourceType.randomResourceType();
             //TODO Tweak random values to make sure these numbers will make for a balanced game.

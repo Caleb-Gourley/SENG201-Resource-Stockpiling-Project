@@ -6,9 +6,9 @@ package seng201.team56.models;
  */
 public class Player {
     private String name;
-    private Inventory inventory;
+    private final Inventory inventory;
     private Difficulty difficulty;
-    private int maxRounds;
+    private final int maxRounds;
     private double money;
     private int xp;
 
@@ -19,9 +19,9 @@ public class Player {
     /**
      * Constructor
      * Sets the player name, difficulty, and the initial inventory. Sets money and xp to 0.
-     * @param name
-     * @param difficulty
-     * @param startInventory
+     * @param name the player's chosen name
+     * @param difficulty the {@link Difficulty} for the game
+     * @param startInventory the {@link Inventory} the player starts with
      */
     public Player(String name, Difficulty difficulty, Inventory startInventory, int maxRounds) {
         this.name = name;
@@ -86,6 +86,10 @@ public class Player {
         } else if (item.getClass() == Upgrade.class) {
             inventory.addUpgrade((Upgrade) item);
         }
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     /**
