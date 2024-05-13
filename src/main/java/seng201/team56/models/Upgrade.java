@@ -4,7 +4,7 @@ package seng201.team56.models;
  * Represents an upgrade.
  * @author Caleb Gourley
  */
-public class Upgrade implements Purchasable {
+public abstract class Upgrade implements Purchasable {
 
     private int cost;
     private String modiferType;
@@ -46,4 +46,6 @@ public class Upgrade implements Purchasable {
      * @return modiferAmount
      */
     public double getModiferAmount() { return modiferAmount; }
+
+    public abstract Tower applyUpgrade(Tower tower);
 }

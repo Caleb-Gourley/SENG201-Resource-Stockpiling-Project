@@ -15,6 +15,7 @@ public class Tower implements Purchasable{
     private int level;
     private int cost;
     private String name;
+    private Rarity rarity;
 
     /**
      * Constructor
@@ -112,6 +113,10 @@ public class Tower implements Purchasable{
      */
     public float getReloadSpeed() {
         return reloadSpeed;
+    }
+
+    public Rarity getRarity() {
+        return rarity;
     }
 
     /**

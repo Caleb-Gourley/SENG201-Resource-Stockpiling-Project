@@ -55,6 +55,10 @@ public enum Rarity {
         }
     }
 
+    public static Rarity getNextRarity(Rarity rarity) {
+        return VALUES.get(VALUES.indexOf(rarity) + 1);
+    }
+
     /**
      * Getter for resourceAmountMin
      * @return resourceAmountMin
