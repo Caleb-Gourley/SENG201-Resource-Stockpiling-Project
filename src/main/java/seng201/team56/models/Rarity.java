@@ -94,4 +94,12 @@ public enum Rarity {
     public List<ResourceType> getTypes() {
         return types;
     }
+
+    /**
+     * Returns a random {@link ResourceType} for the given rarity.
+     * @return the type
+     */
+    public ResourceType getRandomType() {
+        return types.get(RANDOM.nextInt(types.size()));
+    }
 }
