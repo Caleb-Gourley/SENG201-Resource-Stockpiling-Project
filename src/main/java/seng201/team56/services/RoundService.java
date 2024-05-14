@@ -46,6 +46,10 @@ public class RoundService {
 			currentRound.addCart(cart);
 		}
 	}
+
+	public void playRound() {
+
+	}
 	
 
 }
