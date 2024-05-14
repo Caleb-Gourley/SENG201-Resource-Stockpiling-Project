@@ -13,6 +13,7 @@ public class RoundService {
 	private Round currentRound;
 	private int roundNum;
 	private Player player;
+	private RoundDifficulty roundDifficulty;
 	
 	/**
 	 * Constructor.
@@ -25,22 +26,20 @@ public class RoundService {
 		this.currentRound = null;
 	}
 
+	public void setRoundDifficulty(RoundDifficulty difficulty) {
+		this.roundDifficulty = difficulty;
+	}
+
 	/**
 	 * Creates a round with the given (player selected) difficulty information.
-	 * @param trackDistance the distance of the track for the round
-	 * @param numCarts the number of carts in the round
-	 * @param cartMinSize the minimum size of any cart in the round
-	 * @param cartMaxSize the maximum size of any cart in the round
-	 * @param cartMinSpeed the minimum speed of any cart in the round
-	 * @param cartMaxSpeed the maximum speed of any cart in the round
 	 */
-	public void createRound(double trackDistance, int numCarts, int cartMinSize, int cartMaxSize, float cartMinSpeed,
-							float cartMaxSpeed) {
+	//Should this just be in the round constructor?
+	public void createRound() {
 		Random rng = new Random();
-		this.currentRound = new Round(trackDistance, roundNum);
-		for (int i = 1; i < numCarts; i++) {
-			int size = rng.nextInt(cartMinSize,cartMaxSize);
-			float speed = rng.nextFloat(cartMinSpeed,cartMaxSpeed);
+		this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
+		for (int i = 1; i < roundDifficulty.numCarts(); i++) {
+			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
+			float speed = rng.nextFloat(roundDifficulty.cartMinSpeed(),roundDifficulty.cartMaxSpeed());
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
 			Cart cart = new Cart(speed, size, type);
 			currentRound.addCart(cart);
