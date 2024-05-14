@@ -1,5 +1,8 @@
 package seng201.team56.models;
 
+import java.util.List;
+import java.util.Random;
+
 /**
  * Represents an in-game tower.
  * @author Sean Reitsma
@@ -10,7 +13,7 @@ public class Tower implements Purchasable{
     private float reloadSpeed;
     private ResourceType resourceType;
     private int level;
-    private double cost;
+    private int cost;
     private String name;
 
     /**
@@ -21,7 +24,7 @@ public class Tower implements Purchasable{
      * @param speed the reload speed of the tower (time between reloads in seconds)
      * @param cost the tower's cost
      */
-    public Tower(ResourceType type, int amount, float speed, double cost) {
+    public Tower(ResourceType type, int amount, float speed, int cost) {
         this.resourceType = type;
         this.resourceFullAmount = amount;
         this.reloadSpeed = speed;
@@ -29,22 +32,39 @@ public class Tower implements Purchasable{
         this.level = 0;
     }
 
+    public Tower(Rarity rarity) {
+        Random rng = new Random();
+        List<ResourceType> types = rarity.getTypes();
+        this.resourceType = types.get(rng.nextInt(types.size()));
+        this.resourceFullAmount = rng.nextInt(rarity.getResourceAmountMin(), rarity.getResourceAmountMax() + 1);
+        this.reloadSpeed = rng.nextFloat(rarity.getSpeedMin(), rarity.getSpeedMax());
+        switch (rarity) {
+            case COMMON -> this.cost = rng.nextInt(10,20);
+            case UNCOMMON -> this.cost = rng.nextInt(20,30);
+            case RARE -> this.cost = rng.nextInt(30,40);
+            case EPIC -> this.cost = rng.nextInt(40,50);
+            case LEGENDARY -> this.cost = rng.nextInt(100,200);
+        }
+    }
+
     /**
      * Getter for cost
+     *
      * @return cost
      */
     @Override
-    public double getBuyPrice() {
+    public int getBuyPrice() {
         return cost;
     }
 
     /**
      * Returns the sell price of the tower. At this stage this is simply the value of cost but we
      * could implement depreciation to make it more interesting.
+     *
      * @return cost
      */
     @Override
-    public double getSellPrice(){
+    public int getSellPrice(){
         return cost;
     }
 

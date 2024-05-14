@@ -3,6 +3,12 @@
 *.iml
 *.iws
 
+# Eclipse
+bin/
+.project
+.classpath
+.settings/
+
 # Mac
 .DS_Store
 
@@ -18,3 +24,4 @@ build/
 
 # vim
 *.swp
+/proj_extras/.~lock.*.odt#

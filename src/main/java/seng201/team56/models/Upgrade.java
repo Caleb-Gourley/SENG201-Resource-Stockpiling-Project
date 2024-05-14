@@ -6,7 +6,7 @@ package seng201.team56.models;
  */
 public class Upgrade implements Purchasable {
 
-    private double cost;
+    private int cost;
     private String modiferType;
     private double modiferAmount;
 
@@ -17,7 +17,7 @@ public class Upgrade implements Purchasable {
      * @param modiferType the description of the modifer
      * @param modiferAmount the strength of the modifer
      */
-    public Upgrade(double cost, String modiferType, double modiferAmount) {
+    public Upgrade(int cost, String modiferType, double modiferAmount) {
         this.cost = cost;
         this.modiferType = modiferType;
         this.modiferAmount = modiferAmount;
@@ -27,13 +27,13 @@ public class Upgrade implements Purchasable {
      * Getter for buy price
      * @return cost
      */
-    public double getBuyPrice() { return cost; }
+    public int getBuyPrice() { return cost; }
 
     /**
      * Getter for selling price
      * @return cost / 0.5
      */
-    public double getSellPrice() { return cost / 0.5; }
+    public int getSellPrice() { return cost; }
 
     /**
      * Getter for Description

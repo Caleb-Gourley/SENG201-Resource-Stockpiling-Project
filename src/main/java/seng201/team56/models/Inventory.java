@@ -1,6 +1,7 @@
 package seng201.team56.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a players inventory.
@@ -8,9 +9,20 @@ import java.util.ArrayList;
  */
 public class Inventory {
 
-    private ArrayList<Tower> towers = new ArrayList<>();
-    private ArrayList<Upgrade> upgrades = new ArrayList<>();
-    private ArrayList<Tower> fieldTowers = new ArrayList<>();
+    private final ArrayList<Tower> towers;
+    private final ArrayList<Upgrade> upgrades;
+    private final ArrayList<Tower> fieldTowers;
+
+    /**
+     * Initialises an Inventory object with a list of starting towers
+     * @param startTowers the list of starting towers
+     */
+    public Inventory(List<Tower> startTowers) {
+        this.towers = new ArrayList<>();
+        this.towers.addAll(startTowers);
+        this.upgrades = new ArrayList<>();
+        this.fieldTowers = new ArrayList<>();
+    }
 
     /**
      * Adds tower objects to towers ArrayList that are in the players inventory

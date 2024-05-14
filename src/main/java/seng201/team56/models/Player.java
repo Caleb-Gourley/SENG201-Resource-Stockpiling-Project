@@ -6,22 +6,28 @@ package seng201.team56.models;
  */
 public class Player {
     private String name;
-    private Inventory inventory;
+    private final Inventory inventory;
     private Difficulty difficulty;
+    private final int maxRounds;
     private double money;
     private int xp;
+
+    public int getMaxRounds() {
+        return maxRounds;
+    }
 
     /**
      * Constructor
      * Sets the player name, difficulty, and the initial inventory. Sets money and xp to 0.
-     * @param name
-     * @param difficulty
-     * @param startInventory
+     * @param name the player's chosen name
+     * @param difficulty the {@link Difficulty} for the game
+     * @param startInventory the {@link Inventory} the player starts with
      */
-    public Player(String name, Difficulty difficulty, Inventory startInventory) {
+    public Player(String name, Difficulty difficulty, Inventory startInventory, int maxRounds) {
         this.name = name;
         this.difficulty = difficulty;
         this.inventory = startInventory;
+        this.maxRounds = maxRounds;
         this.money = 0;
         this.xp = 0;
     }
@@ -72,6 +78,27 @@ public class Player {
      */
     public void addMoney(double amount) {
         money += amount;
+    }
+
+    /**
+     * Add an item to the player's inventory.
+     * Determine whether the item is an upgrade or a tower and add it to the appropriate inventory list.
+     * @param item a {@link Purchasable} to add to the player's inventory
+     */
+    public void addItem(Purchasable item) {
+        if (item.getClass() == Tower.class) {
+            inventory.addTower((Tower) item);
+        } else if (item.getClass() == Upgrade.class) {
+            inventory.addUpgrade((Upgrade) item);
+        }
+    }
+
+    /**
+     * Getter for Inventory
+     * @return inventory
+     */
+    public Inventory getInventory() {
+        return inventory;
     }
 
     /**

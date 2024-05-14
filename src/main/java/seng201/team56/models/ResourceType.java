@@ -38,7 +38,11 @@ public enum ResourceType {
      * Coq au Vin
      * @recipe <a href=https://www.foodandwine.com/recipes/coq-au-vin>coq-au-vin</a>
      */
-    COQ_A_VIN ("Coq au Vin");
+    COQ_A_VIN ("Coq au Vin"),
+    /**
+     * Ratatouille
+     */
+    RATATOUILLE ("Ratatouille");
 
     private final String name;
     private static final List<ResourceType> VALUES = List.of(values());

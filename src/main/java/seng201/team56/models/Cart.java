@@ -13,7 +13,7 @@ public class Cart {
     /**
      * Constructor
      * Sets the initial resourceAmount to 0
-     * @param speed the speed the cart goes around the track
+     * @param speed the speed the cart goes around the track (m/s)
      * @param size the size of the cart
      * @param resourceType the ResourceType the cart can hold
      */
