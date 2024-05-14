@@ -18,6 +18,7 @@ public class ShopService {
      */
     public ShopService(Player player) {
         this.player = player;
+        this.items = new ArrayList<>();
     }
 
     /**
