@@ -44,13 +44,7 @@ public class SetupService {
         Random rng = new Random();
         ArrayList<Tower> towers = new ArrayList<>(6);
         for (int i = 0; i < 6; i++) {
-            ResourceType type = ResourceType.randomResourceType();
-            //TODO Tweak random values to make sure these numbers will make for a balanced game.
-            int amount = rng.nextInt(5,30);
-            float speed = rng.nextFloat(1.5f,3);
-            //Starting towers are cheap as chips
-            int cost = 1;
-            Tower tower = new Tower(type, amount, speed, cost);
+            Tower tower = new Tower(Rarity.COMMON);
             towers.add(tower);
         }
         return towers;
