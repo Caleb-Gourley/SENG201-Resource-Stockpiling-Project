@@ -3,6 +3,12 @@
 *.iml
 *.iws
 
+# Eclipse
+bin/
+.project
+.classpath
+.settings/
+
 # Mac
 .DS_Store
 
