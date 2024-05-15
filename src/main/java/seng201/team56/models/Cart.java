@@ -7,6 +7,7 @@ package seng201.team56.models;
 public class Cart {
     private float speed;
     private int size;
+    private double distance;
     private ResourceType resourceType;
     private int resourceAmount;
 
@@ -41,6 +42,14 @@ public class Cart {
     }
 
     /**
+     * Getter for distance
+     * @return distance
+     */
+    public double getDistance() {
+        return distance;
+    }
+
+    /**
      * Convenience method which returns true if the cart is full, false otherwise
      * @return resourceAmount == size
      */
@@ -63,6 +72,14 @@ public class Cart {
         }
         return leftOver;
     }
+
+    /**
+     * Move the cart by speed metres. That is, this method equates to 1 second of movement.
+     */
+    public void move() {
+        distance += speed;
+    }
+
 
 
 }

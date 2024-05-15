@@ -39,4 +39,6 @@ public class Round {
      * Remove Cart object from ArrayList when cart is full
      */
     public void removeCart() { carts.remove(-1); }
+
+    public double getTrackDistance() { return trackDistance; }
 }
