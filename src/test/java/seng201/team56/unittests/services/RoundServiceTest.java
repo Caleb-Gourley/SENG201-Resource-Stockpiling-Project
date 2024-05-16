@@ -33,6 +33,10 @@ public class RoundServiceTest {
         int cartMaxSize = 40;
         double cartMinSpeed = 5;
         double cartMaxSpeed = 10.5;
-        assertDoesNotThrow(() -> {roundService.createRound(trackDistance,numCarts,cartMinSize,cartMaxSize,cartMinSpeed,cartMaxSpeed);});
+        roundService.createRound(trackDistance,numCarts,cartMinSize,cartMaxSize,cartMinSpeed,cartMaxSpeed);
+        assertAll("Round",
+                () -> assertNotNull(roundService.getCurrentRound()),
+                () -> assertEquals(numCarts, roundService.getCurrentRound().getCarts().size())
+        );
     }
 }

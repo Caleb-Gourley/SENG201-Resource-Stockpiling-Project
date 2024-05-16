@@ -44,7 +44,7 @@ public class RoundService {
 		this.pool = Executors.newScheduledThreadPool(numCarts);
 		Random rng = new Random();
 		this.currentRound = new Round(trackDistance, roundNum);
-		for (int i = 1; i < numCarts; i++) {
+		for (int i = 0; i < numCarts; i++) {
 			int size = rng.nextInt(cartMinSize,cartMaxSize);
 			double speed = rng.nextDouble(cartMinSpeed,cartMaxSpeed);
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
@@ -68,6 +68,10 @@ public class RoundService {
 				pool.schedule(task, 0, TimeUnit.SECONDS);
 			}
 		}
+	}
+
+	public Round getCurrentRound() {
+		return currentRound;
 	}
 
 	/**
