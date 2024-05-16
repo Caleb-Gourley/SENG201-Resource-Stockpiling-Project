@@ -39,14 +39,14 @@ public class RoundService {
 	 * @param cartMinSpeed the minimum speed of any cart in the round
 	 * @param cartMaxSpeed the maximum speed of any cart in the round
 	 */
-	public void createRound(double trackDistance, int numCarts, int cartMinSize, int cartMaxSize, float cartMinSpeed,
-							float cartMaxSpeed) {
+	public void createRound(double trackDistance, int numCarts, int cartMinSize, int cartMaxSize, double cartMinSpeed,
+							double cartMaxSpeed) {
 		this.pool = Executors.newScheduledThreadPool(numCarts);
 		Random rng = new Random();
 		this.currentRound = new Round(trackDistance, roundNum);
 		for (int i = 1; i < numCarts; i++) {
 			int size = rng.nextInt(cartMinSize,cartMaxSize);
-			float speed = rng.nextFloat(cartMinSpeed,cartMaxSpeed);
+			double speed = rng.nextDouble(cartMinSpeed,cartMaxSpeed);
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
 			Cart cart = new Cart(speed, size, type, trackDistance);
 			currentRound.addCart(cart);
@@ -57,10 +57,13 @@ public class RoundService {
 	 * Play a round. Adds {@link CartMoveTask} tasks to the pool.
 	 */
 	public void playRound() {
-		// Begin moving all carts
-		for (Cart cart: currentRound.getCarts()) {
-			CartMoveTask task = new CartMoveTask(cart, pool, this);
-			pool.schedule(task, 0, TimeUnit.SECONDS);
+		// Check that the round has been created first
+		if (currentRound != null) {
+			// Begin moving all carts
+			for (Cart cart : currentRound.getCarts()) {
+				CartMoveTask task = new CartMoveTask(cart, pool, this);
+				pool.schedule(task, 0, TimeUnit.SECONDS);
+			}
 		}
 	}
 
