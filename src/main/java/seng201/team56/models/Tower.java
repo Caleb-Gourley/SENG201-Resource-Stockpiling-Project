@@ -37,7 +37,7 @@ public class Tower implements Purchasable{
         List<ResourceType> types = rarity.getTypes();
         this.resourceType = types.get(rng.nextInt(types.size()));
         this.resourceFullAmount = rng.nextInt(rarity.getResourceAmountMin(), rarity.getResourceAmountMax() + 1);
-        this.reloadSpeed = rng.nextFloat(rarity.getSpeedMin(), rarity.getSpeedMax());
+        this.reloadSpeed = rng.nextDouble(rarity.getSpeedMin(), rarity.getSpeedMax());
         switch (rarity) {
             case COMMON -> this.cost = rng.nextInt(10,20);
             case UNCOMMON -> this.cost = rng.nextInt(20,30);
