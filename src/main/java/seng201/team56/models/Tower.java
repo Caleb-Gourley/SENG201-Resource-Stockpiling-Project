@@ -156,10 +156,12 @@ public class Tower implements Purchasable, PropertyChangeListener {
      */
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        if (propertyChangeEvent.getPropertyName().equals("distance")
-                && propertyChangeEvent.getNewValue().equals(this.distance)) {
-            Cart cart = (Cart) propertyChangeEvent.getSource();
-            fillCart(cart);
+        if (propertyChangeEvent.getSource() instanceof Cart cart) {
+            if (propertyChangeEvent.getPropertyName().equals("distance")
+                    && (propertyChangeEvent.getNewValue() instanceof Double)
+                    && ((double) propertyChangeEvent.getNewValue() >= distance)) {
+                fillCart(cart);
+            }
         }
     }
 
@@ -176,7 +178,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     /**
      * Set the distance of the Tower on the track. This distance corresponds to the slot the Player puts the Tower in.
      * @see Tower#getDistance()
-     * @param distance
+     * @param distance the distance in metres
      */
     public void setDistance(double distance) {
         this.distance = distance;

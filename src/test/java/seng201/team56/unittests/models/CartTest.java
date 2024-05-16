@@ -1,12 +1,14 @@
 package seng201.team56.unittests.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import seng201.team56.models.Cart;
 
 import org.junit.jupiter.api.Test;
 import seng201.team56.models.ResourceType;
+import seng201.team56.models.Tower;
 
 /**
  * Unit tests for the cart model
@@ -20,7 +22,7 @@ class CartTest {
      */
     @BeforeEach
     public void setUpTest() {
-        cart = new Cart(100, 10, ResourceType.BOUILLABAISSE, 100);
+        cart = new Cart(30, 10, ResourceType.BOUILLABAISSE, 100);
     }
 
     /**
@@ -49,5 +51,38 @@ class CartTest {
         assertEquals(0, cart.fillAmount(9));
         assertEquals(9, cart.getResourceAmount());
 
+    }
+
+    @Test
+    void moveTest() {
+        cart.move();
+        assertEquals(30, cart.getDistance());
+    }
+
+    @Test
+    void finishTest() {
+        for (int i = 0; i < 4; i++) {
+            cart.move();
+        }
+        assertEquals(120, cart.getDistance());
+        assertTrue(cart.isDone());
+    }
+
+    @Test
+    void fillFullTest() {
+        assertEquals(0, cart.fillAmount(10));
+        assertEquals(10, cart.getResourceAmount());
+        assertTrue(cart.isFull());
+    }
+
+    @Test
+    void addPropertyListenerTest() {
+        Tower tower = new Tower(ResourceType.BOUILLABAISSE, 6, 5, 10);
+        cart.addPropertyChangeListener(tower);
+        tower.setDistance(30);
+        tower.reload();
+        cart.move();
+        assertEquals(30,cart.getDistance());
+        assertEquals(6,cart.getResourceAmount());
     }
 }

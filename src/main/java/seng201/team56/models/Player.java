@@ -86,9 +86,9 @@ public class Player {
      * @param item a {@link Purchasable} to add to the player's inventory
      */
     public void addItem(Purchasable item) {
-        if (item.getClass() == Tower.class) {
+        if (item instanceof Tower) {
             inventory.addTower((Tower) item);
-        } else if (item.getClass() == Upgrade.class) {
+        } else if (item instanceof Upgrade) {
             inventory.addUpgrade((Upgrade) item);
         }
     }

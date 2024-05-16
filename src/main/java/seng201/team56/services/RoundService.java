@@ -49,6 +49,9 @@ public class RoundService {
 			double speed = rng.nextDouble(cartMinSpeed,cartMaxSpeed);
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
 			Cart cart = new Cart(speed, size, type, trackDistance);
+			for (Tower tower: player.getInventory().getFieldTowers()) {
+				cart.addPropertyChangeListener(tower);
+			}
 			currentRound.addCart(cart);
 		}
 	}
