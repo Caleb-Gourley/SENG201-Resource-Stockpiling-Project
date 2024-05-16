@@ -17,16 +17,14 @@ public class SetupWindow extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/Tower_Eats_setup.fxml"));
+        FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/TowerEatsSetup.fxml"));
         Parent root = baseLoader.load();
-
-        SetupController baseController = baseLoader.getController();
-        baseController.init(primaryStage);
-
+        FXWrapper fxWrapper = baseLoader.getController();
+        Scene scene = new Scene(root, 710, 500);
         primaryStage.setTitle("Tower Eats");
-        Scene scene = new Scene(root, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
+        fxWrapper.init(primaryStage);
     }
 
     /**

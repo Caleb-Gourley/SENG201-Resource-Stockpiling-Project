@@ -11,6 +11,7 @@ import seng201.team56.models.Tower;
 import seng201.team56.services.SetupService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SetupController {
 
@@ -51,12 +52,24 @@ public class SetupController {
     @FXML
     private Slider RoundsSlider;
     private SetupService setupService;
+    private Difficulty difficulty;
+    private ArrayList<Tower> selectedTower;
+    private Tower[] selectedTowers = new Tower[3];
+    private String name;
+    private int maxRoundNum;
 
-    public void init(Stage stage) {
-        ArrayList<Tower> initTowers = new ArrayList<>();
-        initTowers.add(new Tower(ResourceType.CREME_BRULEE, 10, 10, 100));
-        initTowers.add(new Tower(ResourceType.CREME_BRULEE, 10, 10, 100));
-        initTowers.add(new Tower(ResourceType.CREME_BRULEE, 10, 10, 100));
-        setupService = new SetupService("Name", Difficulty.EASY, initTowers, 10);
+    @FXML
+    public void initialize() {
+        this.difficulty = Difficulty.EASY;
+        List<Button> selectedTowerButtons = List.of(SelectedTower1Button, SelectedTower2Button, SelectedTower3Button);
+        List<Button> towerButtons = List.of(Tower1Button, Tower2Button, Tower3Button, Tower4Button, Tower5Button, Tower6Button, Tower7Button, Tower8Button, Tower9Button);
+
+        maxRoundNum = (int)RoundsSlider.getValue();
+        // PlayButton.setOnAction(event -> new SetupService(name, difficulty, List.of(selectedTowers),maxRoundNum));
+    }
+
+    public void Play() {
+        // update to main scene
+        // SetupService constructor call
     }
 }

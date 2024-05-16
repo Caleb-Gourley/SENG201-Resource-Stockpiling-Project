@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1414.0" prefWidth="2000.0" style="-fx-background-image: url('/img/TowerEatsBackground.png'); -fx-background-size: cover;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team56.gui.SetupController">
+<GridPane fx:id="gridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1414.0" prefWidth="2000.0" style="-fx-background-image: url('/img/TowerEatsBackground.png'); -fx-background-size: cover;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team56.gui.FXWrapper">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="768.0" minWidth="0.0" prefWidth="17.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1106.0" minWidth="10.0" prefWidth="713.0" />
@@ -23,7 +23,7 @@
       <RowConstraints maxHeight="451.0" minHeight="0.0" prefHeight="299.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <TextField fx:id="NameTextField" alignment="CENTER" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <TextField fx:id="NameTextField" alignment="CENTER" promptText="Name" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets bottom="200.0" left="200.0" right="100.0" />
          </GridPane.margin>
@@ -31,7 +31,7 @@
             <Font size="34.0" />
          </font>
       </TextField>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Choose difficulty:" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Choose difficulty:" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="38.0" />
          </font>
@@ -39,7 +39,7 @@
             <Insets bottom="20.0" left="270.0" />
          </GridPane.margin>
       </Text>
-      <Button fx:id="EasyButton" mnemonicParsing="false" prefHeight="51.0" prefWidth="147.0" text="Easy" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Button fx:id="EasyButton" mnemonicParsing="false" prefHeight="51.0" prefWidth="147.0" text="Easy" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="24.0" />
          </font>
@@ -47,7 +47,7 @@
             <Insets left="150.0" top="130.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="MediumButton" layoutX="160.0" layoutY="752.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="147.0" text="Medium" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Button fx:id="MediumButton" layoutX="160.0" layoutY="752.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="147.0" text="Medium" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="24.0" />
          </font>
@@ -55,7 +55,7 @@
             <Insets left="350.0" top="130.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="HardButton" layoutX="360.0" layoutY="752.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="147.0" text="Hard" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Button fx:id="HardButton" layoutX="360.0" layoutY="752.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="147.0" text="Hard" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="24.0" />
          </font>
@@ -63,12 +63,12 @@
             <Insets left="550.0" top="130.0" />
          </GridPane.margin>
       </Button>
-      <Slider fx:id="RoundsSlider" max="15.0" min="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Slider fx:id="RoundsSlider" majorTickUnit="5.0" max="15.0" min="5.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets left="130.0" right="30.0" top="400.0" />
          </GridPane.margin>
       </Slider>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select rounds:" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select rounds:" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="38.0" />
          </font>
@@ -76,7 +76,7 @@
             <Insets left="285.0" top="290.0" />
          </GridPane.margin>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pick Starting Towers:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pick Starting Towers:" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="38.0" />
          </font>
@@ -84,7 +84,7 @@
             <Insets bottom="300.0" left="140.0" />
          </GridPane.margin>
       </Text>
-      <Button fx:id="Tower1Button" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="Tower1Button" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -92,7 +92,7 @@
             <Insets bottom="100.0" left="105.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="Tower2Button" layoutX="851.0" layoutY="639.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="Tower2Button" layoutX="851.0" layoutY="639.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -100,7 +100,7 @@
             <Insets bottom="100.0" left="255.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="Tower3Button" layoutX="1001.0" layoutY="639.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="Tower3Button" layoutX="1001.0" layoutY="639.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -108,7 +108,7 @@
             <Insets bottom="100.0" left="405.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="Tower4Button" layoutX="1151.0" layoutY="639.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="Tower4Button" layoutX="1151.0" layoutY="639.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -116,7 +116,7 @@
             <Insets left="105.0" top="50.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="Tower5Button" layoutX="851.0" layoutY="714.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="Tower5Button" layoutX="851.0" layoutY="714.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -124,7 +124,7 @@
             <Insets left="255.0" top="50.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="Tower6Button" layoutX="1001.0" layoutY="714.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="Tower6Button" layoutX="1001.0" layoutY="714.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -132,7 +132,7 @@
             <Insets left="405.0" top="50.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="Tower7Button" layoutX="856.0" layoutY="714.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="Tower7Button" layoutX="856.0" layoutY="714.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -140,7 +140,7 @@
             <Insets left="105.0" top="200.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="Tower8Button" layoutX="856.0" layoutY="789.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="Tower8Button" layoutX="856.0" layoutY="789.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -148,7 +148,7 @@
             <Insets left="255.0" top="200.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="Tower9Button" layoutX="1006.0" layoutY="789.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="Tower9Button" layoutX="1006.0" layoutY="789.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -156,7 +156,7 @@
             <Insets left="405.0" top="200.0" />
          </GridPane.margin>
       </Button>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Towers:" GridPane.columnIndex="3" GridPane.rowIndex="1">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Towers:" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="38.0" />
          </font>
@@ -164,7 +164,7 @@
             <Insets bottom="300.0" left="100.0" />
          </GridPane.margin>
       </Text>
-      <Button fx:id="SelectedTower1Button" layoutX="856.0" layoutY="639.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" text="Button" GridPane.columnIndex="3" GridPane.rowIndex="1">
+      <Button fx:id="SelectedTower1Button" layoutX="856.0" layoutY="639.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" text="Button" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -172,7 +172,7 @@
             <Insets />
          </GridPane.margin>
       </Button>
-      <Button fx:id="SelectedTower2Button" layoutX="1428.0" layoutY="642.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" text="Button" GridPane.columnIndex="3" GridPane.rowIndex="1">
+      <Button fx:id="SelectedTower2Button" layoutX="1428.0" layoutY="642.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" text="Button" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -180,7 +180,7 @@
             <Insets left="180.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="SelectedTower3Button" layoutX="1628.0" layoutY="642.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" text="Button" GridPane.columnIndex="3" GridPane.rowIndex="1">
+      <Button fx:id="SelectedTower3Button" layoutX="1628.0" layoutY="642.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" text="Button" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -188,7 +188,7 @@
             <Insets left="360.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="PlayButton" layoutX="1428.0" layoutY="642.0" mnemonicParsing="false" prefHeight="83.0" prefWidth="233.0" text="Play" GridPane.columnIndex="3" GridPane.rowIndex="1">
+      <Button fx:id="PlayButton" layoutX="1428.0" layoutY="642.0" mnemonicParsing="false" prefHeight="83.0" prefWidth="233.0" text="Play" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
