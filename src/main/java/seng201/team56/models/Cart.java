@@ -5,7 +5,7 @@ package seng201.team56.models;
  * @author Sean Reitsma
  */
 public class Cart {
-    private float speed;
+    private double speed;
     private int size;
     private double distance;
     private ResourceType resourceType;
@@ -18,7 +18,7 @@ public class Cart {
      * @param size the size of the cart
      * @param resourceType the ResourceType the cart can hold
      */
-    public Cart(float speed, int size, ResourceType resourceType) {
+    public Cart(double speed, int size, ResourceType resourceType) {
         this.speed = speed;
         this.size = size;
         this.resourceType = resourceType;
