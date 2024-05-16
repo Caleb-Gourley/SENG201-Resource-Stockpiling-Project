@@ -18,6 +18,12 @@ public class SetupService {
     /**
      * Constructor
      * Initialises the player.
+     * <p>This should be called once the player clicks "Play." Then the new player object can be retrieved with
+     * getPlayer. For example: </p>
+     * <code>
+     *     SetupService setupService = new SetupService(name, difficulty, startTowers, maxRoundNum);
+     *     Player player = setupService.getPlayer();
+     * </code>
      *
      * @param name the player's chosen name.
      * @param difficulty the player's chosen difficulty.
@@ -43,7 +49,7 @@ public class SetupService {
     public static ArrayList<Tower> getTowersToChoose() {
         Random rng = new Random();
         ArrayList<Tower> towers = new ArrayList<>(6);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 9; i++) {
             Tower tower = new Tower(Rarity.COMMON);
             towers.add(tower);
         }
