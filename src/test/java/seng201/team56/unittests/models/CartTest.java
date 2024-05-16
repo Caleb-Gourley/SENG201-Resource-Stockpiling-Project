@@ -20,7 +20,7 @@ class CartTest {
      */
     @BeforeEach
     public void setUpTest() {
-        cart = new Cart(100, 10, ResourceType.BOUILLABAISSE);
+        cart = new Cart(100, 10, ResourceType.BOUILLABAISSE, 100);
     }
 
     /**

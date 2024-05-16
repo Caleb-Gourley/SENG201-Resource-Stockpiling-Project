@@ -1,13 +1,16 @@
 package seng201.team56.models;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
  * Represents an in-game tower.
  * @author Sean Reitsma
  */
-public class Tower implements Purchasable{
+public class Tower implements Purchasable, PropertyChangeListener {
     private int resourceFullAmount;
     private int resourceAmount;
     private double reloadSpeed;
@@ -15,10 +18,11 @@ public class Tower implements Purchasable{
     private int level;
     private int cost;
     private String name;
+    private double distance;
 
     /**
-     * Constructor
-     * Sets the default level to 0
+     * Construct a new Tower.
+     * Sets the default level to 0.
      * @param type the ResourceType of the new Tower
      * @param amount the amount the tower fills each reload
      * @param speed the reload speed of the tower (time between reloads in seconds)
@@ -30,8 +34,14 @@ public class Tower implements Purchasable{
         this.reloadSpeed = speed;
         this.cost = cost;
         this.level = 0;
+        //A negative distance means the Tower is not on the track
+        this.distance = -1;
     }
 
+    /**
+     * Construct a new randomised Tower based on {@link Rarity}.
+     * @param rarity the {@link Rarity} to base the tower on
+     */
     public Tower(Rarity rarity) {
         Random rng = new Random();
         List<ResourceType> types = rarity.getTypes();
@@ -45,6 +55,8 @@ public class Tower implements Purchasable{
             case EPIC -> this.cost = rng.nextInt(40,50);
             case LEGENDARY -> this.cost = rng.nextInt(100,200);
         }
+        //A negative distance means the Tower is not on the track
+        this.distance = -1;
     }
 
     /**
@@ -94,6 +106,9 @@ public class Tower implements Purchasable{
         return level;
     }
 
+    /**
+     * Level up the tower
+     */
     public void levelUp() {
         level++;
     }
@@ -128,9 +143,42 @@ public class Tower implements Purchasable{
      * @param cart The cart to be filled
      */
     public void fillCart(Cart cart) {
-        resourceAmount = cart.fillAmount(resourceAmount);
-        if (resourceAmount == 0) {
-            reload();
+        if (resourceAmount > 0) {
+            resourceAmount = cart.fillAmount(resourceAmount);
         }
+    }
+
+    /**
+     * This method gets called when the bound property the Tower is listening for changes. In this case the property is
+     * Cart.distance.
+     * @param propertyChangeEvent A {@link PropertyChangeEvent} object describing the event source and the property that
+     *                            has changed
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+        if (propertyChangeEvent.getPropertyName().equals("distance")
+                && propertyChangeEvent.getNewValue().equals(this.distance)) {
+            Cart cart = (Cart) propertyChangeEvent.getSource();
+            fillCart(cart);
+        }
+    }
+
+    /**
+     * Get the distance of the Tower on the track.
+     * If the distance is negative, the Tower is not on the track (i.e. it is in the reserve group).
+     * @see Tower#setDistance(double)
+     * @return distance
+     */
+    public double getDistance() {
+        return distance;
+    }
+
+    /**
+     * Set the distance of the Tower on the track. This distance corresponds to the slot the Player puts the Tower in.
+     * @see Tower#getDistance()
+     * @param distance
+     */
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }
