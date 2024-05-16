@@ -1,14 +1,15 @@
 package seng201.team56.unittests.services;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import seng201.team56.models.*;
+import seng201.team56.models.Difficulty;
+import seng201.team56.models.Player;
+import seng201.team56.models.Rarity;
+import seng201.team56.models.Tower;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.SetupService;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

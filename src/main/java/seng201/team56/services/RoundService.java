@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RoundService {
 	private Round currentRound;
-	private int roundNum;
-	private Player player;
+	private final int roundNum;
+	private final Player player;
 	private ScheduledExecutorService pool;
 	
 	/**
