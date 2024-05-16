@@ -7,7 +7,7 @@ package seng201.team56.models;
 public class Tower implements Purchasable{
     private int resourceFullAmount;
     private int resourceAmount;
-    private float reloadSpeed;
+    private double reloadSpeed;
     private ResourceType resourceType;
     private int level;
     private double cost;
@@ -21,7 +21,7 @@ public class Tower implements Purchasable{
      * @param speed the reload speed of the tower
      * @param cost the tower's cost
      */
-    public Tower(ResourceType type, int amount, float speed, int cost) {
+    public Tower(ResourceType type, int amount, double speed, int cost) {
         this.resourceType = type;
         this.resourceFullAmount = amount;
         this.reloadSpeed = speed;
@@ -90,7 +90,7 @@ public class Tower implements Purchasable{
      * Getter for the reload speed of the tower
      * @return reloadSpeed
      */
-    public float getReloadSpeed() {
+    public double getReloadSpeed() {
         return reloadSpeed;
     }
 
