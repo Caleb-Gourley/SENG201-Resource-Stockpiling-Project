@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SetupWindow extends Application {
+public class FXWindow extends Application {
 
     /**
      * Opens the gui with the fxml content specified in resources/fxml/main.fxml
@@ -17,10 +17,10 @@ public class SetupWindow extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/TowerEatsSetup.fxml"));
+        FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/fx_wrapper.fxml"));
         Parent root = baseLoader.load();
         FXWrapper fxWrapper = baseLoader.getController();
-        Scene scene = new Scene(root, 710, 500);
+        Scene scene = new Scene(root, 1920, 1080);
         primaryStage.setTitle("Tower Eats");
         primaryStage.setScene(scene);
         primaryStage.show();
