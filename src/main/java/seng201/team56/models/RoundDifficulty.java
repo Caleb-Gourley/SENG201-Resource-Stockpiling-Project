@@ -1,4 +1,4 @@
 package seng201.team56.models;
 
-public record RoundDifficulty(double trackDistance, int numCarts, int cartMinSize, int cartMaxSize, float cartMinSpeed,
-                              float cartMaxSpeed) {}
+public record RoundDifficulty(double trackDistance, int numCarts, int cartMinSize, int cartMaxSize, double cartMinSpeed,
+                              double cartMaxSpeed) {}

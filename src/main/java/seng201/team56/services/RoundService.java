@@ -39,7 +39,7 @@ public class RoundService {
 		this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
 		for (int i = 1; i < roundDifficulty.numCarts(); i++) {
 			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
-			float speed = rng.nextFloat(roundDifficulty.cartMinSpeed(),roundDifficulty.cartMaxSpeed());
+			double speed = rng.nextDouble(roundDifficulty.cartMinSpeed(),roundDifficulty.cartMaxSpeed());
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
 			Cart cart = new Cart(speed, size, type);
 			currentRound.addCart(cart);
