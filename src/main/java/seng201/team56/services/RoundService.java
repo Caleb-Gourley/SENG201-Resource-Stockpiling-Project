@@ -1,11 +1,10 @@
 package seng201.team56.services;
 
+import java.util.Random;
+import java.util.concurrent.ScheduledExecutorService;
+
 import seng201.team56.models.*;
 import seng201.team56.services.threads.CartMoveTask;
-
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,6 +18,7 @@ public class RoundService {
 	private final Player player;
 	private ScheduledExecutorService pool;
 	private final ShopService shopService;
+    private RoundDifficulty roundDifficulty;
 	
 	/**
 	 * Constructor.
@@ -32,25 +32,22 @@ public class RoundService {
 		this.shopService = shopService;
 	}
 
+	public void setRoundDifficulty(RoundDifficulty difficulty) {
+		this.roundDifficulty = difficulty;
+	}
+
 	/**
 	 * Creates a round with the given (player selected) difficulty information.
-	 * @param trackDistance the distance of the track for the round
-	 * @param numCarts the number of carts in the round
-	 * @param cartMinSize the minimum size of any cart in the round
-	 * @param cartMaxSize the maximum size of any cart in the round
-	 * @param cartMinSpeed the minimum speed of any cart in the round
-	 * @param cartMaxSpeed the maximum speed of any cart in the round
 	 */
-	public void createRound(double trackDistance, int numCarts, int cartMinSize, int cartMaxSize, double cartMinSpeed,
-							double cartMaxSpeed) {
-		this.pool = Executors.newScheduledThreadPool(numCarts);
+	//Should this just be in the round constructor?
+	public void createRound() {
 		Random rng = new Random();
-		this.currentRound = new Round(trackDistance, roundNum);
-		for (int i = 0; i < numCarts; i++) {
-			int size = rng.nextInt(cartMinSize,cartMaxSize);
-			double speed = rng.nextDouble(cartMinSpeed,cartMaxSpeed);
+		this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
+		for (int i = 1; i < roundDifficulty.numCarts(); i++) {
+			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
+			double speed = rng.nextDouble(roundDifficulty.cartMinSpeed(),roundDifficulty.cartMaxSpeed());
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
-			Cart cart = new Cart(speed, size, type, trackDistance);
+			Cart cart = new Cart(speed, size, type, roundDifficulty.trackDistance());
 			for (Tower tower: player.getInventory().getFieldTowers()) {
 				cart.addPropertyChangeListener(tower);
 			}
