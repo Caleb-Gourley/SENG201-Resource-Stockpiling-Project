@@ -8,26 +8,29 @@ import java.util.Random;
  * @author Sean Reitsma
  */
 public enum Rarity {
-    COMMON(10,20,1.5,3, List.of(ResourceType.BCO_QUICHE,ResourceType.COQ_A_VIN)),
-    UNCOMMON(20, 40, 0.8, 1.4, List.of(ResourceType.BCO_QUICHE, ResourceType.COQ_A_VIN, ResourceType.NICOISE_SALAD)),
-    RARE(40, 80, 0.3, 1, List.of(ResourceType.GRUYER_CHEESE_SOUFFLE, ResourceType.BOUILLABAISSE)),
-    EPIC(90, 110, 0.1, 0.25, List.of(ResourceType.CREME_BRULEE)),
-    LEGENDARY(150, 200, 0.001, 0.1, List.of(ResourceType.RATATOUILLE));
+    COMMON("Common",10,20,1.5,3, List.of(ResourceType.BCO_QUICHE,ResourceType.COQ_A_VIN)),
+    UNCOMMON("Uncommon",20, 40, 0.8, 1.4, List.of(ResourceType.BCO_QUICHE, ResourceType.COQ_A_VIN, ResourceType.NICOISE_SALAD)),
+    RARE("Rare",40, 80, 0.3, 1, List.of(ResourceType.GRUYER_CHEESE_SOUFFLE, ResourceType.BOUILLABAISSE)),
+    EPIC("Epic",90, 110, 0.1, 0.25, List.of(ResourceType.CREME_BRULEE)),
+    LEGENDARY("Legendary",150, 200, 0.001, 0.1, List.of(ResourceType.RATATOUILLE));
     private final int resourceAmountMin;
     private final int resourceAmountMax;
     private final double speedMin;
     private final double speedMax;
     private final List<ResourceType> types;
+    private String description;
 
     /**
      * Constructor
+     * @param description The description of the rarity
      * @param resourceAmountMin Minimum resource amount
      * @param resourceAmountMax Maximum resource amount
      * @param speedMin Minimum speed (max duration)
      * @param speedMax Maximum speed (min duration)
      * @param types A list of possible {@link ResourceType}'s
      */
-    Rarity(int resourceAmountMin, int resourceAmountMax, double speedMin, double speedMax, List<ResourceType> types) {
+    Rarity(String description, int resourceAmountMin, int resourceAmountMax, double speedMin, double speedMax, List<ResourceType> types) {
+        this.description = description;
         this.resourceAmountMin = resourceAmountMin;
         this.resourceAmountMax = resourceAmountMax;
         this.speedMin = speedMin;

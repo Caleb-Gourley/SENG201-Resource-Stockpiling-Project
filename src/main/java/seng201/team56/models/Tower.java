@@ -19,6 +19,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     private int cost;
     private String name;
     private double distance;
+    private Rarity rarity;
 
     /**
      * Construct a new Tower.
@@ -55,8 +56,18 @@ public class Tower implements Purchasable, PropertyChangeListener {
             case EPIC -> this.cost = rng.nextInt(40,50);
             case LEGENDARY -> this.cost = rng.nextInt(100,200);
         }
+        this.level = 0;
         //A negative distance means the Tower is not on the track
         this.distance = -1;
+        this.rarity = rarity;
+    }
+
+    /**
+     * Getter for rarity
+     * @return the rarity of the tower
+     */
+    public Rarity getRarity() {
+        return rarity;
     }
 
     /**
