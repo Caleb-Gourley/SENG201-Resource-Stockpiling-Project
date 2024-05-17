@@ -2,10 +2,7 @@ package seng201.team56.unittests.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import seng201.team56.models.Difficulty;
-import seng201.team56.models.Player;
-import seng201.team56.models.Rarity;
-import seng201.team56.models.Tower;
+import seng201.team56.models.*;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.SetupService;
 import seng201.team56.services.ShopService;
@@ -35,7 +32,10 @@ public class RoundServiceTest {
         int cartMaxSize = 40;
         double cartMinSpeed = 5;
         double cartMaxSpeed = 10.5;
-        roundService.createRound(trackDistance,numCarts,cartMinSize,cartMaxSize,cartMinSpeed,cartMaxSpeed);
+        RoundDifficulty difficulty = new RoundDifficulty(trackDistance,numCarts,cartMinSize,cartMaxSize,cartMinSpeed,
+                cartMaxSpeed);
+        roundService.setRoundDifficulty(difficulty);
+        roundService.createRound();
         assertAll("Round",
                 () -> assertNotNull(roundService.getCurrentRound()),
                 () -> assertEquals(numCarts, roundService.getCurrentRound().getCarts().size())

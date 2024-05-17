@@ -43,7 +43,7 @@ public class RoundService {
 	public void createRound() {
 		Random rng = new Random();
 		this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
-		for (int i = 1; i < roundDifficulty.numCarts(); i++) {
+		for (int i = 0; i < roundDifficulty.numCarts(); i++) {
 			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
 			double speed = rng.nextDouble(roundDifficulty.cartMinSpeed(),roundDifficulty.cartMaxSpeed());
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
