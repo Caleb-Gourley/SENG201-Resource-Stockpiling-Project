@@ -8,6 +8,7 @@ import seng201.team56.models.Rarity;
 import seng201.team56.models.Tower;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.SetupService;
+import seng201.team56.services.ShopService;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class RoundServiceTest {
         }
         SetupService setupService = new SetupService("Test player", Difficulty.MEDIUM, towers, 6);
         Player testPlayer = setupService.getPlayer();
-        roundService = new RoundService(testPlayer);
+        roundService = new RoundService(testPlayer, new ShopService(testPlayer));
     }
 
     @Test

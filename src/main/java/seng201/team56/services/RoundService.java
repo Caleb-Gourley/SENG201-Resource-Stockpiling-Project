@@ -15,19 +15,21 @@ import java.util.concurrent.TimeUnit;
  */
 public class RoundService {
 	private Round currentRound;
-	private final int roundNum;
+	private int roundNum;
 	private final Player player;
 	private ScheduledExecutorService pool;
+	private final ShopService shopService;
 	
 	/**
 	 * Constructor.
 	 * Initialises roundNum to 0.
 	 * @param player the current {@link Player} (game state) object
 	 */
-	public RoundService(Player player) {
+	public RoundService(Player player, ShopService shopService) {
 		this.player = player;
 		this.roundNum = 0;
 		this.currentRound = null;
+		this.shopService = shopService;
 	}
 
 	/**
@@ -86,6 +88,9 @@ public class RoundService {
 		if (currentRound.getCarts().stream().allMatch(cart -> cart.isDone() && cart.isFull())) {
 			//Round completed!
 			pool.shutdown();
+			roundNum++;
+			shopService.updateItems(roundNum);
+			//TODO: choose difficulty for next round
 		} else if (currentRound.getCarts().stream().anyMatch(cart -> cart.isDone() && !cart.isFull())) {
 			//Round lost!
 			pool.shutdown();

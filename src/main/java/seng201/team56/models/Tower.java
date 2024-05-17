@@ -37,6 +37,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
         this.level = 0;
         //A negative distance means the Tower is not on the track
         this.distance = -1;
+        reload();
     }
 
     /**
@@ -60,6 +61,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
         //A negative distance means the Tower is not on the track
         this.distance = -1;
         this.rarity = rarity;
+        reload();
     }
 
     /**
