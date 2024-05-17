@@ -11,11 +11,13 @@ import java.util.Random;
  * @author Sean Reitsma
  */
 public class Tower implements Purchasable, PropertyChangeListener {
+    private static final int LEVELUP_THRESHOLD = 100;
     private int resourceFullAmount;
     private int resourceAmount;
     private double reloadSpeed;
     private ResourceType resourceType;
     private int level;
+    private int xp;
     private int cost;
     private String name;
     private double distance;
@@ -35,6 +37,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
         this.reloadSpeed = speed;
         this.cost = cost;
         this.level = 0;
+        this.xp = 0;
         //A negative distance means the Tower is not on the track
         this.distance = -1;
         reload();
@@ -58,6 +61,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
             case LEGENDARY -> this.cost = rng.nextInt(100,200);
         }
         this.level = 0;
+        this.xp = 0;
         //A negative distance means the Tower is not on the track
         this.distance = -1;
         this.rarity = rarity;
@@ -124,6 +128,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
      */
     public void levelUp() {
         level++;
+        //TODO: Add stats increase
     }
 
     /**
@@ -174,6 +179,9 @@ public class Tower implements Purchasable, PropertyChangeListener {
                     && (propertyChangeEvent.getNewValue() instanceof Double)
                     && ((double) propertyChangeEvent.getNewValue() >= distance)) {
                 fillCart(cart);
+                if(xp++ >= LEVELUP_THRESHOLD) {
+                    levelUp();
+                }
             }
         }
     }
@@ -195,5 +203,18 @@ public class Tower implements Purchasable, PropertyChangeListener {
      */
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public void setBroken() {
+    }
+
+    public void increaseResourceFullAmount(int amount) {
+        this.resourceFullAmount += amount;
+    }
+
+    public void decreaseReloadInterval(int amount) {
+        if (this.reloadSpeed - amount > 0) {
+            this.reloadSpeed -= amount;
+        }
     }
 }

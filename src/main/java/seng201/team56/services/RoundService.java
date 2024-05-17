@@ -1,11 +1,15 @@
 package seng201.team56.services;
 
+import java.beans.PropertyChangeEvent;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 
 import seng201.team56.models.*;
 import seng201.team56.services.threads.CartMoveTask;
 import java.util.concurrent.TimeUnit;
+import java.util.function.IntConsumer;
 
 /**
  * A service to handle creation and running of rounds.
@@ -19,6 +23,7 @@ public class RoundService {
 	private ScheduledExecutorService pool;
 	private final ShopService shopService;
     private RoundDifficulty roundDifficulty;
+	private Random rng;
 	
 	/**
 	 * Constructor.
@@ -26,6 +31,7 @@ public class RoundService {
 	 * @param player the current {@link Player} (game state) object
 	 */
 	public RoundService(Player player, ShopService shopService) {
+		this.rng = new Random();
 		this.player = player;
 		this.roundNum = 0;
 		this.currentRound = null;
@@ -41,7 +47,6 @@ public class RoundService {
 	 */
 	//Should this just be in the round constructor?
 	public void createRound() {
-		Random rng = new Random();
 		this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
 		for (int i = 0; i < roundDifficulty.numCarts(); i++) {
 			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
@@ -73,6 +78,12 @@ public class RoundService {
 		return currentRound;
 	}
 
+	private void randomEvent() {
+		int i = rng.nextInt(player.getInventory().getFieldTowers().size());
+		Tower tower = player.getInventory().getFieldTowers().get(i);
+		//FIXME
+	}
+
 	/**
 	 * Checks conditions for the end of the round and shuts the pool down if any of them are met.
 	 * Conditions are either:
@@ -87,10 +98,13 @@ public class RoundService {
 			pool.shutdown();
 			roundNum++;
 			shopService.updateItems(roundNum);
-			//TODO: choose difficulty for next round
+			player.addMoney(roundDifficulty.monetaryReward());
+			player.addXp(roundDifficulty.xpReward());
+			randomEvent();
 		} else if (currentRound.getCarts().stream().anyMatch(cart -> cart.isDone() && !cart.isFull())) {
 			//Round lost!
 			pool.shutdown();
+			shopService.updateItems(roundNum);
 		}
 	}
 }
