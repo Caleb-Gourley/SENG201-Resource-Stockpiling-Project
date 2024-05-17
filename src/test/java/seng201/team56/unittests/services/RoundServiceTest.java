@@ -33,7 +33,7 @@ public class RoundServiceTest {
         double cartMinSpeed = 5;
         double cartMaxSpeed = 10.5;
         RoundDifficulty difficulty = new RoundDifficulty(trackDistance,numCarts,cartMinSize,cartMaxSize,cartMinSpeed,
-                cartMaxSpeed);
+                cartMaxSpeed, 100, 100);
         roundService.setRoundDifficulty(difficulty);
         roundService.createRound();
         assertAll("Round",
