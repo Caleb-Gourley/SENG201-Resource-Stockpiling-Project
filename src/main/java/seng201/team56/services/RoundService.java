@@ -54,7 +54,7 @@ public class RoundService {
 			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
 			double speed = rng.nextDouble(roundDifficulty.cartMinSpeed(),roundDifficulty.cartMaxSpeed());
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
-			Cart cart = new Cart(speed, size, type, roundDifficulty.trackDistance());
+			Cart cart = new Cart(speed, size, type, currentRound.getTrackDistance());
 			for (Tower tower: player.getInventory().getFieldTowers()) {
 				cart.addPropertyChangeListener(tower);
 			}
@@ -76,13 +76,15 @@ public class RoundService {
 		}
 	}
 
+	/**
+	 * Getter for the current round
+	 * @return currentRound
+	 */
 	public Round getCurrentRound() {
 		return currentRound;
 	}
 
-	public void randomEvent() {
-		int i = rng.nextInt(player.getInventory().getFieldTowers().size());
-		Tower tower = player.getInventory().getFieldTowers().get(i);
+	public List<RandomEvent> getRandomEvents(Tower tower) {
 		int randInt = rng.nextInt(5,5 + roundNum * 2);
 		double randDouble = rng.nextDouble(0.05, roundNum * 0.2);
 		RandomEvent towerCapacityIncrease = new RandomEvent(roundNum, () -> tower.increaseResourceFullAmount(randInt),player.getDifficulty());
@@ -92,6 +94,13 @@ public class RoundService {
 		RandomEvent towerBreaks = new RandomEvent(roundNum,tower::setBroken,player.getDifficulty(),tower.getUseCount());
 		RandomEvent nothingHappens = new RandomEvent(() -> {}, 7);
 		List<RandomEvent> events = List.of(towerCapacityIncrease, towerCapacityDecrease, towerReloadSpeedIncrease, towerReloadSpeedDecrease, towerBreaks, nothingHappens);
+		return events;
+	}
+
+	/**
+	 * Executes a random event from a weighted selection of random events.
+ 	 */
+	public void randomEvent(List<RandomEvent> events) {
 		int total = 0;
 		for (RandomEvent event : events) {
 			total += event.getProbability();
@@ -116,11 +125,14 @@ public class RoundService {
 			pool.shutdown();
 			shopService.updateItems(roundNum);
 			player.getInventory().incFieldTowers();
+			int i = rng.nextInt(player.getInventory().getFieldTowers().size());
+			Tower tower = player.getInventory().getFieldTowers().get(i);
+			List<RandomEvent> events = getRandomEvents(tower);
+			randomEvent(events);
 			if (roundWon) {
 				roundNum++;
 				player.addMoney(roundDifficulty.monetaryReward());
 				player.addXp(roundDifficulty.xpReward());
-				randomEvent();
 			} else {
             }
 		}

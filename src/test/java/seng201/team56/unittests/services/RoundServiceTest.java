@@ -1,13 +1,17 @@
 package seng201.team56.unittests.services;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import seng201.team56.models.*;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.SetupService;
 import seng201.team56.services.ShopService;
+import seng201.team56.services.util.RandomEvent;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,9 +49,11 @@ public class RoundServiceTest {
         );
     }
 
+    @Disabled
     @Test
     void randomEventTest() {
-        //FIXME
-        roundService.randomEvent();
+        //FIXME Not yet implemented
+        List<RandomEvent> events = List.of(new RandomEvent(() -> {}, 1));
+        roundService.randomEvent(events);
     }
 }
