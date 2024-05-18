@@ -36,6 +36,12 @@ public class Inventory {
      */
     public void addFieldTower(Tower tower) { fieldTowers.add(tower); }
 
+    public void incFieldTowers() {
+        for (Tower tower : fieldTowers) {
+            tower.incUseCount();
+        }
+    }
+
     /**
      * Adds upgrade objects to upgrades ArrayList that are in the players inventory
      * @param upgrade the upgrade object to be added to the ArrayList

@@ -1,15 +1,15 @@
 package seng201.team56.services;
 
-import java.beans.PropertyChangeEvent;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import seng201.team56.models.*;
 import seng201.team56.services.threads.CartMoveTask;
+import seng201.team56.services.util.RandomEvent;
+
 import java.util.concurrent.TimeUnit;
-import java.util.function.IntConsumer;
 
 /**
  * A service to handle creation and running of rounds.
@@ -47,6 +47,7 @@ public class RoundService {
 	 */
 	//Should this just be in the round constructor?
 	public void createRound() {
+		this.pool = Executors.newScheduledThreadPool(roundDifficulty.numCarts());
 		this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
 		for (int i = 0; i < roundDifficulty.numCarts(); i++) {
 			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
@@ -81,7 +82,15 @@ public class RoundService {
 	private void randomEvent() {
 		int i = rng.nextInt(player.getInventory().getFieldTowers().size());
 		Tower tower = player.getInventory().getFieldTowers().get(i);
-		//FIXME
+		int randInt = rng.nextInt(1,roundNum * 2);
+		double randDouble = rng.nextDouble(0.05, roundNum * 0.2);
+		RandomEvent towerCapacityIncrease = new RandomEvent(roundNum, () -> tower.increaseResourceFullAmount(randInt),player.getDifficulty());
+		RandomEvent towerCapacityDecrease = new RandomEvent(roundNum, () -> tower.decreaseResourceFullAmount(randInt),player.getDifficulty());
+		RandomEvent towerReloadSpeedIncrease = new RandomEvent(roundNum, () -> tower.decreaseReloadInterval(randDouble),player.getDifficulty());
+		RandomEvent towerReloadSpeedDecrease = new RandomEvent(roundNum, () -> tower.increaseReloadInvterval(randDouble),player.getDifficulty());
+		RandomEvent towerBreaks = new RandomEvent(roundNum,tower::setBroken,player.getDifficulty(),tower.getUseCount());
+		RandomEvent nothingHappens = new RandomEvent(() -> {}, 0.7);
+		List<RandomEvent> events = List.of(towerCapacityIncrease, towerCapacityDecrease, towerReloadSpeedIncrease, towerReloadSpeedDecrease, towerBreaks, nothingHappens);
 	}
 
 	/**
@@ -93,18 +102,19 @@ public class RoundService {
 	 * </ul>
 	 */
 	public void endRound() {
-		if (currentRound.getCarts().stream().allMatch(cart -> cart.isDone() && cart.isFull())) {
-			//Round completed!
-			pool.shutdown();
-			roundNum++;
-			shopService.updateItems(roundNum);
-			player.addMoney(roundDifficulty.monetaryReward());
-			player.addXp(roundDifficulty.xpReward());
-			randomEvent();
-		} else if (currentRound.getCarts().stream().anyMatch(cart -> cart.isDone() && !cart.isFull())) {
-			//Round lost!
+		boolean roundWon = currentRound.getCarts().stream().allMatch(cart -> cart.isDone() && cart.isFull());
+		boolean roundLost = currentRound.getCarts().stream().anyMatch(cart -> cart.isDone() && !cart.isFull());
+		if (roundWon || roundLost) {
 			pool.shutdown();
 			shopService.updateItems(roundNum);
+			player.getInventory().incFieldTowers();
+			if (roundWon) {
+				roundNum++;
+				player.addMoney(roundDifficulty.monetaryReward());
+				player.addXp(roundDifficulty.xpReward());
+				randomEvent();
+			} else {
+            }
 		}
 	}
 }

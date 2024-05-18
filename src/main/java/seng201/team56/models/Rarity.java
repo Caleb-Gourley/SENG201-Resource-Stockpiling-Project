@@ -51,7 +51,7 @@ public enum Rarity {
     public static Rarity pickRarity(int roundNumber, int maxRoundNumber) {
         if (roundNumber <= 1/3 * maxRoundNumber) {
             return VALUES.get(RANDOM.nextInt(0, 2));
-        } else if (roundNumber <= 1/2 * maxRoundNumber) {
+        } else if (roundNumber <= 2/3 * maxRoundNumber) {
             return VALUES.get(RANDOM.nextInt(0,3));
         } else {
             return VALUES.get(RANDOM.nextInt(1,5));

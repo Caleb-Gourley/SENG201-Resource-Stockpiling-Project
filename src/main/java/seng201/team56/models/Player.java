@@ -28,7 +28,7 @@ public class Player {
         this.difficulty = difficulty;
         this.inventory = startInventory;
         this.maxRounds = maxRounds;
-        this.money = 0;
+        this.money = difficulty.getStartMoney();
         this.xp = 0;
     }
 

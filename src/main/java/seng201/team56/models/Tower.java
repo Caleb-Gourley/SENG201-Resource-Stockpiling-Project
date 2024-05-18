@@ -22,6 +22,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     private String name;
     private double distance;
     private Rarity rarity;
+    private int useCount;
 
     /**
      * Construct a new Tower.
@@ -123,6 +124,18 @@ public class Tower implements Purchasable, PropertyChangeListener {
         return level;
     }
 
+    public void addXp(int xp) {
+        this.xp += xp;
+    }
+
+    public void incUseCount() {
+        this.useCount++;
+    }
+
+    public int getUseCount() {
+        return useCount;
+    }
+
     /**
      * Level up the tower
      */
@@ -212,8 +225,18 @@ public class Tower implements Purchasable, PropertyChangeListener {
         this.resourceFullAmount += amount;
     }
 
-    public void decreaseReloadInterval(int amount) {
-        if (this.reloadSpeed - amount > 0) {
+    public void decreaseResourceFullAmount(int amount) {
+        if(this.resourceFullAmount > amount) {
+            this.resourceFullAmount -= amount;
+        }
+    }
+
+    public void increaseReloadInvterval(double amount) {
+        this.reloadSpeed += amount;
+    }
+
+    public void decreaseReloadInterval(double amount) {
+        if (this.reloadSpeed > amount) {
             this.reloadSpeed -= amount;
         }
     }
