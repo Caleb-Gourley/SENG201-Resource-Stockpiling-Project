@@ -23,7 +23,7 @@ public class RoundService {
 	private ScheduledExecutorService pool;
 	private final ShopService shopService;
     private RoundDifficulty roundDifficulty;
-	private Random rng;
+	private final Random rng;
 	
 	/**
 	 * Constructor.

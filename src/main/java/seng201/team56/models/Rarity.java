@@ -18,7 +18,7 @@ public enum Rarity {
     private final double speedMin;
     private final double speedMax;
     private final List<ResourceType> types;
-    private String description;
+    private final String description;
 
     /**
      * Constructor
@@ -49,12 +49,12 @@ public enum Rarity {
      * @return the chosen Rarity
      */
     public static Rarity pickRarity(int roundNumber, int maxRoundNumber) {
-        if (roundNumber <= 1/3 * maxRoundNumber) {
+        if (roundNumber <= (double) 1/3 * maxRoundNumber) {
             return VALUES.get(RANDOM.nextInt(0, 2));
-        } else if (roundNumber <= 2/3 * maxRoundNumber) {
+        } else if (roundNumber <= (double) 2/3 * maxRoundNumber) {
             return VALUES.get(RANDOM.nextInt(0,3));
         } else {
-            return VALUES.get(RANDOM.nextInt(1,5));
+            return VALUES.get(RANDOM.nextInt(1,SIZE));
         }
     }
 
@@ -104,5 +104,9 @@ public enum Rarity {
      */
     public ResourceType getRandomType() {
         return types.get(RANDOM.nextInt(types.size()));
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

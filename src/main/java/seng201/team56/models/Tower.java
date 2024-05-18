@@ -3,7 +3,6 @@ package seng201.team56.models;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -239,5 +238,9 @@ public class Tower implements Purchasable, PropertyChangeListener {
         if (this.reloadSpeed > amount) {
             this.reloadSpeed -= amount;
         }
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
