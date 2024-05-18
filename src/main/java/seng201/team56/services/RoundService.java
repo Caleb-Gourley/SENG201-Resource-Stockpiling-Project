@@ -1,6 +1,7 @@
 package seng201.team56.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -33,7 +34,7 @@ public class RoundService {
 	public RoundService(Player player, ShopService shopService) {
 		this.rng = new Random();
 		this.player = player;
-		this.roundNum = 0;
+		this.roundNum = 1;
 		this.currentRound = null;
 		this.shopService = shopService;
 	}
@@ -79,18 +80,25 @@ public class RoundService {
 		return currentRound;
 	}
 
-	private void randomEvent() {
+	public void randomEvent() {
 		int i = rng.nextInt(player.getInventory().getFieldTowers().size());
 		Tower tower = player.getInventory().getFieldTowers().get(i);
-		int randInt = rng.nextInt(1,roundNum * 2);
+		int randInt = rng.nextInt(5,5 + roundNum * 2);
 		double randDouble = rng.nextDouble(0.05, roundNum * 0.2);
 		RandomEvent towerCapacityIncrease = new RandomEvent(roundNum, () -> tower.increaseResourceFullAmount(randInt),player.getDifficulty());
 		RandomEvent towerCapacityDecrease = new RandomEvent(roundNum, () -> tower.decreaseResourceFullAmount(randInt),player.getDifficulty());
 		RandomEvent towerReloadSpeedIncrease = new RandomEvent(roundNum, () -> tower.decreaseReloadInterval(randDouble),player.getDifficulty());
 		RandomEvent towerReloadSpeedDecrease = new RandomEvent(roundNum, () -> tower.increaseReloadInvterval(randDouble),player.getDifficulty());
 		RandomEvent towerBreaks = new RandomEvent(roundNum,tower::setBroken,player.getDifficulty(),tower.getUseCount());
-		RandomEvent nothingHappens = new RandomEvent(() -> {}, 0.7);
+		RandomEvent nothingHappens = new RandomEvent(() -> {}, 7);
 		List<RandomEvent> events = List.of(towerCapacityIncrease, towerCapacityDecrease, towerReloadSpeedIncrease, towerReloadSpeedDecrease, towerBreaks, nothingHappens);
+		int total = 0;
+		for (RandomEvent event : events) {
+			total += event.getProbability();
+			event.setWeight(total);
+		}
+		int value = rng.nextInt(total + 1);
+		events.stream().filter(randomEvent -> randomEvent.getWeight() >= value).findFirst().ifPresent(RandomEvent::act);
 	}
 
 	/**
@@ -117,4 +125,6 @@ public class RoundService {
             }
 		}
 	}
+
+
 }

@@ -3,30 +3,45 @@ package seng201.team56.services.util;
 import seng201.team56.models.Difficulty;
 
 public class RandomEvent {
-    private final double probability;
-    private static final double BASE_PROBABILITY = 0.10;
+    private int weight;
     private final Runnable action;
 
     public RandomEvent(int roundNum, Runnable action, Difficulty difficulty) {
         this.action = action;
-        this.probability = BASE_PROBABILITY * difficulty.getProbabilityModifier() + 0.01 * roundNum;
+        this.weight = difficulty.getProbabilityModifier() + roundNum;
     }
 
     public RandomEvent(int roundNum, Runnable action, Difficulty difficulty, int towerUseCount) {
         this.action = action;
-        this.probability = BASE_PROBABILITY * difficulty.getProbabilityModifier() + 0.01 * roundNum + 0.01 * towerUseCount;
+        this.weight = difficulty.getProbabilityModifier() + roundNum + towerUseCount;
     }
 
-    public RandomEvent(Runnable action, double probability) {
+    public RandomEvent(Runnable action, int weight) {
         this.action = action;
-        this.probability = probability;
+        this.weight = weight;
     }
 
     public void act() {
         action.run();
     }
 
-    public double getProbability() {
-        return probability;
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public int getProbability() {
+        return weight;
+    }
+
+    @Override
+    public String toString() {
+        return "RandomEvent{" +
+                ", weight=" + weight +
+                ", action=" + action +
+                '}';
     }
 }

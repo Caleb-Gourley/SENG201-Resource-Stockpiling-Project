@@ -22,6 +22,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     private double distance;
     private Rarity rarity;
     private int useCount;
+    private final Random rng = new Random();
 
     /**
      * Construct a new Tower.
@@ -48,7 +49,6 @@ public class Tower implements Purchasable, PropertyChangeListener {
      * @param rarity the {@link Rarity} to base the tower on
      */
     public Tower(Rarity rarity) {
-        Random rng = new Random();
         List<ResourceType> types = rarity.getTypes();
         this.resourceType = types.get(rng.nextInt(types.size()));
         this.resourceFullAmount = rng.nextInt(rarity.getResourceAmountMin(), rarity.getResourceAmountMax() + 1);
@@ -140,7 +140,8 @@ public class Tower implements Purchasable, PropertyChangeListener {
      */
     public void levelUp() {
         level++;
-        //TODO: Add stats increase
+        increaseResourceFullAmount(rng.nextInt(level + 5, (level + 5) * 2));
+        decreaseReloadInterval(rng.nextDouble(0.5,(level * 0.1 + 0.5) * 2));
     }
 
     /**

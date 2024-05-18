@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RoundServiceTest {
     private RoundService roundService;
+    private Tower testTower;
     @BeforeEach
     public void initAllTests() {
         ArrayList<Tower> towers = new ArrayList<>();
@@ -21,6 +22,8 @@ public class RoundServiceTest {
         }
         SetupService setupService = new SetupService("Test player", Difficulty.MEDIUM, towers, 6);
         Player testPlayer = setupService.getPlayer();
+        testTower = new Tower(Rarity.COMMON);
+        testPlayer.getInventory().addFieldTower(testTower);
         roundService = new RoundService(testPlayer, new ShopService(testPlayer));
     }
 
@@ -40,5 +43,11 @@ public class RoundServiceTest {
                 () -> assertNotNull(roundService.getCurrentRound()),
                 () -> assertEquals(numCarts, roundService.getCurrentRound().getCarts().size())
         );
+    }
+
+    @Test
+    void randomEventTest() {
+        //FIXME
+        roundService.randomEvent();
     }
 }
