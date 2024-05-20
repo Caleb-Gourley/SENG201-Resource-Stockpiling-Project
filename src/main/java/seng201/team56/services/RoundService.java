@@ -1,5 +1,7 @@
 package seng201.team56.services;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -24,7 +26,11 @@ public class RoundService {
 	private ScheduledExecutorService pool;
 	private final ShopService shopService;
     private RoundDifficulty roundDifficulty;
+	private boolean roundRunning = false;
+	private boolean roundWon = false;
+	private boolean roundLost = false;
 	private final Random rng;
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	/**
 	 * Constructor.
@@ -35,12 +41,15 @@ public class RoundService {
 		this.rng = new Random();
 		this.player = player;
 		this.roundNum = 1;
-		this.currentRound = null;
 		this.shopService = shopService;
-	}
+    }
 
 	public void setRoundDifficulty(RoundDifficulty difficulty) {
 		this.roundDifficulty = difficulty;
+	}
+
+	public void addRunningSubscriber(PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener("roundRunning", listener);
 	}
 
 	/**
@@ -48,7 +57,7 @@ public class RoundService {
 	 */
 	//Should this just be in the round constructor?
 	public void createRound() {
-		this.pool = Executors.newScheduledThreadPool(roundDifficulty.numCarts());
+		this.pool = Executors.newScheduledThreadPool(roundDifficulty.numCarts() + player.getInventory().getFieldTowers().size());
 		this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
 		for (int i = 0; i < roundDifficulty.numCarts(); i++) {
 			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
@@ -56,7 +65,7 @@ public class RoundService {
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
 			Cart cart = new Cart(speed, size, type, currentRound.getTrackDistance());
 			for (Tower tower: player.getInventory().getFieldTowers()) {
-				cart.addPropertyChangeListener(tower);
+				cart.addTowerDistanceListener(tower);
 			}
 			currentRound.addCart(cart);
 		}
@@ -67,12 +76,18 @@ public class RoundService {
 	 */
 	public void playRound() {
 		// Check that the round has been created first
-		if (currentRound != null) {
+		if (currentRound != null && !roundRunning) {
 			// Begin moving all carts
 			for (Cart cart : currentRound.getCarts()) {
 				CartMoveTask task = new CartMoveTask(cart, pool, this);
 				pool.schedule(task, 0, TimeUnit.SECONDS);
 			}
+			for (Tower tower: player.getInventory().getFieldTowers()) {
+				pool.scheduleAtFixedRate(tower::reload, 0, tower.getReloadSpeed(), TimeUnit.MILLISECONDS);
+			}
+			boolean oldValue = roundRunning;
+			roundRunning = true;
+			pcs.firePropertyChange("roundRunning", oldValue, true);
 		}
 	}
 
@@ -84,17 +99,32 @@ public class RoundService {
 		return currentRound;
 	}
 
+	/**
+	 * Getter for roundRunning
+	 * @return true if a round is currently active, false otherwise
+	 */
+	public boolean isRoundRunning() {
+		return roundRunning;
+	}
+
+	public boolean isRoundWon() {
+		return roundWon;
+	}
+
+	public boolean isRoundLost() {
+		return roundLost;
+	}
+
 	public List<RandomEvent> getRandomEvents(Tower tower) {
 		int randInt = rng.nextInt(5,5 + roundNum * 2);
-		double randDouble = rng.nextDouble(0.05, roundNum * 0.2);
+		long randLong = rng.nextLong(50, roundNum * 200);
 		RandomEvent towerCapacityIncrease = new RandomEvent(roundNum, () -> tower.increaseResourceFullAmount(randInt),player.getDifficulty());
 		RandomEvent towerCapacityDecrease = new RandomEvent(roundNum, () -> tower.decreaseResourceFullAmount(randInt),player.getDifficulty());
-		RandomEvent towerReloadSpeedIncrease = new RandomEvent(roundNum, () -> tower.decreaseReloadInterval(randDouble),player.getDifficulty());
-		RandomEvent towerReloadSpeedDecrease = new RandomEvent(roundNum, () -> tower.increaseReloadInvterval(randDouble),player.getDifficulty());
+		RandomEvent towerReloadSpeedIncrease = new RandomEvent(roundNum, () -> tower.decreaseReloadInterval(randLong),player.getDifficulty());
+		RandomEvent towerReloadSpeedDecrease = new RandomEvent(roundNum, () -> tower.increaseReloadInvterval(randLong),player.getDifficulty());
 		RandomEvent towerBreaks = new RandomEvent(roundNum,tower::setBroken,player.getDifficulty(),tower.getUseCount());
-		RandomEvent nothingHappens = new RandomEvent(() -> {}, 7);
-		List<RandomEvent> events = List.of(towerCapacityIncrease, towerCapacityDecrease, towerReloadSpeedIncrease, towerReloadSpeedDecrease, towerBreaks, nothingHappens);
-		return events;
+		RandomEvent nothingHappens = new RandomEvent(() -> {}, 10);
+        return List.of(towerCapacityIncrease, towerCapacityDecrease, towerReloadSpeedIncrease, towerReloadSpeedDecrease, towerBreaks, nothingHappens);
 	}
 
 	/**
@@ -103,7 +133,7 @@ public class RoundService {
 	public void randomEvent(List<RandomEvent> events) {
 		int total = 0;
 		for (RandomEvent event : events) {
-			total += event.getProbability();
+			total += event.getWeight();
 			event.setWeight(total);
 		}
 		int value = rng.nextInt(total + 1);
@@ -119,9 +149,12 @@ public class RoundService {
 	 * </ul>
 	 */
 	public void endRound() {
-		boolean roundWon = currentRound.getCarts().stream().allMatch(cart -> cart.isDone() && cart.isFull());
-		boolean roundLost = currentRound.getCarts().stream().anyMatch(cart -> cart.isDone() && !cart.isFull());
+		roundWon = currentRound.getCarts().stream().allMatch(cart -> cart.isDone() && cart.isFull());
+		roundLost = currentRound.getCarts().stream().anyMatch(cart -> cart.isDone() && !cart.isFull());
 		if (roundWon || roundLost) {
+			boolean oldValue = roundRunning;
+			roundRunning = false;
+			this.pcs.firePropertyChange("roundRunning", oldValue, false);
 			pool.shutdown();
 			shopService.updateItems(roundNum);
 			player.getInventory().incFieldTowers();
@@ -132,9 +165,10 @@ public class RoundService {
 			if (roundWon) {
 				roundNum++;
 				player.addMoney(roundDifficulty.monetaryReward());
-				player.addXp(roundDifficulty.xpReward());
-			} else {
-            }
+				for (Tower t: player.getInventory().getFieldTowers()) {
+					t.addXp(roundDifficulty.xpReward());
+				}
+			}
 		}
 	}
 

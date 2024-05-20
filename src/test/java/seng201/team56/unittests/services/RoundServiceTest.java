@@ -1,14 +1,14 @@
 package seng201.team56.unittests.services;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import seng201.team56.models.*;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.SetupService;
 import seng201.team56.services.ShopService;
 import seng201.team56.services.util.RandomEvent;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeListenerProxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,9 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RoundServiceTest {
     private RoundService roundService;
+    private RoundDifficulty difficulty;
     private Tower testTower;
     @BeforeEach
-    public void initAllTests() {
+    void initTest() {
         ArrayList<Tower> towers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             towers.add(new Tower(Rarity.COMMON));
@@ -29,31 +30,56 @@ public class RoundServiceTest {
         testTower = new Tower(Rarity.COMMON);
         testPlayer.getInventory().addFieldTower(testTower);
         roundService = new RoundService(testPlayer, new ShopService(testPlayer));
-    }
-
-    @Test
-    void createRoundTest() {
         double trackDistance = 50;
         int numCarts = 5;
         int cartMinSize = 15;
         int cartMaxSize = 40;
         double cartMinSpeed = 5;
         double cartMaxSpeed = 10.5;
-        RoundDifficulty difficulty = new RoundDifficulty(trackDistance,numCarts,cartMinSize,cartMaxSize,cartMinSpeed,
+        difficulty = new RoundDifficulty(trackDistance,numCarts,cartMinSize,cartMaxSize,cartMinSpeed,
                 cartMaxSpeed, 100, 100);
         roundService.setRoundDifficulty(difficulty);
+    }
+
+    @Test
+    void createRoundTest() {
         roundService.createRound();
         assertAll("Round",
                 () -> assertNotNull(roundService.getCurrentRound()),
-                () -> assertEquals(numCarts, roundService.getCurrentRound().getCarts().size())
+                () -> assertEquals(difficulty.numCarts(), roundService.getCurrentRound().getCarts().size())
         );
     }
 
-    @Disabled
     @Test
     void randomEventTest() {
         //FIXME Not yet implemented
-        List<RandomEvent> events = List.of(new RandomEvent(() -> {}, 1));
+        Tower tower = new Tower(Rarity.COMMON);
+        assertEquals(0, tower.getUseCount());
+        RandomEvent testEvent = new RandomEvent(15, tower::incUseCount, Difficulty.HARD);
+        RandomEvent doNothing = new RandomEvent(() -> {}, 0);
+        List<RandomEvent> events = List.of(testEvent, doNothing);
+        assertAll(
+                () -> assertEquals(20, testEvent.getWeight()),
+                () -> assertEquals(0, doNothing.getWeight())
+        );
         roundService.randomEvent(events);
+        assertEquals(1, tower.getUseCount());
+
+    }
+
+    @Test
+    void playRoundTest() {
+        roundService.createRound();
+        roundService.playRound();
+        assertTrue(roundService.isRoundRunning());
+    }
+
+    @Test
+    void roundEndTest() {
+        roundService.createRound();
+        roundService.playRound();
+        while(!roundService.isRoundRunning()) {
+
+        }
     }
 }
