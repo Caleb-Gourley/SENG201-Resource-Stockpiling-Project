@@ -18,6 +18,7 @@ public class ShopService {
      */
     public ShopService(Player player) {
         this.player = player;
+        this.items = new ArrayList<>();
     }
 
     /**
@@ -42,11 +43,14 @@ public class ShopService {
      * Fails if the player does not have enough money.
      * @param index the index of the item in the items {@link ArrayList} to buy
      */
-    public void buyItem(int index) {
+    public boolean buyItem(int index) {
         Purchasable item = items.get(index);
         if (player.spendMoney(item.getBuyPrice())) {
             items.remove(index);
             player.addItem(item);
+            return true;
+        } else {
+            return false;
         }
     }
 

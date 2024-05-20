@@ -25,6 +25,7 @@ public class SetupServiceTest {
         Player player = setupService.getPlayer();
         assertEquals(name,player.getName());
         assertEquals(towers,player.getInventory().getTowers());
+
     }
 
     @Test
