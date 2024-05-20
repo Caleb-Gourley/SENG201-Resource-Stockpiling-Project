@@ -32,15 +32,10 @@ public class RandomEvent {
     public int getWeight() {
         return weight;
     }
-
-    public int getProbability() {
-        return weight;
-    }
-
     @Override
     public String toString() {
         return "RandomEvent{" +
-                ", weight=" + weight +
+                "weight=" + weight +
                 ", action=" + action +
                 '}';
     }
