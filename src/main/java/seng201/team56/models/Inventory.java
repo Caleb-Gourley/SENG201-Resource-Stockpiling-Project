@@ -37,6 +37,15 @@ public class Inventory {
     public void addFieldTower(Tower tower) { fieldTowers.add(tower); }
 
     /**
+     * Increment tower use counts.
+     */
+    public void incFieldTowers() {
+        for (Tower tower : fieldTowers) {
+            tower.incUseCount();
+        }
+    }
+
+    /**
      * Adds upgrade objects to upgrades ArrayList that are in the players inventory
      * @param upgrade the upgrade object to be added to the ArrayList
      */
@@ -65,4 +74,24 @@ public class Inventory {
      * @param tower the tower object to be removed from field_towers ArrayList
      */
     public void removeFieldTowers(Tower tower) { fieldTowers.remove(tower); }
+
+    /**
+     * Move a tower from an index in the field list to the reserve list.
+     * @param index the index in the field list of the tower to remove
+     */
+    public void moveFieldTower(int index) {
+        Tower tower = fieldTowers.get(index);
+        removeFieldTowers(tower);
+        towers.add(tower);
+    }
+
+    /**
+     * Move a tower from an index in the reserve list to the field list.
+     * @param index the index in the reserve list of the tower to remove
+     */
+    public void moveReserveTower(int index) {
+        Tower tower = towers.get(index);
+        towers.remove(index);
+        fieldTowers.add(tower);
+    }
 }

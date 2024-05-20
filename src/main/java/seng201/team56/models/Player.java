@@ -10,7 +10,6 @@ public class Player {
     private Difficulty difficulty;
     private final int maxRounds;
     private double money;
-    private int xp;
 
     public int getMaxRounds() {
         return maxRounds;
@@ -28,8 +27,7 @@ public class Player {
         this.difficulty = difficulty;
         this.inventory = startInventory;
         this.maxRounds = maxRounds;
-        this.money = 0;
-        this.xp = 0;
+        this.money = difficulty.getStartMoney();
     }
 
     /**
@@ -86,9 +84,9 @@ public class Player {
      * @param item a {@link Purchasable} to add to the player's inventory
      */
     public void addItem(Purchasable item) {
-        if (item.getClass() == Tower.class) {
+        if (item instanceof Tower) {
             inventory.addTower((Tower) item);
-        } else if (item.getClass() == Upgrade.class) {
+        } else if (item instanceof Upgrade) {
             inventory.addUpgrade((Upgrade) item);
         }
     }
@@ -113,21 +111,5 @@ public class Player {
         } else {
             return false;
         }
-    }
-
-    /**
-     * Getter for player xp
-     * @return xp
-     */
-    public int getXp() {
-        return xp;
-    }
-
-    /**
-     * Add experience to the player
-     * @param amount xp amount to add
-     */
-    public void addXp(int amount) {
-        xp += amount;
     }
 }
