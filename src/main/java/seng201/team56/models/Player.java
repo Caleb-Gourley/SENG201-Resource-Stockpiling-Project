@@ -1,5 +1,7 @@
 package seng201.team56.models;
 
+import seng201.team56.models.upgrades.Upgrade;
+
 /**
  * Represents the player and stores player-specific game-wide data
  * @author Sean Reitsma

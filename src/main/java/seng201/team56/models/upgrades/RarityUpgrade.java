@@ -1,15 +1,17 @@
-package seng201.team56.models;
+package seng201.team56.models.upgrades;
 
-public class RarityUpgrade extends Upgrade{
+import seng201.team56.models.Rarity;
+import seng201.team56.models.Tower;
+
+public class RarityUpgrade extends Upgrade<Rarity>{
     /**
      * Constructor
      * Sets the initial cost and modiferAmount to 0 and modiferType to null
      *
      * @param cost          the upgrades cost
-     * @param modiferAmount the strength of the modifer
      */
-    public RarityUpgrade(int cost, double modiferAmount) {
-        super(cost, "Rarity", modiferAmount);
+    public RarityUpgrade(int cost) {
+        super(cost, "Rarity", null);
     }
 
     @Override

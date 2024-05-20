@@ -1,5 +1,7 @@
 package seng201.team56.models;
 
+import seng201.team56.models.upgrades.Upgrade;
+
 import java.util.ArrayList;
 import java.util.List;
 
