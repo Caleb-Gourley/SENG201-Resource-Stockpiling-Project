@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-image: url('/images/TowerEatsBackground.png'); -fx-background-size: stretch;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team56.gui.SetupController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-image: url('/images/TowerEatsBackground.png'); -fx-background-size: stretch;" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team56.gui.SetupController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1106.0" minWidth="10.0" prefWidth="708.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="675.0" minWidth="10.0" prefWidth="487.0" />
@@ -63,7 +63,7 @@
             <Insets bottom="140.0" left="540.0" top="130.0" />
          </GridPane.margin>
       </Button>
-      <Slider fx:id="RoundsSlider" majorTickUnit="5.0" max="15.0" min="5.0" minorTickCount="1" prefHeight="73.0" prefWidth="478.0" scaleX="0.8" scaleY="0.8" scaleZ="0.8" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <Slider fx:id="RoundsSlider" blockIncrement="5.0" majorTickUnit="1.0" max="15.0" min="5.0" minorTickCount="0" prefHeight="73.0" prefWidth="478.0" scaleX="0.8" scaleY="0.8" scaleZ="0.8" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets bottom="180.0" left="200.0" right="20.0" top="400.0" />
          </GridPane.margin>
@@ -196,7 +196,7 @@
             <Insets bottom="100.0" left="147.0" top="300.0" />
          </GridPane.margin>
       </Button>
-      <Label fx:id="TowerDescription" prefHeight="39.0" prefWidth="1643.0" text="&quot;%s: A %s restaurant with reload speed: %f, capacity: %d. The chef has %d years experience.&quot;" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+      <Label fx:id="TowerDescription" prefHeight="135.0" prefWidth="1953.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
          <font>
             <Font size="28.0" />
          </font>
@@ -204,7 +204,7 @@
             <Insets />
          </GridPane.margin>
          <padding>
-            <Insets bottom="100.0" left="280.0" />
+            <Insets bottom="100.0" left="120.0" />
          </padding>
       </Label>
    </children>

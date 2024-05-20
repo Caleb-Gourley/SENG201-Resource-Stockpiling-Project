@@ -5,14 +5,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import seng201.team56.GameEnvironment;
 import seng201.team56.models.Difficulty;
-import seng201.team56.models.ResourceType;
 import seng201.team56.models.Tower;
 import seng201.team56.services.SetupService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SetupController {
@@ -57,9 +54,8 @@ public class SetupController {
     private Label TowerDescription;
     private SetupService setupService;
     private Difficulty difficulty;
-    private ArrayList<Tower> selectedTower;
-    private Tower[] selectedTowers = new Tower[3];
-    private String name;
+    private final Tower[] selectedTower = new Tower[3];
+    private String playerName;
     private int maxRoundNum;
     private int SelectedTowerIndex = -1;
     private final GameEnvironment gameEnvironment;
@@ -68,20 +64,20 @@ public class SetupController {
 
     @FXML
     public void initialize() {
-        System.out.println("g");
         this.difficulty = Difficulty.EASY;
         List<Button> selectedTowerButtons = List.of(SelectedTower1Button, SelectedTower2Button, SelectedTower3Button);
         List<Button> towerButtons = List.of(Tower1Button, Tower2Button, Tower3Button, Tower4Button, Tower5Button, Tower6Button, Tower7Button, Tower8Button, Tower9Button);
         List<Tower> towers = SetupService.getTowersToChoose();
+        List<Button> difficultyButtons = List.of(EasyButton, MediumButton, HardButton);
+        List<Difficulty> difficulties = List.of(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD);
 
         for (int i = 0; i < towerButtons.size(); i++) {
             int finalI = i;
             towerButtons.get(i).setOnAction(event -> { updateStats(towers.get(finalI));
-                System.out.println("Yay");
                 SelectedTowerIndex = finalI;
                 towerButtons.forEach(button -> {
                     if (button == towerButtons.get(finalI)) {
-                        button.setStyle("-fx-background-color: #3b3b3; -fx-background-radius: 5");
+                        button.setStyle("-fx-background-color: #3b3b3b; -fx-background-radius: 5");
                     } else {
                         button.setStyle("");
                     }
@@ -89,8 +85,29 @@ public class SetupController {
             });
         }
 
-        // maxRoundNum = (int)RoundsSlider.getValue();
-        // PlayButton.setOnAction(event -> new SetupService(name, difficulty, List.of(selectedTowers),maxRoundNum));
+        for (int i = 0; i < selectedTowerButtons.size(); i++) {
+            int finalI = i;
+            selectedTowerButtons.get(i).setOnAction(event -> {
+                if (SelectedTowerIndex != -1) {
+                    selectedTowerButtons.get(finalI).setText(String.valueOf(towers.get(SelectedTowerIndex).getResourceType()));
+                    selectedTower[finalI] = towers.get(SelectedTowerIndex);
+                }
+            });
+        }
+
+        RoundsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+                maxRoundNum = newValue.intValue();
+        });
+
+        NameTextField.textProperty().addListener((observable, oldValue, newValue) -> playerName = NameTextField.getText());
+
+        for (int i = 0; i < difficultyButtons.size(); i++) {
+            int finalI = i;
+            difficultyButtons.get(i).setOnAction(event -> {
+                difficulty = difficulties.get(finalI);
+                System.out.println(difficulty);
+            });
+        }
     }
 
     public void Play() {
