@@ -93,8 +93,8 @@ public class Cart {
      * @param listener the {@link PropertyChangeListener} to be notified of changes to the distance property 
      *                 (in this case a {@link Cart} object)
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.pcs.addPropertyChangeListener(listener);
+    public void addTowerDistanceListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener("distance", listener);
     }
 
     /**
