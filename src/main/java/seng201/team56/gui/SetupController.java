@@ -52,9 +52,7 @@ public class SetupController {
     private Slider RoundsSlider;
     @FXML
     private Label TowerDescription;
-    private SetupService setupService;
     private Difficulty difficulty;
-    private final Tower[] selectedTower = new Tower[3];
     private String playerName;
     private int maxRoundNum;
     private int SelectedTowerIndex = -1;
@@ -65,9 +63,13 @@ public class SetupController {
     @FXML
     public void initialize() {
         this.difficulty = Difficulty.EASY;
+        this.maxRoundNum = 5;
+        this.playerName = "Default";
+
         List<Button> selectedTowerButtons = List.of(SelectedTower1Button, SelectedTower2Button, SelectedTower3Button);
         List<Button> towerButtons = List.of(Tower1Button, Tower2Button, Tower3Button, Tower4Button, Tower5Button, Tower6Button, Tower7Button, Tower8Button, Tower9Button);
         List<Tower> towers = SetupService.getTowersToChoose();
+        List<Tower> selectedTowers = towers.subList(0, 3);
         List<Button> difficultyButtons = List.of(EasyButton, MediumButton, HardButton);
         List<Difficulty> difficulties = List.of(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD);
 
@@ -90,14 +92,12 @@ public class SetupController {
             selectedTowerButtons.get(i).setOnAction(event -> {
                 if (SelectedTowerIndex != -1) {
                     selectedTowerButtons.get(finalI).setText(String.valueOf(towers.get(SelectedTowerIndex).getResourceType()));
-                    selectedTower[finalI] = towers.get(SelectedTowerIndex);
+                    selectedTowers.set(finalI, towers.get(SelectedTowerIndex));
                 }
             });
         }
 
-        RoundsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-                maxRoundNum = newValue.intValue();
-        });
+        RoundsSlider.valueProperty().addListener((observable, oldValue, newValue) -> maxRoundNum = newValue.intValue());
 
         NameTextField.textProperty().addListener((observable, oldValue, newValue) -> playerName = NameTextField.getText());
 
@@ -108,11 +108,11 @@ public class SetupController {
                 System.out.println(difficulty);
             });
         }
-    }
 
-    public void Play() {
-        // update to main scene
-        // SetupService constructor call
+        PlayButton.setOnAction(event -> {
+            SetupService Player = new SetupService(playerName, difficulty, selectedTowers, maxRoundNum);
+            gameEnvironment.closeSetupScreen();
+        });
     }
 
     public void updateStats(Tower tower) { TowerDescription.setText(tower.getDescription()); }
