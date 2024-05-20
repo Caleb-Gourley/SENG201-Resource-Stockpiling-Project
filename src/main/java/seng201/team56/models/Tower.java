@@ -13,7 +13,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     private static final int LEVELUP_THRESHOLD = 100;
     private int resourceFullAmount;
     private int resourceAmount;
-    private double reloadSpeed;
+    private long reloadSpeed;
     private ResourceType resourceType;
     private int level;
     private int xp;
@@ -29,10 +29,10 @@ public class Tower implements Purchasable, PropertyChangeListener {
      * Sets the default level to 0.
      * @param type the ResourceType of the new Tower
      * @param amount the amount the tower fills each reload
-     * @param speed the reload speed of the tower (time between reloads in seconds)
+     * @param speed the reload speed of the tower (time between reloads in milliseconds)
      * @param cost the tower's cost
      */
-    public Tower(ResourceType type, int amount, double speed, int cost) {
+    public Tower(ResourceType type, int amount, long speed, int cost) {
         this.resourceType = type;
         this.resourceFullAmount = amount;
         this.reloadSpeed = speed;
@@ -52,7 +52,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
         List<ResourceType> types = rarity.getTypes();
         this.resourceType = types.get(rng.nextInt(types.size()));
         this.resourceFullAmount = rng.nextInt(rarity.getResourceAmountMin(), rarity.getResourceAmountMax() + 1);
-        this.reloadSpeed = rng.nextDouble(rarity.getSpeedMin(), rarity.getSpeedMax());
+        this.reloadSpeed = rng.nextLong(rarity.getSpeedMin(), rarity.getSpeedMax());
         switch (rarity) {
             case COMMON -> this.cost = rng.nextInt(10,20);
             case UNCOMMON -> this.cost = rng.nextInt(20,30);
@@ -123,14 +123,25 @@ public class Tower implements Purchasable, PropertyChangeListener {
         return level;
     }
 
+    /**
+     * Add xp to the tower.
+     * @param xp amount to increment the tower's current xp by.
+     */
     public void addXp(int xp) {
         this.xp += xp;
     }
 
+    /**
+     * Increment tower use count.
+     */
     public void incUseCount() {
         this.useCount++;
     }
 
+    /**
+     * Getter for the use count of the tower.
+     * @return useCount
+     */
     public int getUseCount() {
         return useCount;
     }
@@ -141,7 +152,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     public void levelUp() {
         level++;
         increaseResourceFullAmount(rng.nextInt(level + 5, (level + 5) * 2));
-        decreaseReloadInterval(rng.nextDouble(0.5,(level * 0.1 + 0.5) * 2));
+        decreaseReloadInterval(rng.nextLong(500,(level * 100 + 500) * 2));
     }
 
     /**
@@ -156,7 +167,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
      * Getter for the reload speed of the tower
      * @return reloadSpeed
      */
-    public double getReloadSpeed() {
+    public long getReloadSpeed() {
         return reloadSpeed;
     }
 
@@ -218,29 +229,52 @@ public class Tower implements Purchasable, PropertyChangeListener {
         this.distance = distance;
     }
 
+    /**
+     * Sets the tower broken.
+     */
     public void setBroken() {
     }
 
+    /**
+     * Increases the tower's capacity by a set amount.
+     * @param amount the amount to add to the tower's capacity
+     */
     public void increaseResourceFullAmount(int amount) {
         this.resourceFullAmount += amount;
     }
 
+    /**
+     * Decreases the tower's capacity by a set amount (if the amount is less than the current capacity).
+     * @param amount the amount to subtract
+     */
     public void decreaseResourceFullAmount(int amount) {
         if(this.resourceFullAmount > amount) {
             this.resourceFullAmount -= amount;
         }
     }
 
-    public void increaseReloadInvterval(double amount) {
+    /**
+     * Increases the interval between reloads (decreases the speed).
+     * @param amount the amount (in milliseconds) to add to the interval
+     */
+    public void increaseReloadInvterval(long amount) {
         this.reloadSpeed += amount;
     }
 
-    public void decreaseReloadInterval(double amount) {
+    /**
+     * Decreases the interval between reloads (increases the speed).
+     * @param amount the amount (in milliseconds) to add to the interval
+     */
+    public void decreaseReloadInterval(long amount) {
         if (this.reloadSpeed > amount) {
             this.reloadSpeed -= amount;
         }
     }
 
+    /**
+     * Setter for name.
+     * @param name the tower's new name
+     */
     public void setName(String name) {
         this.name = name;
     }
