@@ -80,7 +80,7 @@ public class SetupController {
                 SelectedTowerIndex = finalI;
                 towerButtons.forEach(button -> {
                     if (button == towerButtons.get(finalI)) {
-                        button.setStyle("-fx-background-color: #3b3b3b; -fx-background-radius: 5");
+                        button.setStyle("-fx-background-color: #9a9a9a; -fx-background-radius: 5");
                     } else {
                         button.setStyle("");
                     }
