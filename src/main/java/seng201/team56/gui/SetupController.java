@@ -7,6 +7,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import seng201.team56.GameEnvironment;
 import seng201.team56.models.Difficulty;
+import seng201.team56.models.Player;
 import seng201.team56.models.Tower;
 import seng201.team56.services.SetupService;
 
@@ -110,7 +111,9 @@ public class SetupController {
         }
 
         PlayButton.setOnAction(event -> {
-            SetupService Player = new SetupService(playerName, difficulty, selectedTowers, maxRoundNum);
+            SetupService setupService = new SetupService(playerName, difficulty, selectedTowers, maxRoundNum);
+            Player player = setupService.getPlayer();
+            gameEnvironment.setPlayer(player);
             gameEnvironment.closeSetupScreen();
         });
     }

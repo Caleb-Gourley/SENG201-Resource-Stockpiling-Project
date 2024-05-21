@@ -1,11 +1,14 @@
 package seng201.team56;
 
+import seng201.team56.models.Player;
+
 import java.util.function.Consumer;
 
 public class GameEnvironment {
     private final Consumer<GameEnvironment> setupScreenLauncher;
     private final Consumer<GameEnvironment> mainScreenLauncher;
     private final Runnable clearScreen;
+    private Player player;
 
     public GameEnvironment(Consumer<GameEnvironment> setupScreenLauncher, Consumer<GameEnvironment> mainScreenLauncher, Runnable clearScreen) {
         this.setupScreenLauncher = setupScreenLauncher;
@@ -22,4 +25,12 @@ public class GameEnvironment {
     }
 
     public void launchMainScreen() { mainScreenLauncher.accept(this); }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 }

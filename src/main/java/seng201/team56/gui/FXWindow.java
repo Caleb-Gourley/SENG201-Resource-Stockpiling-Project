@@ -21,6 +21,8 @@ public class FXWindow extends Application {
         Parent root = baseLoader.load();
         FXWrapper fxWrapper = baseLoader.getController();
         Scene scene = new Scene(root, 1920, 1080);
+        primaryStage.setMaximized(true);
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Tower Eats");
         primaryStage.setScene(scene);
         primaryStage.show();
