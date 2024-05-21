@@ -30,7 +30,7 @@
                            <children>
                               <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Label fx:id="nameLabel" prefHeight="40.0" prefWidth="47.0" text="Name">
+                                    <Label fx:id="nameLabel" prefHeight="54.0" text="Name">
                                        <HBox.margin>
                                           <Insets left="5.0" right="5.0" />
                                        </HBox.margin></Label>

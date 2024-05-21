@@ -18,10 +18,10 @@ public class Inventory {
      * @param startTowers the list of starting towers
      */
     public Inventory(List<Tower> startTowers) {
-        this.towers = new ArrayList<>();
+        this.towers = new ArrayList<>(5);
         this.towers.addAll(startTowers);
         this.upgrades = new ArrayList<>();
-        this.fieldTowers = new ArrayList<>();
+        this.fieldTowers = new ArrayList<>(5);
     }
 
     /**
@@ -93,5 +93,15 @@ public class Inventory {
         Tower tower = towers.get(index);
         towers.remove(index);
         fieldTowers.add(tower);
+    }
+
+    public void moveTower(Tower tower) {
+        if (towers.contains(tower)) {
+            towers.remove(tower);
+            fieldTowers.add(tower);
+        } else if (fieldTowers.contains(tower)) {
+            fieldTowers.remove(tower);
+            towers.add(tower);
+        }
     }
 }

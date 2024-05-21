@@ -99,6 +99,10 @@ public class RoundService {
 		return currentRound;
 	}
 
+	public int getRoundNum() {
+		return roundNum;
+	}
+
 	/**
 	 * Getter for roundRunning
 	 * @return true if a round is currently active, false otherwise

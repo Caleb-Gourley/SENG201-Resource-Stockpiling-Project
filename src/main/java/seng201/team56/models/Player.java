@@ -9,7 +9,7 @@ public class Player {
     private final Inventory inventory;
     private Difficulty difficulty;
     private final int maxRounds;
-    private double money;
+    private int money;
 
     public int getMaxRounds() {
         return maxRounds;
@@ -66,7 +66,7 @@ public class Player {
      * Getter for how much money the player has
      * @return money
      */
-    public double getMoney() {
+    public int getMoney() {
         return money;
     }
 
@@ -74,7 +74,7 @@ public class Player {
      * Add money to the player
      * @param amount the amount to add
      */
-    public void addMoney(double amount) {
+    public void addMoney(int amount) {
         money += amount;
     }
 
