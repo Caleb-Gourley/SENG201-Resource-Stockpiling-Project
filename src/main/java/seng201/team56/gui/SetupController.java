@@ -65,7 +65,7 @@ public class SetupController {
 
     /**
      * Constructor
-     * @param gameEnvironment instance of gameEnvironment
+     * @param gameEnvironment the {@link GameEnvironment} object in charge of the game state
      */
     public SetupController(GameEnvironment gameEnvironment) { this.gameEnvironment = gameEnvironment; }
 

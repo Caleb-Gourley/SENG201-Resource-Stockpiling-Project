@@ -1,6 +1,7 @@
 package seng201.team56.gui;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -8,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 import seng201.team56.GameEnvironment;
 import seng201.team56.models.Inventory;
+import seng201.team56.models.Purchasable;
 import seng201.team56.models.Tower;
 import seng201.team56.models.Upgrade;
 import seng201.team56.services.RoundService;
@@ -54,6 +56,8 @@ public class MainController {
     private Polyline trackLine;
     @FXML
     private ListView<Upgrade> upgradesView;
+    @FXML
+    private ListView<Purchasable> shopListView;
     private int selectedTower = -1;
     private final GameEnvironment gameEnvironment;
     private final RoundService roundService;
@@ -75,6 +79,16 @@ public class MainController {
      */
     @FXML
     public void initialize() {
+        shopService.updateItems(1);
+        shopListView.setCellFactory(new ShopCellFactory());
+        shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
+
+        shopListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        shopListView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Purchasable>) r -> {
+            System.out.println("Action " + r);
+            System.out.println("Current Selection: " + shopListView.getSelectionModel().getSelectedItem());
+        });
+
         nameLabel.setText(gameEnvironment.getPlayer().getName());
         coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
         roundNumLabel.setText(String.format("%d/%d", roundService.getRoundNum(), gameEnvironment.getPlayer().getMaxRounds()));

@@ -31,7 +31,7 @@ public class FXWrapper {
 
     /**
      * Opens the gui with the fxml content specified in resources/fxml/TowerEatsSetup.fxml
-     * @param gameEnvironment instance of gameEnvironment
+     * @param gameEnvironment the {@link GameEnvironment} object in charge of the game state
      */
     public void launchSetupScreen(GameEnvironment gameEnvironment) {
         try {
