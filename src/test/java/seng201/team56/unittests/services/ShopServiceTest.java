@@ -20,7 +20,7 @@ public class ShopServiceTest {
 
     @Test
     void updateItemsTest() {
-        List<Purchasable> oldItems = shopService.getItems();
+        List<Purchasable> oldItems = List.copyOf(shopService.getItems());
         shopService.updateItems(1);
         assertNotEquals(oldItems, shopService.getItems());
     }

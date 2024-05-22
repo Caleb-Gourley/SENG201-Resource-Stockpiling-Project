@@ -2,14 +2,15 @@ package seng201.team56.services;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import seng201.team56.models.*;
 import seng201.team56.services.threads.CartMoveTask;
+import seng201.team56.services.threads.TowerFillTask;
 import seng201.team56.services.util.RandomEvent;
 
 import java.util.concurrent.TimeUnit;
@@ -48,6 +49,23 @@ public class RoundService {
 		this.roundDifficulty = difficulty;
 	}
 
+	public List<RoundDifficulty> generateRoundDifficulties() {
+		ArrayList<RoundDifficulty> difficulties = new ArrayList<>();
+		Rarity rarity;
+		if (roundNum <= player.getMaxRounds() / 3) {
+			rarity = Rarity.COMMON;
+		} else if (roundNum <= player.getMaxRounds() * 2 / 3) {
+			rarity = Rarity.RARE;
+		} else {
+			rarity = Rarity.EPIC;
+		}
+		for (int i = 0; i < 3; i++) {
+			RoundDifficulty diff = new RoundDifficulty(rng,roundNum,rarity);
+			difficulties.add(diff);
+		}
+		return difficulties;
+	}
+
 	public void addRunningSubscriber(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener("roundRunning", listener);
 	}
@@ -64,9 +82,6 @@ public class RoundService {
 			double speed = rng.nextDouble(roundDifficulty.cartMinSpeed(),roundDifficulty.cartMaxSpeed());
 			ResourceType type = Rarity.pickRarity(roundNum, player.getMaxRounds()).getRandomType();
 			Cart cart = new Cart(speed, size, type, currentRound.getTrackDistance());
-			for (Tower tower: player.getInventory().getFieldTowers()) {
-				cart.addTowerDistanceListener(tower);
-			}
 			currentRound.addCart(cart);
 		}
 	}
@@ -83,7 +98,8 @@ public class RoundService {
 				pool.schedule(task, 0, TimeUnit.SECONDS);
 			}
 			for (Tower tower: player.getInventory().getFieldTowers()) {
-				pool.scheduleAtFixedRate(tower::reload, 0, tower.getReloadSpeed(), TimeUnit.MILLISECONDS);
+				TowerFillTask towerTask = new TowerFillTask(currentRound.getCarts(), tower);
+				pool.scheduleAtFixedRate(towerTask, 0, tower.getReloadSpeed(), TimeUnit.MILLISECONDS);
 			}
 			boolean oldValue = roundRunning;
 			roundRunning = true;
@@ -122,10 +138,10 @@ public class RoundService {
 	public List<RandomEvent> getRandomEvents(Tower tower) {
 		int randInt = rng.nextInt(5,5 + roundNum * 2);
 		long randLong = rng.nextLong(50, roundNum * 200);
-		RandomEvent towerCapacityIncrease = new RandomEvent(roundNum, () -> tower.increaseResourceFullAmount(randInt),player.getDifficulty());
-		RandomEvent towerCapacityDecrease = new RandomEvent(roundNum, () -> tower.decreaseResourceFullAmount(randInt),player.getDifficulty());
+		RandomEvent towerCapacityIncrease = new RandomEvent(roundNum, () -> tower.increaseResourceAmount(randInt),player.getDifficulty());
+		RandomEvent towerCapacityDecrease = new RandomEvent(roundNum, () -> tower.decreaseResourceAmount(randInt),player.getDifficulty());
 		RandomEvent towerReloadSpeedIncrease = new RandomEvent(roundNum, () -> tower.decreaseReloadInterval(randLong),player.getDifficulty());
-		RandomEvent towerReloadSpeedDecrease = new RandomEvent(roundNum, () -> tower.increaseReloadInvterval(randLong),player.getDifficulty());
+		RandomEvent towerReloadSpeedDecrease = new RandomEvent(roundNum, () -> tower.increaseReloadInterval(randLong),player.getDifficulty());
 		RandomEvent towerBreaks = new RandomEvent(roundNum,tower::setBroken,player.getDifficulty(),tower.getUseCount());
 		RandomEvent nothingHappens = new RandomEvent(() -> {}, 10);
         return List.of(towerCapacityIncrease, towerCapacityDecrease, towerReloadSpeedIncrease, towerReloadSpeedDecrease, towerBreaks, nothingHappens);
