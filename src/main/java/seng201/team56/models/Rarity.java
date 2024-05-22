@@ -106,7 +106,8 @@ public enum Rarity {
         return types.get(RANDOM.nextInt(types.size()));
     }
 
-    public String getDescription() {
+    @Override
+    public String toString() {
         return description;
     }
 }

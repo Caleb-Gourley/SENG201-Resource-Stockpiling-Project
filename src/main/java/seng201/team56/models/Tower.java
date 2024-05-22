@@ -104,7 +104,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     @Override
     public String getDescription() {
         return String.format("%s: A %s restaurant with reload speed: %d, capacity: %d. The chef has %d years experience.",
-                name,resourceType.getName(),reloadSpeed,resourceFullAmount,level);
+                name,resourceType.toString(),reloadSpeed,resourceFullAmount,level);
     }
 
     /**

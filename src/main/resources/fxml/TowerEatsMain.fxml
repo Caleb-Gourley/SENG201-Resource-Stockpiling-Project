@@ -59,11 +59,13 @@
                                        </HBox.margin>
                                     </Label>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label fx:id="difficultyLabel" prefHeight="93.0" prefWidth="36.0" text="Easy">
+                                    <Label fx:id="difficultyLabel" prefHeight="93.0" text="Easy">
                                        <HBox.margin>
                                           <Insets left="5.0" right="5.0" />
                                        </HBox.margin>
                                     </Label>
+                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                    <Label id="error" fx:id="messageLabel" prefHeight="39.0" prefWidth="57.0" style="visibility: hide;" text="Error!" />
                                  </children>
                               </HBox>
                            </children>
