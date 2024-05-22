@@ -9,18 +9,29 @@ import seng201.team56.GameEnvironment;
 
 import java.io.IOException;
 
-// Implementation details of opening other screens
+/**
+ * Holds implementation to launch scenes
+ * @author Caleb Gourley
+ */
 public class FXWrapper {
 
     @FXML
     private Pane pane;
     private Stage stage;
 
+    /**
+     *
+     * @param stage
+     */
     public void init(Stage stage) {
         this.stage = stage;
         new GameEnvironment(this::launchSetupScreen, this::launchMainScreen, this::clearPane);
     }
 
+    /**
+     *
+     * @param gameEnvironment
+     */
     public void launchSetupScreen(GameEnvironment gameEnvironment) {
         try {
             FXMLLoader setupLoader = new FXMLLoader(getClass().getResource("/fxml/TowerEatsSetup.fxml"));
@@ -33,8 +44,15 @@ public class FXWrapper {
         }
     }
 
+    /**
+     *
+     */
     public void clearPane() { pane.getChildren().removeAll(pane.getChildren()); }
 
+    /**
+     *
+     * @param gameEnvironment
+     */
     public void launchMainScreen(GameEnvironment gameEnvironment) {
         try {
             FXMLLoader mainScreenLoader = new FXMLLoader(getClass().getResource("/fxml/TowerEatsMain.fxml"));
