@@ -64,14 +64,19 @@ public class SetupController {
     private final GameEnvironment gameEnvironment;
 
     /**
-     *
-     * @param gameEnvironment
+     * Constructor
+     * @param gameEnvironment instance of gameEnvironment
      */
     public SetupController(GameEnvironment gameEnvironment) { this.gameEnvironment = gameEnvironment; }
 
     /**
      * Initialises default values, selectedTowerButtons, towerButtons, towers, difficultyButtons, difficulties
-     * Handles
+     * Handles Pick Starting Towers button interaction
+     * Handles Selected Towers button interaction
+     * Handles Select rounds slider
+     * Handles Name text field
+     * Handles Choose difficulty buttons
+     * Handles Play button interaction
      */
     @FXML
     public void initialize() {
@@ -115,9 +120,7 @@ public class SetupController {
 
         for (int i = 0; i < difficultyButtons.size(); i++) {
             int finalI = i;
-            difficultyButtons.get(i).setOnAction(event -> {
-                difficulty = difficulties.get(finalI);
-            });
+            difficultyButtons.get(i).setOnAction(event -> difficulty = difficulties.get(finalI));
         }
 
         PlayButton.setOnAction(event -> {
@@ -129,8 +132,8 @@ public class SetupController {
     }
 
     /**
-     *
-     * @param tower
+     * Sets label with TowerDescription
+     * @param tower object to get TowerDescription from
      */
     public void updateStats(Tower tower) { TowerDescription.setText(tower.getDescription()); }
 }

@@ -15,10 +15,12 @@ public class GameEnvironment {
     private Player player;
 
     /**
-     *
-     * @param setupScreenLauncher
-     * @param mainScreenLauncher
-     * @param clearScreen
+     * Constructor
+     * Initialises setupScreenLauncher, mainScreenLauncher, clearScreen
+     * Launches the setup screen
+     * @param setupScreenLauncher Consumer
+     * @param mainScreenLauncher Consumer
+     * @param clearScreen Consumer
      */
     public GameEnvironment(Consumer<GameEnvironment> setupScreenLauncher, Consumer<GameEnvironment> mainScreenLauncher, Runnable clearScreen) {
         this.setupScreenLauncher = setupScreenLauncher;
@@ -28,12 +30,12 @@ public class GameEnvironment {
     }
 
     /**
-     *
+     * Launches the setup screen
      */
     public void launchSetupScreen() { setupScreenLauncher.accept(this); }
 
     /**
-     *
+     * Closes the setup screen and launches the main screen
      */
     public void closeSetupScreen() {
         clearScreen.run();
@@ -41,7 +43,7 @@ public class GameEnvironment {
     }
 
     /**
-     *
+     * Launches the main screen
      */
     public void launchMainScreen() { mainScreenLauncher.accept(this); }
 
