@@ -1,5 +1,6 @@
 package seng201.team56.models;
 
+import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 import java.util.Random;
 
@@ -9,6 +10,68 @@ import java.util.Random;
  */
 public class Tower implements Purchasable {
     private static final int LEVELUP_THRESHOLD = 100;
+    private static final String[] NAMES = {
+            "Alain Ducasse at the Dorchester",
+            "Alo",
+            "Alobar Yorkville",
+            "Les Amis",
+            "Arpège",
+            "L'Atelier de Joël Robuchon",
+            "Aubergine",
+            "Bagatelle restaurant",
+            "Berowra Waters Inn",
+            "Bistro 990",
+            "Café des Artistes",
+            "Café Rouge",
+            "Café Royal",
+            "Caprice",
+            "Chez Bruce",
+            "Chez Dominique",
+            "Les Créations de Narisawa",
+            "L'Escargot",
+            "La Lune",
+            "La Ferme de Mon Père",
+            "Fitzgerald",
+            "La Folie",
+            "Fouquet's",
+            "Gaddi's",
+            "Galvin at Windows",
+            "Le Gavroche",
+            "La Grenouille",
+            "Jean-Georges",
+            "Jeune et Jolie",
+            "Locke-Ober",
+            "Lumière",
+            "Lutèce",
+            "La Madeleine",
+            "Maison Novelli",
+            "Le Manoir aux Quat' Saisons",
+            "Mas",
+            "Masa's Wine Bar & Kitchen",
+            "Maxim's Paris",
+            "Mimi's Cafe",
+            "Mr & Mrs Bund, Shanghai, China",
+            "L'Opéra restaurant",
+            "Ortolan, Los Angeles",
+            "Le Papillon",
+            "Per Se",
+            "Philippe's",
+            "Pied à Terre",
+            "Pierre",
+            "Restaurant André",
+            "The Restaurant Marco Pierre White",
+            "Rhubarb Le Restaurant",
+            "RIA",
+            "Roussillon",
+            "Seinpost",
+            "Sketch",
+            "St. Lawrence",
+            "La Société",
+            "La Tante Claire",
+            "Tom Aikens",
+            "Trois Mec",
+            "Tru"
+    };
     private int resourceAmount;
     private long reloadSpeed;
     private ResourceType resourceType;
@@ -35,7 +98,7 @@ public class Tower implements Purchasable {
         this.cost = cost;
         this.level = 0;
         this.xp = 0;
-        //A negative distance means the Tower is not on the track
+        this.name = NAMES[rng.nextInt(NAMES.length)];
     }
 
     /**
@@ -50,8 +113,8 @@ public class Tower implements Purchasable {
         this.cost = rng.nextInt(rarity.getCostMin(),rarity.getCostMax());
         this.level = 0;
         this.xp = 0;
-        //A negative distance means the Tower is not on the track
         this.rarity = rarity;
+        this.name = NAMES[rng.nextInt(NAMES.length)];
     }
 
     /**
