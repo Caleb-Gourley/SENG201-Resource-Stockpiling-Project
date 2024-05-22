@@ -10,7 +10,6 @@ import javafx.scene.text.Font;
 import javafx.util.Callback;
 import seng201.team56.models.Purchasable;
 import seng201.team56.models.Tower;
-import seng201.team56.services.ShopService;
 
 public class ShopCellFactory implements Callback<ListView<Purchasable>, ListCell<Purchasable>> {
     @Override
@@ -21,14 +20,14 @@ public class ShopCellFactory implements Callback<ListView<Purchasable>, ListCell
                 super.updateItem(purchasable, broken);
                 if (broken || purchasable == null) {
                     setGraphic(null);
-                } else {
+                } else if(purchasable instanceof Tower) {
                     HBox hBox = new HBox(5);
-                    ImageView imageView = new ImageView(String.format("/images/tower_%s.png"));
+                    ImageView imageView = new ImageView(String.format("/images/tower_%s.png", ((Tower) purchasable).getRarity().toString().toLowerCase()));
                     imageView.setPreserveRatio(true);
                     imageView.setFitWidth(50);
                     imageView.setFitWidth(50);
                     VBox vBox = new VBox(5);
-                    Label nameLabel = new Label(/*Get Name*/);
+                    Label nameLabel = new Label(((Tower) purchasable).getName());
                     nameLabel.setFont(new Font(20));
                     vBox.getChildren().addAll(
                             nameLabel,

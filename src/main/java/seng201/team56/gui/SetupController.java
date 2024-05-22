@@ -92,6 +92,7 @@ public class SetupController {
         List<Difficulty> difficulties = List.of(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD);
         for (int i = 0; i < towerButtons.size(); i++) {
             int finalI = i;
+            towerButtons.get(finalI).setText(towers.get(finalI).getName());
             towerButtons.get(i).setOnAction(event -> { updateStats(towers.get(finalI));
                 SelectedTowerIndex = finalI;
                 towerButtons.forEach(button -> {
@@ -106,9 +107,10 @@ public class SetupController {
 
         for (int i = 0; i < selectedTowerButtons.size(); i++) {
             int finalI = i;
+           selectedTowerButtons.get(finalI).setText(selectedTowers.get(finalI).getName());
             selectedTowerButtons.get(i).setOnAction(event -> {
                 if (SelectedTowerIndex != -1 && !selectedTowers.contains(towers.get(SelectedTowerIndex))) {
-                    selectedTowerButtons.get(finalI).setText(String.valueOf(towers.get(SelectedTowerIndex).getResourceType()));
+                    selectedTowerButtons.get(finalI).setText(towers.get(SelectedTowerIndex).getName());
                     selectedTowers.set(finalI, towers.get(SelectedTowerIndex));
                 }
             });

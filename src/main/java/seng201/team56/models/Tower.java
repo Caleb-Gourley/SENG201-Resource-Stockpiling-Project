@@ -1,6 +1,5 @@
 package seng201.team56.models;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 import java.util.Random;
 
@@ -280,6 +279,12 @@ public class Tower implements Purchasable {
             this.reloadSpeed -= amount;
         }
     }
+
+    /**
+     * Getter for the name of the tower
+     * @return name
+     */
+    public String getName() { return name; }
 
     /**
      * Setter for name.
