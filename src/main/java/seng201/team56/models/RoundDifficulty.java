@@ -75,4 +75,17 @@ public class RoundDifficulty {
     public int xpReward() {
         return xpReward;
     }
+
+    @Override
+    public String toString() {
+        return String.format("""
+                Track distance: %.2f
+                Number of carts: %d
+                Min cart size: %d
+                Max cart size: %d
+                Min cart speed: %.2f
+                Max cart speed: %.2f
+                Monetary reward: %d
+                Tower xp reward: %d""", trackDistance,numCarts,cartMinSize,cartMaxSize,cartMinSpeed,cartMaxSpeed,monetaryReward,xpReward);
+    }
 }

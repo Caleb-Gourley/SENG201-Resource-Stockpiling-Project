@@ -10,6 +10,8 @@ import java.util.Random;
  */
 public class Tower implements Purchasable {
     private static final int LEVELUP_THRESHOLD = 100;
+
+    //Sourced from https://en.wikipedia.org/wiki/List_of_French_restaurants
     private static final String[] NAMES = {
             "Alain Ducasse at the Dorchester",
             "Alo",

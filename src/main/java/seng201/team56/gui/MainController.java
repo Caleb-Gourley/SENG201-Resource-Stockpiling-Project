@@ -3,18 +3,22 @@ package seng201.team56.gui;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Polyline;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import seng201.team56.GameEnvironment;
-import seng201.team56.models.Inventory;
-import seng201.team56.models.Purchasable;
-import seng201.team56.models.Tower;
-import seng201.team56.models.Upgrade;
+import seng201.team56.models.*;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.ShopService;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -42,6 +46,8 @@ public class MainController {
     private Button fieldTower4Button;
     @FXML
     private Button fieldTower5Button;
+    @FXML
+    private Button popupButton;
     @FXML
     private Label nameLabel;
     @FXML
@@ -168,5 +174,32 @@ public class MainController {
                 }
             });
         }
+    }
+
+    @FXML
+    public void showDiffSelection() {
+        try {
+            FXMLLoader newStageLoader = new FXMLLoader(getClass().getResource("/fxml/TowerEatsRoundDiff.fxml"));
+            newStageLoader.setControllerFactory(param -> new RoundDiffPopupController(roundService));
+            AnchorPane root = newStageLoader.load();
+            Scene modalScene = new Scene(root);
+            Stage modalStage = new Stage();
+            modalStage.setScene(modalScene);
+            modalStage.setWidth(600);
+            modalStage.setHeight(400);
+            modalStage.setResizable(false);
+            modalStage.setTitle("Set Round Difficulty");
+            modalStage.initModality(Modality.WINDOW_MODAL);
+            modalStage.initOwner(popupButton.getScene().getWindow());
+            modalStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void playRound() {
+        roundService.createRound();
+        roundService.playRound();
     }
 }
