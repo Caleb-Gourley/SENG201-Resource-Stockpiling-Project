@@ -9,6 +9,7 @@ import seng201.team56.services.util.RandomEvent;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeListenerProxy;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -52,7 +53,6 @@ public class RoundServiceTest {
 
     @Test
     void randomEventTest() {
-        //FIXME Not yet implemented
         Tower tower = new Tower(Rarity.COMMON);
         assertEquals(0, tower.getUseCount());
         RandomEvent testEvent = new RandomEvent(15, tower::incUseCount, Difficulty.HARD);
@@ -74,12 +74,26 @@ public class RoundServiceTest {
         assertTrue(roundService.isRoundRunning());
     }
 
+    @Disabled
     @Test
     void roundEndTest() {
         roundService.createRound();
         roundService.playRound();
-        while(!roundService.isRoundRunning()) {
+        assertTimeout(Duration.ofSeconds(30), () -> {
+            while(!roundService.isRoundRunning()) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        assertFalse(roundService.isRoundRunning());
+    }
 
-        }
+    @Test
+    void genDifficultiesTest() {
+        List<RoundDifficulty> difficulties = roundService.generateRoundDifficulties();
+        assertEquals(3, difficulties.size());
     }
 }

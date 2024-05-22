@@ -47,13 +47,7 @@ public class Tower implements Purchasable {
         this.resourceType = types.get(rng.nextInt(types.size()));
         this.resourceAmount = rng.nextInt(rarity.getResourceAmountMin(), rarity.getResourceAmountMax() + 1);
         this.reloadSpeed = rng.nextLong(rarity.getSpeedMin(), rarity.getSpeedMax());
-        switch (rarity) {
-            case COMMON -> this.cost = rng.nextInt(10,20);
-            case UNCOMMON -> this.cost = rng.nextInt(20,30);
-            case RARE -> this.cost = rng.nextInt(30,40);
-            case EPIC -> this.cost = rng.nextInt(40,50);
-            case LEGENDARY -> this.cost = rng.nextInt(100,200);
-        }
+        this.cost = rng.nextInt(rarity.getCostMin(),rarity.getCostMax());
         this.level = 0;
         this.xp = 0;
         //A negative distance means the Tower is not on the track
@@ -172,7 +166,7 @@ public class Tower implements Purchasable {
      * If the cart cannot take a full resourceAmount then simply set resourceAmount to the difference
      * @param carts The carts to be filled
      */
-    public void fillCarts(List<Cart> carts) {
+    public synchronized void fillCarts(List<Cart> carts) {
         for (Cart cart: carts) {
             if (cart.getResourceType() == resourceType) {
                 cart.fillAmount(resourceAmount);

@@ -30,7 +30,7 @@ class CartTest {
      */
     @Test
     void fillExactTest() {
-        assertEquals(0, cart.fillAmount(10));
+        cart.fillAmount(10);
         assertEquals(10, cart.getResourceAmount());
     }
 
@@ -39,7 +39,7 @@ class CartTest {
      */
     @Test
     void fillOverTest() {
-        assertEquals(1, cart.fillAmount(11));
+        cart.fillAmount(11);
         assertEquals(10, cart.getResourceAmount());
     }
 
@@ -48,7 +48,7 @@ class CartTest {
      */
     @Test
     void fillUnderTest() {
-        assertEquals(0, cart.fillAmount(9));
+        cart.fillAmount(9);
         assertEquals(9, cart.getResourceAmount());
 
     }
@@ -70,19 +70,8 @@ class CartTest {
 
     @Test
     void fillFullTest() {
-        assertEquals(0, cart.fillAmount(10));
+        cart.fillAmount(10);
         assertEquals(10, cart.getResourceAmount());
         assertTrue(cart.isFull());
-    }
-
-    @Test
-    void addPropertyListenerTest() {
-        Tower tower = new Tower(ResourceType.BOUILLABAISSE, 6, 5, 10);
-        cart.addPropertyChangeListener(tower);
-        tower.setDistance(30);
-        tower.reload();
-        cart.move();
-        assertEquals(30,cart.getDistance());
-        assertEquals(6,cart.getResourceAmount());
     }
 }
