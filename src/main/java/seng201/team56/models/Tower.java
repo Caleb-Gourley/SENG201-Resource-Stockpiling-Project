@@ -1,7 +1,5 @@
 package seng201.team56.models;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Random;
 
@@ -9,9 +7,8 @@ import java.util.Random;
  * Represents an in-game tower.
  * @author Sean Reitsma
  */
-public class Tower implements Purchasable, PropertyChangeListener {
+public class Tower implements Purchasable {
     private static final int LEVELUP_THRESHOLD = 100;
-    private int resourceFullAmount;
     private int resourceAmount;
     private long reloadSpeed;
     private ResourceType resourceType;
@@ -19,7 +16,6 @@ public class Tower implements Purchasable, PropertyChangeListener {
     private int xp;
     private int cost;
     private String name;
-    private double distance;
     private Rarity rarity;
     private int useCount;
     private final Random rng = new Random();
@@ -34,14 +30,12 @@ public class Tower implements Purchasable, PropertyChangeListener {
      */
     public Tower(ResourceType type, int amount, long speed, int cost) {
         this.resourceType = type;
-        this.resourceFullAmount = amount;
+        this.resourceAmount = amount;
         this.reloadSpeed = speed;
         this.cost = cost;
         this.level = 0;
         this.xp = 0;
         //A negative distance means the Tower is not on the track
-        this.distance = -1;
-        reload();
     }
 
     /**
@@ -51,7 +45,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     public Tower(Rarity rarity) {
         List<ResourceType> types = rarity.getTypes();
         this.resourceType = types.get(rng.nextInt(types.size()));
-        this.resourceFullAmount = rng.nextInt(rarity.getResourceAmountMin(), rarity.getResourceAmountMax() + 1);
+        this.resourceAmount = rng.nextInt(rarity.getResourceAmountMin(), rarity.getResourceAmountMax() + 1);
         this.reloadSpeed = rng.nextLong(rarity.getSpeedMin(), rarity.getSpeedMax());
         switch (rarity) {
             case COMMON -> this.cost = rng.nextInt(10,20);
@@ -63,9 +57,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
         this.level = 0;
         this.xp = 0;
         //A negative distance means the Tower is not on the track
-        this.distance = -1;
         this.rarity = rarity;
-        reload();
     }
 
     /**
@@ -87,7 +79,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     }
 
     /**
-     * Returns the sell price of the tower. At this stage this is simply the value of cost but we
+     * Returns the sell price of the tower. At this stage this is simply the value of cost, but we
      * could implement depreciation to make it more interesting.
      *
      * @return cost
@@ -104,7 +96,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
     @Override
     public String getDescription() {
         return String.format("%s: A %s restaurant with reload speed: %d, capacity: %d. The chef has %d years experience.",
-                name,resourceType.toString(),reloadSpeed,resourceFullAmount,level);
+                name,resourceType.toString(),reloadSpeed,resourceAmount,level);
     }
 
     /**
@@ -129,6 +121,10 @@ public class Tower implements Purchasable, PropertyChangeListener {
      */
     public void addXp(int xp) {
         this.xp += xp;
+        if (this.xp >= LEVELUP_THRESHOLD) {
+            levelUp();
+            this.xp = 0;
+        }
     }
 
     /**
@@ -151,7 +147,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
      */
     public void levelUp() {
         level++;
-        increaseResourceFullAmount(rng.nextInt(level + 5, (level + 5) * 2));
+        increaseResourceAmount(rng.nextInt(level + 5, (level + 5) * 2));
         decreaseReloadInterval(rng.nextLong(500,(level * 100 + 500) * 2));
     }
 
@@ -159,8 +155,8 @@ public class Tower implements Purchasable, PropertyChangeListener {
      * Getter for the resource amount when the tower is full
      * @return resourceFullAmount
      */
-    public int getResourceFullAmount() {
-        return resourceFullAmount;
+    public int getResourceAmount() {
+        return resourceAmount;
     }
 
     /**
@@ -172,61 +168,16 @@ public class Tower implements Purchasable, PropertyChangeListener {
     }
 
     /**
-     * Reload the tower back to the full resource amount
-     */
-    public void reload() {
-        //Delegate responsibility of reloadSpeed logic to the relevant service class
-        resourceAmount = resourceFullAmount;
-    }
-
-    /**
-     * Fills one cart with resourceAmount and then reloads.
+     * Fills all carts in carts with resourceAmount (if the type matches).
      * If the cart cannot take a full resourceAmount then simply set resourceAmount to the difference
-     * @param cart The cart to be filled
+     * @param carts The carts to be filled
      */
-    public void fillCart(Cart cart) {
-        if (resourceAmount > 0) {
-            resourceAmount = cart.fillAmount(resourceAmount);
-        }
-    }
-
-    /**
-     * This method gets called when the bound property the Tower is listening for changes. In this case the property is
-     * Cart.distance.
-     * @param propertyChangeEvent A {@link PropertyChangeEvent} object describing the event source and the property that
-     *                            has changed
-     */
-    @Override
-    public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        if (propertyChangeEvent.getSource() instanceof Cart cart) {
-            if (propertyChangeEvent.getPropertyName().equals("distance")
-                    && (propertyChangeEvent.getNewValue() instanceof Double)
-                    && ((double) propertyChangeEvent.getNewValue() >= distance)) {
-                fillCart(cart);
-                if(xp++ >= LEVELUP_THRESHOLD) {
-                    levelUp();
-                }
+    public void fillCarts(List<Cart> carts) {
+        for (Cart cart: carts) {
+            if (cart.getResourceType() == resourceType) {
+                cart.fillAmount(resourceAmount);
             }
         }
-    }
-
-    /**
-     * Get the distance of the Tower on the track.
-     * If the distance is negative, the Tower is not on the track (i.e. it is in the reserve group).
-     * @see Tower#setDistance(double)
-     * @return distance
-     */
-    public double getDistance() {
-        return distance;
-    }
-
-    /**
-     * Set the distance of the Tower on the track. This distance corresponds to the slot the Player puts the Tower in.
-     * @see Tower#getDistance()
-     * @param distance the distance in metres
-     */
-    public void setDistance(double distance) {
-        this.distance = distance;
     }
 
     /**
@@ -239,17 +190,17 @@ public class Tower implements Purchasable, PropertyChangeListener {
      * Increases the tower's capacity by a set amount.
      * @param amount the amount to add to the tower's capacity
      */
-    public void increaseResourceFullAmount(int amount) {
-        this.resourceFullAmount += amount;
+    public void increaseResourceAmount(int amount) {
+        this.resourceAmount += amount;
     }
 
     /**
      * Decreases the tower's capacity by a set amount (if the amount is less than the current capacity).
      * @param amount the amount to subtract
      */
-    public void decreaseResourceFullAmount(int amount) {
-        if(this.resourceFullAmount > amount) {
-            this.resourceFullAmount -= amount;
+    public void decreaseResourceAmount(int amount) {
+        if(this.resourceAmount > amount) {
+            this.resourceAmount -= amount;
         }
     }
 
@@ -257,7 +208,7 @@ public class Tower implements Purchasable, PropertyChangeListener {
      * Increases the interval between reloads (decreases the speed).
      * @param amount the amount (in milliseconds) to add to the interval
      */
-    public void increaseReloadInvterval(long amount) {
+    public void increaseReloadInterval(long amount) {
         this.reloadSpeed += amount;
     }
 

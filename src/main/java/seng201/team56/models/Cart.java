@@ -15,7 +15,6 @@ public class Cart {
     private double trackDistance;
     private ResourceType resourceType;
     private int resourceAmount;
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     /**
      * Constructor
      * Sets the initial resourceAmount to 0
@@ -38,6 +37,10 @@ public class Cart {
      */
     public int getResourceAmount() {
         return resourceAmount;
+    }
+
+    public ResourceType getResourceType() {
+        return resourceType;
     }
 
     /**
@@ -75,44 +78,22 @@ public class Cart {
     /**
      * Fill the cart up with amount
      * @param amount the amount to add to the cart
-     * @return the leftover amount after filling the cart
      */
-    public int fillAmount(int amount) {
-        int leftOver = 0;
+    public void fillAmount(int amount) {
         if (resourceAmount + amount > size) {
-            leftOver = amount - (size - resourceAmount);
             resourceAmount += size - resourceAmount;
         } else {
             resourceAmount += amount;
         }
-        return leftOver;
     }
 
-    /**
-     * Add a listener (subscriber)
-     * @param listener the {@link PropertyChangeListener} to be notified of changes to the distance property 
-     *                 (in this case a {@link Cart} object)
-     */
-    public void addTowerDistanceListener(PropertyChangeListener listener) {
-        this.pcs.addPropertyChangeListener("distance", listener);
-    }
-
-    /**
-     * Remove a listener (subscriber)
-     * @param listener the {@link PropertyChangeListener} to be removed
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.pcs.removePropertyChangeListener(listener);
-    }
 
     /**
      * Move the cart by speed metres. That is, this method equates to 1 second of movement.
      * Fires a {@link PropertyChangeSupport#firePropertyChange(String, Object, Object)} to notify listeners that the cart has moved.
      */
     public synchronized void move() {
-        double oldValue = distance;
         distance += speed;
-        this.pcs.firePropertyChange("distance", oldValue, distance);
     }
 
 
