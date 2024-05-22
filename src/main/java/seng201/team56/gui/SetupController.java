@@ -13,6 +13,10 @@ import seng201.team56.services.SetupService;
 
 import java.util.List;
 
+/**
+ * controller for the TowerEatsMain.fxml window
+ * @author Caleb Gourley
+ */
 public class SetupController {
 
     @FXML
@@ -59,8 +63,21 @@ public class SetupController {
     private int SelectedTowerIndex = -1;
     private final GameEnvironment gameEnvironment;
 
+    /**
+     * Constructor
+     * @param gameEnvironment instance of gameEnvironment
+     */
     public SetupController(GameEnvironment gameEnvironment) { this.gameEnvironment = gameEnvironment; }
 
+    /**
+     * Initialises default values, selectedTowerButtons, towerButtons, towers, difficultyButtons, difficulties
+     * Handles Pick Starting Towers button interaction
+     * Handles Selected Towers button interaction
+     * Handles Select rounds slider
+     * Handles Name text field
+     * Handles Choose difficulty buttons
+     * Handles Play button interaction
+     */
     @FXML
     public void initialize() {
         this.difficulty = Difficulty.EASY;
@@ -73,7 +90,6 @@ public class SetupController {
         List<Tower> selectedTowers = towers.subList(0, 3);
         List<Button> difficultyButtons = List.of(EasyButton, MediumButton, HardButton);
         List<Difficulty> difficulties = List.of(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD);
-
         for (int i = 0; i < towerButtons.size(); i++) {
             int finalI = i;
             towerButtons.get(i).setOnAction(event -> { updateStats(towers.get(finalI));
@@ -91,7 +107,7 @@ public class SetupController {
         for (int i = 0; i < selectedTowerButtons.size(); i++) {
             int finalI = i;
             selectedTowerButtons.get(i).setOnAction(event -> {
-                if (SelectedTowerIndex != -1) {
+                if (SelectedTowerIndex != -1 && !selectedTowers.contains(towers.get(SelectedTowerIndex))) {
                     selectedTowerButtons.get(finalI).setText(String.valueOf(towers.get(SelectedTowerIndex).getResourceType()));
                     selectedTowers.set(finalI, towers.get(SelectedTowerIndex));
                 }
@@ -104,10 +120,7 @@ public class SetupController {
 
         for (int i = 0; i < difficultyButtons.size(); i++) {
             int finalI = i;
-            difficultyButtons.get(i).setOnAction(event -> {
-                difficulty = difficulties.get(finalI);
-                System.out.println(difficulty);
-            });
+            difficultyButtons.get(i).setOnAction(event -> difficulty = difficulties.get(finalI));
         }
 
         PlayButton.setOnAction(event -> {
@@ -118,5 +131,9 @@ public class SetupController {
         });
     }
 
+    /**
+     * Sets label with TowerDescription
+     * @param tower object to get TowerDescription from
+     */
     public void updateStats(Tower tower) { TowerDescription.setText(tower.getDescription()); }
 }
