@@ -17,6 +17,6 @@ public class SpeedUpgrade extends Upgrade<Long>{
     @Override
     public Tower applyUpgrade(Tower tower) {
         tower.decreaseReloadInterval(getModifierAmount());
-        return null;
+        return tower;
     }
 }
