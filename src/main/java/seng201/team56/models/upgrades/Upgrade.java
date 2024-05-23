@@ -18,6 +18,7 @@ public abstract class Upgrade<T> implements Purchasable {
      * Sets the initial cost and modifierAmount to 0 and modifierType to null
      * @param cost the upgrades cost
      * @param modifierType the description of the modifier
+     * @param modifierAmount the strength of the modifier
      */
     public Upgrade(int cost, String modifierType, T modifierAmount) {
         this.cost = cost;
@@ -43,9 +44,18 @@ public abstract class Upgrade<T> implements Purchasable {
      */
     public String getDescription() { return modifierType; }
 
+    /**
+     * Getter for modifierAmount
+     * @return modifierAmount
+     */
     public T getModifierAmount() {
         return modifierAmount;
     }
 
+    /**
+     * Applies the upgrade to the given tower.
+     * @param tower Tower to apply the upgrade to
+     * @return the modified tower
+     */
     public abstract Tower applyUpgrade(Tower tower);
 }

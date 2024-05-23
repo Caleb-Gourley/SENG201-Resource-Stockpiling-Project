@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * ResourceType options (to be used for carts and towers)
+ * ResourceType options (to be used for carts and towers).
  * @author Sean Reitsma
  */
 public enum ResourceType {
@@ -50,6 +50,11 @@ public enum ResourceType {
     public String toString() {
         return name;
     }
+
+    /**
+     * Returns a random {@link ResourceType} for this Rarity
+     * @return a random ResourceType
+     */
     public static ResourceType randomResourceType() {
         return VALUES.get(RANDOM.nextInt(SIZE));
     }

@@ -3,7 +3,7 @@ package seng201.team56.models;
 import seng201.team56.models.upgrades.Upgrade;
 
 /**
- * Represents the player and stores player-specific game-wide data
+ * Represents the player and stores player-specific game-wide data.
  * @author Sean Reitsma
  */
 public class Player {
@@ -13,16 +13,21 @@ public class Player {
     private final int maxRounds;
     private int money;
 
+    /**
+     * Getter for maxRounds
+     * @return maxRounds
+     */
     public int getMaxRounds() {
         return maxRounds;
     }
 
     /**
-     * Constructor
+     * Constructor.
      * Sets the player name, difficulty, and the initial inventory. Sets money and xp to 0.
      * @param name the player's chosen name
      * @param difficulty the {@link Difficulty} for the game
      * @param startInventory the {@link Inventory} the player starts with
+     * @param maxRounds the maximum number of rounds in the game
      */
     public Player(String name, Difficulty difficulty, Inventory startInventory, int maxRounds) {
         this.name = name;
@@ -33,7 +38,7 @@ public class Player {
     }
 
     /**
-     * Getter for name
+     * Getter for name.
      * @return name
      */
     public String getName() {
@@ -41,7 +46,7 @@ public class Player {
     }
 
     /**
-     * Setter for name
+     * Setter for name.
      * @param name the new name to set
      */
     public void setName(String name) {
@@ -49,7 +54,7 @@ public class Player {
     }
 
     /**
-     * Setter for difficulty
+     * Setter for difficulty.
      * @param difficulty the new difficulty to set
      */
     public void setDifficulty(Difficulty difficulty) {
@@ -57,7 +62,7 @@ public class Player {
     }
 
     /**
-     * Getter for the game difficulty
+     * Getter for the game difficulty.
      * @return difficulty
      */
     public Difficulty getDifficulty() {
@@ -65,7 +70,7 @@ public class Player {
     }
 
     /**
-     * Getter for how much money the player has
+     * Getter for how much money the player has.
      * @return money
      */
     public int getMoney() {
@@ -73,7 +78,7 @@ public class Player {
     }
 
     /**
-     * Add money to the player
+     * Add money to the player.
      * @param amount the amount to add
      */
     public void addMoney(int amount) {
@@ -89,12 +94,12 @@ public class Player {
         if (item instanceof Tower) {
             inventory.addTower((Tower) item);
         } else if (item instanceof Upgrade) {
-            inventory.addUpgrade((Upgrade) item);
+            inventory.addUpgrade((Upgrade<?>) item);
         }
     }
 
     /**
-     * Getter for Inventory
+     * Getter for Inventory.
      * @return inventory
      */
     public Inventory getInventory() {
@@ -102,11 +107,11 @@ public class Player {
     }
 
     /**
-     * Subtracts amount from the player's money if the player has enough
+     * Subtracts amount from the player's money if the player has enough.
      * @param amount the amount to subtract
      * @return true if the money is subtracted, false if the player does not have enough money
      */
-    public boolean spendMoney(double amount) {
+    public boolean spendMoney(int amount) {
         if (money >= amount) {
             money -= amount;
             return true;

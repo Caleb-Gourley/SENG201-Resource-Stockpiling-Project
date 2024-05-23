@@ -2,6 +2,9 @@ package seng201.team56.models;
 
 import java.util.Random;
 
+/**
+ * A class to represent round difficulties. This can be used to populate a round with randomised carts.
+ */
 public class RoundDifficulty {
     private double trackDistance;
     private int numCarts;
@@ -12,6 +15,17 @@ public class RoundDifficulty {
     private int monetaryReward;
     private int xpReward;
 
+    /**
+     * Constructs a round difficulty.
+     * @param trackDistance the track distance for the round
+     * @param numCarts the number of carts to include in the round
+     * @param cartMinSize the minimum resourceAmount of any cart
+     * @param cartMaxSize the maximum resourceAmount of any cart
+     * @param cartMinSpeed the minimum speed of any cart
+     * @param cartMaxSpeed the maximum speed of any cart
+     * @param monetaryReward the amount of money the player gets if he/she wins a round
+     * @param xpReward the amount of xp applied to each tower used in the round
+     */
     public RoundDifficulty(double trackDistance, int numCarts, int cartMinSize, int cartMaxSize, double cartMinSpeed, double cartMaxSpeed, int monetaryReward, int xpReward) {
         this.trackDistance = trackDistance;
         this.numCarts = numCarts;
@@ -23,6 +37,13 @@ public class RoundDifficulty {
         this.xpReward = xpReward;
     }
 
+    /**
+     * Constructs a randomised round difficulty based on the round number and a given rarity. The rarity should be the
+     * average tower rarity the player is expected to have in a given point in the game. Later rounds are harder.
+     * @param rng a random number generator
+     * @param roundNum the current round number
+     * @param rarity the rarity we assume most of the player's towers are
+     */
     public RoundDifficulty(Random rng, int roundNum, Rarity rarity) {
         int minNumCarts = 5 + 2 * (roundNum - 1);
         int maxNumCarts = minNumCarts + 2;
@@ -44,38 +65,74 @@ public class RoundDifficulty {
         xpReward = rng.nextInt(20,60);
     }
 
+    /**
+     * Getter for trackDistance.
+     * @return trackDistance
+     */
     public double trackDistance() {
         return trackDistance;
     }
 
+    /**
+     * Getter for numCarts.
+     * @return numCarts
+     */
     public int numCarts() {
         return numCarts;
     }
 
+    /**
+     * Getter for cartMinSize.
+     * @return cartMinSize
+     */
     public int cartMinSize() {
         return cartMinSize;
     }
 
+    /**
+     * Getter for cartMaxSize.
+     * @return cartMaxSize
+     */
     public int cartMaxSize() {
         return cartMaxSize;
     }
 
+    /**
+     * Getter for cartMinSpeed.
+     * @return cartMinSpeed
+     */
     public double cartMinSpeed() {
         return cartMinSpeed;
     }
 
+    /**
+     * Getter for cartMaxSpeed,
+     * @return cartMaxSpeed
+     */
     public double cartMaxSpeed() {
         return cartMaxSpeed;
     }
 
+    /**
+     * Getter for monetaryReward.
+     * @return monetaryReward
+     */
     public int monetaryReward() {
         return monetaryReward;
     }
 
+    /**
+     * Getter for xpReward
+     * @return xpReward
+     */
     public int xpReward() {
         return xpReward;
     }
 
+    /**
+     * String representation of the RoundDifficulty
+     * @return a String giving a textual description of all the aspects of this RoundDifficulty
+     */
     @Override
     public String toString() {
         return String.format("""

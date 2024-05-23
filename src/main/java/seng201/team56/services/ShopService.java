@@ -42,6 +42,7 @@ public class ShopService {
      * Buy an item and add it to the players inventory.
      * Fails if the player does not have enough money.
      * @param index the index of the item in the items {@link ArrayList} to buy
+     * @return true if the purchase succeeded, false if the player doesn't have enough money
      */
     public boolean buyItem(int index) {
         Purchasable item = items.get(index);

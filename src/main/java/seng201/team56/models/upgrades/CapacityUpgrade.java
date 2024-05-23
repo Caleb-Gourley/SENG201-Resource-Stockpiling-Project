@@ -2,6 +2,11 @@ package seng201.team56.models.upgrades;
 
 import seng201.team56.models.Tower;
 
+/**
+ * An upgrade which increases a Tower's capacity (resourceAmount)
+ *
+ * @author Sean Reitsma
+ */
 public class CapacityUpgrade extends Upgrade<Integer>{
     /**
      * Constructor
@@ -14,6 +19,11 @@ public class CapacityUpgrade extends Upgrade<Integer>{
         super(cost, "Capacity", modifierAmount);
     }
 
+    /**
+     * Increases the resourceAmount of the tower <em>in place.</em>
+     * @param tower Tower to apply the upgrade to
+     * @return the modified Tower
+     */
     @Override
     public Tower applyUpgrade(Tower tower) {
         tower.increaseResourceAmount(getModifierAmount());

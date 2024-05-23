@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a players inventory.
+ * Represents a player's inventory.
  * @author Caleb Gourley
  */
 public class Inventory {
@@ -32,7 +32,7 @@ public class Inventory {
     }
 
     /**
-     * Adds tower objects to towers ArrayList that are in the players inventory.
+     * Adds tower objects to towers ArrayList that are in the player's inventory.
      * @param tower the tower object to be added to the ArrayList
      * @throws ArrayStoreException if the tower object is already in the towers list or the player already has 5 towers.
      */
@@ -47,7 +47,7 @@ public class Inventory {
     }
 
     /**
-     * Adds tower objects to field_towers ArrayList that are placed into the field.
+     * Adds tower objects to fieldTowers ArrayList that are placed into the field.
      * @param tower the tower object to be added to the ArrayList
      * @throws ArrayStoreException if the tower object is already in the towers list or the player already has 5 field towers.
      */
@@ -71,7 +71,7 @@ public class Inventory {
     }
 
     /**
-     * Adds upgrade objects to upgrades ArrayList that are in the players inventory.
+     * Adds upgrade objects to upgrades ArrayList that are in the player's inventory.
      * @param upgrade the upgrade object to be added to the ArrayList
      */
     public void addUpgrade(Upgrade<?> upgrade) { upgrades.add(upgrade); }

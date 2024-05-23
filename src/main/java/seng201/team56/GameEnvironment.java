@@ -47,10 +47,18 @@ public class GameEnvironment {
      */
     public void launchMainScreen() { mainScreenLauncher.accept(this); }
 
+    /**
+     * Sets the current player object
+     * @param player the current player object for the game
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
+    /**
+     * Returns the current player object
+     * @return player
+     */
     public Player getPlayer() {
         return player;
     }

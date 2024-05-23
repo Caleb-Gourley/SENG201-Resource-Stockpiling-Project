@@ -4,8 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * Represents an in-game cart. The cart uses {@link PropertyChangeSupport} to provide Observable type behaviour using
- * the java.beans framework rather than the Deprecated
+ * Represents an in-game cart.
  * @author Sean Reitsma
  */
 public class Cart {
@@ -16,8 +15,8 @@ public class Cart {
     private ResourceType resourceType;
     private int resourceAmount;
     /**
-     * Constructor
-     * Sets the initial resourceAmount to 0
+     * Constructor.
+     * Sets the initial resourceAmount to 0.
      * @param speed the speed the cart goes around the track (m/s)
      * @param size the size of the cart
      * @param resourceType the ResourceType the cart can hold
@@ -39,6 +38,10 @@ public class Cart {
         return resourceAmount;
     }
 
+    /**
+     * Getter for resourceType
+     * @return resourceType
+     */
     public ResourceType getResourceType() {
         return resourceType;
     }

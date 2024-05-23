@@ -12,8 +12,16 @@ import seng201.team56.models.Purchasable;
 import seng201.team56.models.Tower;
 import seng201.team56.models.upgrades.Upgrade;
 
+/**
+ * A factory which creates custom cells for shop items in the shop ListView
+ */
 public class ShopCellFactory implements Callback<ListView<Purchasable>, ListCell<Purchasable>> {
 
+    /**
+     * Returns a custom ListCell for a shop item.
+     * @param listView the ListView which contains the cells
+     * @return the ListCell object
+     */
     @Override
     public ListCell<Purchasable> call(ListView<Purchasable> listView) {
         return new ListCell<>() {

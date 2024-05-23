@@ -37,6 +37,7 @@ public class RoundService {
 	 * Constructor.
 	 * Initialises roundNum to 0.
 	 * @param player the current {@link Player} (game state) object
+	 * @param shopService the currently active ShopService instance to update on round end
 	 */
 	public RoundService(Player player, ShopService shopService) {
 		this.rng = new Random();
@@ -45,10 +46,18 @@ public class RoundService {
 		this.shopService = shopService;
     }
 
+	/**
+	 * Sets the RoundDifficulty for the next round to be created.
+	 * @param difficulty the RoundDifficulty to base the round off
+	 */
 	public void setRoundDifficulty(RoundDifficulty difficulty) {
 		this.roundDifficulty = difficulty;
 	}
 
+	/**
+	 * Generate 3 RoundDifficulty options for the player to choose from.
+	 * @return the list of RoundDifficulty options
+	 */
 	public List<RoundDifficulty> generateRoundDifficulties() {
 		ArrayList<RoundDifficulty> difficulties = new ArrayList<>();
 		Rarity rarity;
@@ -66,6 +75,11 @@ public class RoundService {
 		return difficulties;
 	}
 
+	/**
+	 * Adds a subscriber which specifically listens for a change in the roundRunning property. The listener will be
+	 * updated when a round starts or ends.
+	 * @param listener the {@link PropertyChangeListener} to listen for changes in the round state
+	 */
 	public void addRunningSubscriber(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener("roundRunning", listener);
 	}
@@ -115,6 +129,10 @@ public class RoundService {
 		return currentRound;
 	}
 
+	/**
+	 * Getter for the curren round number
+	 * @return roundNum
+	 */
 	public int getRoundNum() {
 		return roundNum;
 	}
@@ -127,14 +145,35 @@ public class RoundService {
 		return roundRunning;
 	}
 
+	/**
+	 * Getter for roundWon.
+	 * @return true if the player has won the round
+	 */
 	public boolean isRoundWon() {
 		return roundWon;
 	}
 
+	/**
+	 * Getter for roundLost.
+	 * @return true if the player has lost the round
+	 */
 	public boolean isRoundLost() {
 		return roundLost;
 	}
 
+	/**
+	 * Creates a list of random events. Possible random events consist of:
+	 * <ul>
+	 *     <li>A tower's capacity decreases</li>
+	 *     <li>A tower's capacity increases</li>
+	 *     <li>A tower's reload speed increases</li>
+	 *     <li>A tower's reload speed increases</li>
+	 *     <li>A tower breaks</li>
+	 *     <li>Nothing happens</li>
+	 * </ul>
+	 * @param tower the tower which will be affected
+	 * @return the list of possible events
+	 */
 	public List<RandomEvent> getRandomEvents(Tower tower) {
 		int randInt = rng.nextInt(5,5 + roundNum * 2);
 		long randLong = rng.nextLong(50, roundNum * 200);
@@ -149,6 +188,8 @@ public class RoundService {
 
 	/**
 	 * Executes a random event from a weighted selection of random events.
+	 * @param events a list of {@link RandomEvent}s to choose from
+	 * @see  RoundService#getRandomEvents(Tower)    
  	 */
 	public void randomEvent(List<RandomEvent> events) {
 		int total = 0;

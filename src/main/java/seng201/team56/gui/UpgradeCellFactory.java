@@ -9,8 +9,18 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import seng201.team56.models.upgrades.Upgrade;
 
+/**
+ * A factory which creates custom cells for upgrades in the players inventory.
+ *
+ * @author Sean Reitsma
+ */
 public class UpgradeCellFactory implements Callback<ListView<Upgrade<?>>, ListCell<Upgrade<?>>> {
 
+    /**
+     * Returns a custom ListCell for an upgrade.
+     * @param upgradeListView the ListView for the upgrades in the player's inventory
+     * @return the ListCell object
+     */
     @Override
     public ListCell<Upgrade<?>> call(ListView<Upgrade<?>> upgradeListView) {
         return new ListCell<>() {

@@ -25,9 +25,10 @@ public class SetupService {
      *     Player player = setupService.getPlayer();
      * </code>
      *
-     * @param name the player's chosen name.
-     * @param difficulty the player's chosen difficulty.
-     * @param startTowers an ArrayList of the player's chosen starting towers.
+     * @param name the player's chosen name
+     * @param difficulty the player's chosen difficulty
+     * @param startTowers an ArrayList of the player's chosen starting towers
+     * @param maxRoundNum the maximum number of rounds in the game
      */
     public SetupService(String name, Difficulty difficulty, List<Tower> startTowers, int maxRoundNum) {
         Inventory inventory = new Inventory(startTowers);

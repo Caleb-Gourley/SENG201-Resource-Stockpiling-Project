@@ -4,14 +4,29 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Represents different rarities for towers
+ * Represents different rarities for towers.
  * @author Sean Reitsma
  */
 public enum Rarity {
+    /**
+     * Common
+     */
     COMMON("Common",10,20,1500,3000, 10, 20, List.of(ResourceType.BCO_QUICHE,ResourceType.COQ_A_VIN)),
+    /**
+     * Uncommon
+     */
     UNCOMMON("Uncommon",20, 40, 800, 1400, 20, 30, List.of(ResourceType.BCO_QUICHE, ResourceType.COQ_A_VIN, ResourceType.NICOISE_SALAD)),
+    /**
+     * Rare
+     */
     RARE("Rare",40, 80, 300, 1000, 30, 40, List.of(ResourceType.GRUYER_CHEESE_SOUFFLE, ResourceType.BOUILLABAISSE)),
+    /**
+     * Epic
+     */
     EPIC("Epic",90, 110, 100, 250, 40, 50, List.of(ResourceType.CREME_BRULEE)),
+    /**
+     * Legendary
+     */
     LEGENDARY("Legendary",150, 200, 1, 100, 100, 200, List.of(ResourceType.RATATOUILLE));
     private final int resourceAmountMin;
     private final int resourceAmountMax;
@@ -30,8 +45,8 @@ public enum Rarity {
      * @param resourceAmountMax Maximum resource amount
      * @param speedMin          Minimum speed (max duration)
      * @param speedMax          Maximum speed (min duration)
-     * @param costMin
-     * @param costMax
+     * @param costMin           The minimum cost of any tower
+     * @param costMax           The maximum cost of any tower
      * @param types             A list of possible {@link ResourceType}'s
      */
     Rarity(String description, int resourceAmountMin, int resourceAmountMax, long speedMin, long speedMax, int costMin, int costMax, List<ResourceType> types) {
@@ -65,6 +80,11 @@ public enum Rarity {
         }
     }
 
+    /**
+     * Gets the rarity 1 level above this one (i.e. if the rarity passed in is "Common" getNextRarity returns "Uncommon")
+     * @param rarity the current Rarity
+     * @return the next Rarity
+     */
     public static Rarity getNextRarity(Rarity rarity) {
         return VALUES.get(VALUES.indexOf(rarity) + 1);
     }
@@ -117,15 +137,27 @@ public enum Rarity {
         return types.get(RANDOM.nextInt(types.size()));
     }
 
+    /**
+     * String representation of Rarity
+     * @return description
+     */
     @Override
     public String toString() {
         return description;
     }
 
+    /**
+     * Getter for costMin.
+     * @return costMin
+     */
     public int getCostMin() {
         return costMin;
     }
 
+    /**
+     * Getter for costMax.
+     * @return costMax
+     */
     public int getCostMax() {
         return costMax;
     }

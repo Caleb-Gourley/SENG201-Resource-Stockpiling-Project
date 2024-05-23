@@ -9,6 +9,9 @@ import seng201.team56.services.RoundService;
 
 import java.util.List;
 
+/**
+ * A controller for the popup which lets the player choose a round difficulty for the upcoming round
+ */
 public class RoundDiffPopupController {
     @FXML
     private Button option1Button;
@@ -25,10 +28,17 @@ public class RoundDiffPopupController {
     private RoundService roundService;
     private RoundDifficulty selectedDifficulty;
 
+    /**
+     * Constructor.
+     * @param roundService the current RoundService instance
+     */
     public RoundDiffPopupController(RoundService roundService) {
         this.roundService = roundService;
     }
 
+    /**
+     * Initializer. Called when the popup is opened.
+     */
     @FXML
     public void initialize() {
         List<RoundDifficulty> difficulties = roundService.generateRoundDifficulties();
@@ -45,12 +55,18 @@ public class RoundDiffPopupController {
         }
     }
 
+    /**
+     * Accept button handler.
+     */
     @FXML
     public void onAccept() {
         roundService.setRoundDifficulty(selectedDifficulty);
         ((Stage) option1Label.getScene().getWindow()).close();
     }
 
+    /**
+     * Cancel button handler.
+     */
     @FXML
     public void onCancel() {
         ((Stage) option1Label.getScene().getWindow()).close();

@@ -2,6 +2,11 @@ package seng201.team56.models.upgrades;
 
 import seng201.team56.models.Tower;
 
+/**
+ * An upgrade which increases a tower's speed.
+ *
+ * @author Sean Reitsma
+ */
 public class SpeedUpgrade extends Upgrade<Long>{
     /**
      * Constructor
@@ -14,6 +19,11 @@ public class SpeedUpgrade extends Upgrade<Long>{
         super(cost, "Speed", modifierAmount);
     }
 
+    /**
+     * Increases the tower's reload speed <em>in place</em>.
+     * @param tower Tower to apply the upgrade to
+     * @return the modified Tower
+     */
     @Override
     public Tower applyUpgrade(Tower tower) {
         tower.decreaseReloadInterval(getModifierAmount());

@@ -198,6 +198,9 @@ public class MainController implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Shows a popup to let the player select a difficulty for the upcoming round.
+     */
     @FXML
     public void showDiffSelection() {
         try {
@@ -219,6 +222,9 @@ public class MainController implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Handler for the play round button.
+     */
     @FXML
     public void playRound() {
         roundService.createRound();

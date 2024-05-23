@@ -8,6 +8,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * FXWrapper window class which sets up the main window.
+ *
+ * @author Caleb Gourley
+ */
 public class FXWindow extends Application {
 
     /**
