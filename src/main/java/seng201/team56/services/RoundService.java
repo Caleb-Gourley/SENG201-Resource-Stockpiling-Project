@@ -209,20 +209,20 @@ public class RoundService {
 	 *     <li>Any cart is done but not full (if this is the case the round is lost).</li>
 	 * </ul>
 	 */
-	public void endRound() {
+	public synchronized void endRound() {
 		roundWon = currentRound.getCarts().stream().allMatch(cart -> cart.isDone() && cart.isFull());
 		roundLost = currentRound.getCarts().stream().anyMatch(cart -> cart.isDone() && !cart.isFull());
-		if (roundWon || roundLost) {
+		if (roundRunning && (roundWon || roundLost)) {
 			boolean oldValue = roundRunning;
 			roundRunning = false;
-			this.pcs.firePropertyChange("roundRunning", oldValue, false);
-			pool.shutdown();
+			pool.shutdownNow();
 			shopService.updateItems(roundNum);
 			player.getInventory().incFieldTowers();
 			int i = rng.nextInt(player.getInventory().getFieldTowers().size());
 			Tower tower = player.getInventory().getFieldTowers().get(i);
 			List<RandomEvent> events = getRandomEvents(tower);
 			randomEvent(events);
+			this.pcs.firePropertyChange("roundRunning", oldValue, false);
 			if (roundWon) {
 				roundNum++;
 				player.addMoney(roundDifficulty.monetaryReward());

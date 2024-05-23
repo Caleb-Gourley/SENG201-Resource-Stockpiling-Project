@@ -95,6 +95,7 @@ public class MainController implements PropertyChangeListener {
      */
     @FXML
     public void initialize() {
+        roundService.addRunningSubscriber(this);
         shopService.updateItems(1);
         shopListView.setCellFactory(new ShopCellFactory());
         shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
@@ -272,6 +273,14 @@ public class MainController implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getSource() instanceof RoundService
+        && evt.getPropertyName().equals("roundRunning")
+        && evt.getOldValue() instanceof Boolean oldValue
+        && evt.getNewValue() instanceof Boolean newValue
+        && oldValue && !newValue) {
+            openRoundSummaryPopup();
+
+        }
 
     }
 }
