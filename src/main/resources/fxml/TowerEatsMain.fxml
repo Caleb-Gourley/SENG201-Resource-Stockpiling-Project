@@ -121,7 +121,7 @@
                               <ListView fx:id="shopListView" maxHeight="-Infinity" prefHeight="798.0" prefWidth="1666.0" GridPane.columnIndex="1" GridPane.rowSpan="2147483647" />
                               <Label fx:id="moneyLess" style="visibility: hidden;" text="Label" />
                               <Label fx:id="moneyMore" style="visibility: hidden;" text="Label" />
-                              <Button fx:id="buyItemButtom" mnemonicParsing="false" text="Buy" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                              <Button fx:id="buyItemButton" mnemonicParsing="false" text="Buy" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
