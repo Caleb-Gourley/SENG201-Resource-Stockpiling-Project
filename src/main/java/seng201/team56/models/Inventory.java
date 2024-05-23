@@ -12,7 +12,7 @@ import java.util.List;
 public class Inventory {
 
     private final ArrayList<Tower> towers;
-    private final ArrayList<Upgrade> upgrades;
+    private final ArrayList<Upgrade<?>> upgrades;
     private final ArrayList<Tower> fieldTowers;
 
     /**
@@ -74,7 +74,7 @@ public class Inventory {
      * Adds upgrade objects to upgrades ArrayList that are in the players inventory.
      * @param upgrade the upgrade object to be added to the ArrayList
      */
-    public void addUpgrade(Upgrade upgrade) { upgrades.add(upgrade); }
+    public void addUpgrade(Upgrade<?> upgrade) { upgrades.add(upgrade); }
 
     /**
      * Getter for towers.
@@ -86,7 +86,7 @@ public class Inventory {
      * Getter for upgrades.
      * @return upgrades
      */
-    public ArrayList<Upgrade> getUpgrades() { return upgrades; }
+    public ArrayList<Upgrade<?>> getUpgrades() { return upgrades; }
 
     /**
      * Getter for fieldTowers.

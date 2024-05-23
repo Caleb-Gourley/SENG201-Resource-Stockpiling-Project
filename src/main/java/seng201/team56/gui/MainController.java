@@ -63,7 +63,7 @@ public class MainController {
     @FXML
     private Polyline trackLine;
     @FXML
-    private ListView<Upgrade> upgradesView;
+    private ListView<Upgrade<?>> upgradesView;
     @FXML
     private ListView<Purchasable> shopListView;
     @FXML

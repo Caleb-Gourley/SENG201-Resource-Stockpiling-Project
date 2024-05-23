@@ -9,10 +9,10 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import seng201.team56.models.upgrades.Upgrade;
 
-public class UpgradeCellFactory implements Callback<ListView<Upgrade>, ListCell<Upgrade>> {
+public class UpgradeCellFactory implements Callback<ListView<Upgrade<?>>, ListCell<Upgrade<?>>> {
 
     @Override
-    public ListCell<Upgrade> call(ListView<Upgrade> upgradeListView) {
+    public ListCell<Upgrade<?>> call(ListView<Upgrade<?>> upgradeListView) {
         return new ListCell<>() {
             @Override
             protected void updateItem(Upgrade upgrade, boolean b) {
