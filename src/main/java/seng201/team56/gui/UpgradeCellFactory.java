@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
-import seng201.team56.models.Upgrade;
+import seng201.team56.models.upgrades.Upgrade;
 
 public class UpgradeCellFactory implements Callback<ListView<Upgrade>, ListCell<Upgrade>> {
 

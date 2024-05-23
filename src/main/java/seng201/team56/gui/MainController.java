@@ -15,6 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng201.team56.GameEnvironment;
 import seng201.team56.models.*;
+import seng201.team56.models.upgrades.Upgrade;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.ShopService;
 
