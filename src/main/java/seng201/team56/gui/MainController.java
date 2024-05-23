@@ -20,6 +20,8 @@ import seng201.team56.models.upgrades.Upgrade;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.ShopService;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,7 +29,7 @@ import java.util.List;
  * Controller for the main.fxml window
  * @author Sean Reitsma
  */
-public class MainController {
+public class MainController implements PropertyChangeListener {
     @FXML
     private Button resTower1Button;
     @FXML
@@ -106,6 +108,8 @@ public class MainController {
             buyItemButton.setOnAction(event -> {
                 if (shopService.buyItem(shopListView.getSelectionModel().getSelectedIndex())) {
                     shopPopupTimer(moneyMore);
+                    shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
+                    coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
                 } else {
                     shopService.buyItem((shopListView.getSelectionModel().getSelectedIndex()));
                     shopPopupTimer(moneyLess);
@@ -257,6 +261,11 @@ public class MainController {
                 System.out.println("Clicked OK");
             }
         });
+
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
 
     }
 }
