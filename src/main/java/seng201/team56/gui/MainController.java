@@ -1,5 +1,6 @@
 package seng201.team56.gui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -9,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -65,6 +66,12 @@ public class MainController {
     private ListView<Upgrade> upgradesView;
     @FXML
     private ListView<Purchasable> shopListView;
+    @FXML
+    private Button buyItemButton;
+    @FXML
+    private Label moneyLess;
+    @FXML
+    private Label moneyMore;
     private int selectedTower = -1;
     private final GameEnvironment gameEnvironment;
     private final RoundService roundService;
@@ -89,11 +96,21 @@ public class MainController {
         shopService.updateItems(1);
         shopListView.setCellFactory(new ShopCellFactory());
         shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
+        moneyLess.setVisible(false);
+        moneyMore.setVisible(true);
 
         shopListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         shopListView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Purchasable>) r -> {
             System.out.println("Action " + r);
             System.out.println("Current Selection: " + shopListView.getSelectionModel().getSelectedItem());
+            buyItemButton.setOnAction(event -> {
+                if (shopService.buyItem(shopListView.getSelectionModel().getSelectedIndex())) {
+                    shopPopupTimer(moneyMore);
+                } else {
+                    shopService.buyItem((shopListView.getSelectionModel().getSelectedIndex()));
+                    shopPopupTimer(moneyLess);
+                }
+            });
         });
 
         nameLabel.setText(gameEnvironment.getPlayer().getName());
@@ -202,5 +219,44 @@ public class MainController {
     public void playRound() {
         roundService.createRound();
         roundService.playRound();
+    }
+
+    public void shopPopupTimer(Label labelPopup) {
+        Platform.runLater(() -> labelPopup.setVisible(true));
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            Platform.runLater(() -> labelPopup.setVisible(false));
+        }).start();
+    }
+
+    @FXML
+    private void openRoundSummaryPopup() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Round Summary");
+        dialog.setHeaderText("Round Summary");
+
+        VBox dialogContent = new VBox(10);
+        Label roundStatus = new Label("Win or Loss");
+        Label roundMonetaryGain = new Label("Money");
+        Label roundFieldTower1Xp = new Label("Xp");
+        Label roundFieldTower2Xp = new Label("Xp");
+        Label roundFieldTower3Xp = new Label("Xp");
+        Label roundFieldTower4Xp = new Label("Xp");
+        Label roundFieldTower5Xp = new Label("Xp");
+        dialogContent.getChildren().addAll(roundStatus, roundMonetaryGain, roundFieldTower1Xp, roundFieldTower2Xp, roundFieldTower3Xp, roundFieldTower4Xp, roundFieldTower5Xp);
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+
+        dialog.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == ButtonType.OK) {
+                System.out.println("Clicked OK");
+            }
+        });
+
     }
 }
