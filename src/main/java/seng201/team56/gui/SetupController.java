@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import seng201.team56.GameEnvironment;
 import seng201.team56.models.Difficulty;
 import seng201.team56.models.Player;
@@ -92,7 +93,9 @@ public class SetupController {
         List<Difficulty> difficulties = List.of(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD);
         for (int i = 0; i < towerButtons.size(); i++) {
             int finalI = i;
-            towerButtons.get(finalI).setText(towers.get(finalI).getName());
+            //towerButtons.get(finalI).setText(towers.get(finalI).getName());
+            ImageView imageView = new ImageView(String.format("/images/tower_%s.png", towers.get(finalI).getRarity().toString().toLowerCase()));
+            towerButtons.get(finalI).setGraphic(imageView);
             towerButtons.get(i).setOnAction(event -> { updateStats(towers.get(finalI));
                 SelectedTowerIndex = finalI;
                 towerButtons.forEach(button -> {

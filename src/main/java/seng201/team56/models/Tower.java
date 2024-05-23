@@ -153,7 +153,7 @@ public class Tower implements Purchasable {
      */
     @Override
     public String getDescription() {
-        return String.format("%s: A %s restaurant with reload speed: %d, capacity: %d. The chef has %d years experience.",
+        return String.format("%s: Resource type: %s, reload speed: %d, capacity: %d, level: %d",
                 name,resourceType.toString(),reloadSpeed,resourceAmount,level);
     }
 
@@ -206,7 +206,7 @@ public class Tower implements Purchasable {
     public void levelUp() {
         level++;
         increaseResourceAmount(rng.nextInt(level + 5, (level + 5) * 2));
-        decreaseReloadInterval(rng.nextLong(500,(level * 100 + 500) * 2));
+        decreaseReloadInterval(rng.nextLong(500,(level * 100L + 500) * 2));
     }
 
     /**
