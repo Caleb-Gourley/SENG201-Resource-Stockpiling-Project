@@ -10,34 +10,44 @@ import javafx.scene.text.Font;
 import javafx.util.Callback;
 import seng201.team56.models.Purchasable;
 import seng201.team56.models.Tower;
+import seng201.team56.models.upgrades.Upgrade;
 
 public class ShopCellFactory implements Callback<ListView<Purchasable>, ListCell<Purchasable>> {
+
     @Override
-    public ListCell<Purchasable> call(ListView<Purchasable> param) {
+    public ListCell<Purchasable> call(ListView<Purchasable> listView) {
         return new ListCell<>() {
             @Override
-            public void updateItem(Purchasable purchasable, boolean broken) {
-                super.updateItem(purchasable, broken);
-                if (broken || purchasable == null) {
+            protected void updateItem(Purchasable item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
                     setGraphic(null);
-                } else if(purchasable instanceof Tower) {
+                } else {
                     HBox hBox = new HBox(5);
-                    ImageView imageView = new ImageView(String.format("/images/tower_%s.png", ((Tower) purchasable).getRarity().toString().toLowerCase()));
-                    imageView.setPreserveRatio(true);
-                    imageView.setFitWidth(50);
-                    imageView.setFitWidth(50);
+                    ImageView imageView = new ImageView();
                     VBox vBox = new VBox(5);
-                    Label nameLabel = new Label(((Tower) purchasable).getName());
-                    nameLabel.setFont(new Font(20));
-                    vBox.getChildren().addAll(
-                            nameLabel,
-                            new Label(purchasable.getDescription()),
-                            new Label("Price: " + purchasable.getBuyPrice())
-                    );
-                    hBox.getChildren().addAll(
-                            imageView,
-                            vBox
-                    );
+
+                    if (item instanceof Tower tower) {
+                        imageView.setImage(new ImageView(String.format("/images/tower_%s.png", tower.getRarity().toString().toLowerCase())).getImage());
+                        imageView.setFitWidth(50);
+                        imageView.setFitHeight(50);
+                        Label nameLabel = new Label(tower.getName());
+                        nameLabel.setFont(new Font(20));
+                        vBox.getChildren().addAll(
+                                nameLabel,
+                                new Label(tower.getDescription()),
+                                new Label("Price: " + tower.getBuyPrice())
+                        );
+                    } else if (item instanceof Upgrade upgrade) {
+                        imageView.setImage(new ImageView("/images/upgrade.png").getImage());
+                        imageView.setFitWidth(50);
+                        imageView.setFitHeight(50);
+                        vBox.getChildren().addAll(
+                                new Label(upgrade.getDescription())
+                        );
+                    }
+
+                    hBox.getChildren().addAll(imageView, vBox);
                     setGraphic(hBox);
                 }
             }
