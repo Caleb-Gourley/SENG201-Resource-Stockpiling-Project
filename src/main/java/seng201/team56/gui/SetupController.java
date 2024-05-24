@@ -1,10 +1,7 @@
 package seng201.team56.gui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import seng201.team56.GameEnvironment;
 import seng201.team56.models.Difficulty;
@@ -12,6 +9,7 @@ import seng201.team56.models.Player;
 import seng201.team56.models.Tower;
 import seng201.team56.services.SetupService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +55,13 @@ public class SetupController {
     @FXML
     private Slider RoundsSlider;
     @FXML
-    private Label TowerDescription;
+    private Label towerDescription;
+    @FXML
+    private Label selTower1Description;
+    @FXML
+    private Label selTower2Description;
+    @FXML
+    private Label selTower3Description;
     private Difficulty difficulty;
     private String playerName;
     private int maxRoundNum;
@@ -85,10 +89,12 @@ public class SetupController {
         this.maxRoundNum = 5;
         this.playerName = "Default";
 
+        List<Label> towerLabels = List.of(selTower1Description,selTower2Description, selTower3Description);
         List<Button> selectedTowerButtons = List.of(SelectedTower1Button, SelectedTower2Button, SelectedTower3Button);
         List<Button> towerButtons = List.of(Tower1Button, Tower2Button, Tower3Button, Tower4Button, Tower5Button, Tower6Button, Tower7Button, Tower8Button, Tower9Button);
         List<Tower> towers = SetupService.getTowersToChoose();
-        List<Tower> selectedTowers = towers.subList(0, 3);
+        List<Tower> selectedTowers = new ArrayList<>(3);
+        selectedTowers.addAll(towers.subList(0,3));
         List<Button> difficultyButtons = List.of(EasyButton, MediumButton, HardButton);
         List<Difficulty> difficulties = List.of(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD);
         for (int i = 0; i < towerButtons.size(); i++) {
@@ -96,6 +102,7 @@ public class SetupController {
             //towerButtons.get(finalI).setText(towers.get(finalI).getName());
             ImageView imageView = new ImageView(String.format("/images/tower_%s.png", towers.get(finalI).getRarity().toString().toLowerCase()));
             towerButtons.get(finalI).setGraphic(imageView);
+            towerButtons.get(i).setTooltip(new Tooltip(towers.get(i).getDescription()));
             towerButtons.get(i).setOnAction(event -> { updateStats(towers.get(finalI));
                 SelectedTowerIndex = finalI;
                 towerButtons.forEach(button -> {
@@ -113,6 +120,7 @@ public class SetupController {
            //selectedTowerButtons.get(finalI).setText(selectedTowers.get(finalI).getName());
            ImageView image = new ImageView(String.format("/images/tower_%s.png", selectedTowers.get(finalI).getRarity().toString().toLowerCase()));
            selectedTowerButtons.get(finalI).setGraphic(image);
+           updateSelTower(selectedTowers.get(i),selectedTowerButtons.get(i),towerLabels.get(i));
            selectedTowerButtons.get(i).setOnAction(event -> {
                updateStats(selectedTowers.get(finalI));
                if (SelectedTowerIndex != -1 && !selectedTowers.contains(towers.get(SelectedTowerIndex))) {
@@ -121,6 +129,7 @@ public class SetupController {
                    //selectedTowerButtons.get(finalI).setText(towers.get(SelectedTowerIndex).getName());
                    selectedTowers.set(finalI, towers.get(SelectedTowerIndex));
                    updateStats(towers.get(SelectedTowerIndex));
+                   updateSelTower(selectedTowers.get(finalI),selectedTowerButtons.get(finalI),towerLabels.get(finalI));
                }
             });
         }
@@ -146,5 +155,13 @@ public class SetupController {
      * Sets label with TowerDescription
      * @param tower object to get TowerDescription from
      */
-    public void updateStats(Tower tower) { TowerDescription.setText(tower.getDescription()); }
+    public void updateStats(Tower tower) {
+        towerDescription.setText(tower.getDescription());
+
+    }
+
+    public void updateSelTower(Tower tower, Button button, Label label) {
+        label.setText(tower.getName());
+        button.setTooltip(new Tooltip(tower.getDescription()));
+    }
 }

@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Polyline?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team56.gui.MainController">
@@ -21,11 +22,54 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="864.0" minHeight="10.0" prefHeight="825.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="864.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="971.0" minHeight="10.0" prefHeight="949.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="534.0" minHeight="10.0" prefHeight="255.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="828.0" prefWidth="1920.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="2147483647" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
+      <HBox>
+         <children>
+            <Label fx:id="nameLabel" prefHeight="54.0" text="Name">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <ImageView pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/coin.png" />
+               </image>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" top="5.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label fx:id="coinsLabel" prefHeight="40.0" prefWidth="37.0" text="\$100">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label prefHeight="40.0" prefWidth="49.0" text="Round:">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="roundNumLabel" prefHeight="40.0" prefWidth="31.0" text="1/15">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label fx:id="difficultyLabel" prefHeight="93.0" text="Easy">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label id="error" fx:id="messageLabel" prefHeight="39.0" style="visibility: hide;" text="Error!" />
+         </children>
+      </HBox>
+      <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="828.0" prefWidth="1920.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="2147483647" GridPane.hgrow="NEVER" GridPane.rowSpan="2" GridPane.vgrow="NEVER">
          <tabs>
             <Tab text="Game">
                <content>
@@ -55,48 +99,7 @@
                                     <Button fx:id="fieldTower5Button" layoutX="1386.0" layoutY="257.0" mnemonicParsing="false" text="Button" />
                                  </children>
                               </AnchorPane>
-                              <HBox>
-                                 <children>
-                                    <Label fx:id="nameLabel" prefHeight="54.0" text="Name">
-                                       <HBox.margin>
-                                          <Insets left="5.0" right="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <ImageView pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/coin.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="5.0" top="5.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <Label fx:id="coinsLabel" prefHeight="40.0" prefWidth="37.0" text="\$100">
-                                       <HBox.margin>
-                                          <Insets left="5.0" right="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label prefHeight="40.0" prefWidth="49.0" text="Round:">
-                                       <HBox.margin>
-                                          <Insets left="5.0" right="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Label fx:id="roundNumLabel" prefHeight="40.0" prefWidth="31.0" text="1/15">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label fx:id="difficultyLabel" prefHeight="93.0" text="Easy">
-                                       <HBox.margin>
-                                          <Insets left="5.0" right="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label id="error" fx:id="messageLabel" prefHeight="39.0" style="visibility: hide;" text="Error!" />
-                                 </children>
-                              </HBox>
+                              <VBox fx:id="resultBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -113,15 +116,16 @@
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1663.0" minWidth="10.0" prefWidth="1621.0" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints maxHeight="355.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="551.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="355.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="551.0" minHeight="10.0" prefHeight="86.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="677.0" minHeight="10.0" prefHeight="676.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <ListView fx:id="shopListView" maxHeight="-Infinity" prefHeight="798.0" prefWidth="1666.0" GridPane.columnIndex="1" GridPane.rowSpan="2147483647" />
-                              <Label fx:id="moneyLess" style="visibility: hidden;" text="Label" />
-                              <Label fx:id="moneyMore" style="visibility: hidden;" text="Label" />
+                              <ListView fx:id="shopListView" maxHeight="-Infinity" prefHeight="799.0" prefWidth="1621.0" GridPane.columnIndex="1" GridPane.rowSpan="2147483647" />
+                              <Label fx:id="moneyLess" style="visibility: hidden;" text="You don't have enough money for that!" />
+                              <Label fx:id="moneyMore" style="visibility: hidden;" text="Transaction accepted" />
                               <Button fx:id="buyItemButton" mnemonicParsing="false" text="Buy" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                              <Button fx:id="sellItemButton" mnemonicParsing="false" text="Sell" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                      </children>
@@ -130,7 +134,7 @@
             </Tab>
          </tabs>
       </TabPane>
-      <GridPane GridPane.rowIndex="1">
+      <GridPane GridPane.rowIndex="2">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="312.0" minWidth="0.0" percentWidth="10.0" prefWidth="55.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="956.0" minWidth="0.0" percentWidth="10.0" prefWidth="106.0" />

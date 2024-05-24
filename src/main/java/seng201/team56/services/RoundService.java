@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.SimpleTimeZone;
 import java.util.concurrent.Executors;
 
 import javafx.application.Platform;
@@ -32,6 +33,7 @@ public class RoundService {
 	private List<Service<Boolean>> services = new ArrayList<>();
 	private final Random rng;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private String event;
 	
 	/**
 	 * Constructor.
@@ -75,6 +77,10 @@ public class RoundService {
 		return difficulties;
 	}
 
+	public RoundDifficulty getRoundDifficulty() {
+		return roundDifficulty;
+	}
+
 	/**
 	 * Adds a subscriber which specifically listens for a change in the roundRunning property. The listener will be
 	 * updated when a round starts or ends.
@@ -89,7 +95,6 @@ public class RoundService {
 	 */
 	//Should this just be in the round constructor?
 	public void createRound() {
-        Executors.newScheduledThreadPool(roundDifficulty.numCarts() + player.getInventory().getFieldTowers().size());
         this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
 		for (int i = 0; i < roundDifficulty.numCarts(); i++) {
 			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
@@ -180,12 +185,12 @@ public class RoundService {
 	public List<RandomEvent> getRandomEvents(Tower tower) {
 		int randInt = rng.nextInt(5,5 + roundNum * 2);
 		long randLong = rng.nextLong(50, roundNum * 200);
-		RandomEvent towerCapacityIncrease = new RandomEvent(roundNum, () -> tower.increaseResourceAmount(randInt),player.getDifficulty());
-		RandomEvent towerCapacityDecrease = new RandomEvent(roundNum, () -> tower.decreaseResourceAmount(randInt),player.getDifficulty());
-		RandomEvent towerReloadSpeedIncrease = new RandomEvent(roundNum, () -> tower.decreaseReloadInterval(randLong),player.getDifficulty());
-		RandomEvent towerReloadSpeedDecrease = new RandomEvent(roundNum, () -> tower.increaseReloadInterval(randLong),player.getDifficulty());
-		RandomEvent towerBreaks = new RandomEvent(roundNum,tower::setBroken,player.getDifficulty(),tower.getUseCount());
-		RandomEvent nothingHappens = new RandomEvent(() -> {}, 10);
+		RandomEvent towerCapacityIncrease = new RandomEvent(roundNum, () -> tower.increaseResourceAmount(randInt),player.getDifficulty(), "Tower capacity increased");
+		RandomEvent towerCapacityDecrease = new RandomEvent(roundNum, () -> tower.decreaseResourceAmount(randInt),player.getDifficulty(), "Tower capacity decreased");
+		RandomEvent towerReloadSpeedIncrease = new RandomEvent(roundNum, () -> tower.decreaseReloadInterval(randLong),player.getDifficulty(), "Tower reload speed increased");
+		RandomEvent towerReloadSpeedDecrease = new RandomEvent(roundNum, () -> tower.increaseReloadInterval(randLong),player.getDifficulty(), "Tower relaod speed decreased");
+		RandomEvent towerBreaks = new RandomEvent(roundNum,() -> tower.setBroken(true),player.getDifficulty(),tower.getUseCount(),"Tower broke :(");
+		RandomEvent nothingHappens = new RandomEvent(() -> {}, 10,"Nothing out of the ordinary");
         return List.of(towerCapacityIncrease, towerCapacityDecrease, towerReloadSpeedIncrease, towerReloadSpeedDecrease, towerBreaks, nothingHappens);
 	}
 
@@ -194,14 +199,19 @@ public class RoundService {
 	 * @param events a list of {@link RandomEvent}s to choose from
 	 * @see  RoundService#getRandomEvents(Tower)    
  	 */
-	public void randomEvent(List<RandomEvent> events) {
+	public RandomEvent randomEvent(List<RandomEvent> events) {
 		int total = 0;
 		for (RandomEvent event : events) {
 			total += event.getWeight();
 			event.setWeight(total);
 		}
 		int value = rng.nextInt(total + 1);
-		events.stream().filter(randomEvent -> randomEvent.getWeight() >= value).findFirst().ifPresent(RandomEvent::act);
+		return events.stream().filter(randomEvent -> randomEvent.getWeight() >= value).findFirst().orElse(null);
+
+	}
+
+	public String getRandomEvent() {
+		return event;
 	}
 
 	/**
@@ -224,16 +234,20 @@ public class RoundService {
 			int i = rng.nextInt(player.getInventory().getFieldTowers().size());
 			Tower tower = player.getInventory().getFieldTowers().get(i);
 			List<RandomEvent> events = getRandomEvents(tower);
-			randomEvent(events);
+			RandomEvent event = randomEvent(events);
+			this.event = String.format("Random event for %s: %s", tower.getName(),event);
+			if (event != null) event.act();
 			this.pcs.firePropertyChange("roundRunning", oldValue, false);
 			if (roundWon) {
 				System.out.println("Win");
 				roundNum++;
 				player.addMoney(roundDifficulty.monetaryReward());
+				player.addXp(roundDifficulty.xpReward());
 				for (Tower t: player.getInventory().getFieldTowers()) {
-					t.addXp(roundDifficulty.xpReward());
+					t.addXp(roundDifficulty.xpReward() * t.getUseCount());
 				}
 			} else {
+				player.subXp(roundDifficulty.xpReward() / 2);
 				System.out.println("Lose");
 			}
 		}

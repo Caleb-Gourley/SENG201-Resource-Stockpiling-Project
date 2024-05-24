@@ -13,7 +13,7 @@ public class AnyResourceUpgrade extends Upgrade<Boolean>{
      * Sets the initial cost, modifierAmount to 0 and false, and modiferType to "Any Resource"
      * @param cost the upgrades cost
      */
-    public AnyResourceUpgrade(int cost) { super(cost, "Any Resource", false); }
+    public AnyResourceUpgrade(int cost) { super(cost, "Any Resource", true); }
 
     /**
      * Set the AnyResource of the tower to true
@@ -22,7 +22,9 @@ public class AnyResourceUpgrade extends Upgrade<Boolean>{
      */
     @Override
     public Tower applyUpgrade(Tower tower) {
-        tower.setAnyResource(true);
+        if (!tower.isBroken()) {
+            tower.setAnyResource(true);
+        }
         return tower;
     }
 }

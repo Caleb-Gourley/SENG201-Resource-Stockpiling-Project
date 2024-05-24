@@ -1,5 +1,7 @@
 package seng201.team56.models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.Random;
 
@@ -83,7 +85,9 @@ public class Tower implements Purchasable {
     private Rarity rarity;
     private int useCount;
     private boolean anyResource;
+    private boolean broken;
     private final Random rng = new Random();
+    PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**
      * Construct a new Tower.
@@ -100,6 +104,7 @@ public class Tower implements Purchasable {
         this.cost = cost;
         this.level = 0;
         this.xp = 0;
+        this.broken = false;
         this.name = NAMES[rng.nextInt(NAMES.length)];
     }
 
@@ -115,6 +120,7 @@ public class Tower implements Purchasable {
         this.cost = rng.nextInt(rarity.getCostMin(),rarity.getCostMax());
         this.level = 0;
         this.xp = 0;
+        this.broken = false;
         this.rarity = rarity;
         this.name = NAMES[rng.nextInt(NAMES.length)];
     }
@@ -154,8 +160,8 @@ public class Tower implements Purchasable {
      */
     @Override
     public String getDescription() {
-        return String.format("%s: Resource type: %s, reload speed: %d, capacity: %d, level: %d, Any Resource: %s",
-                name,resourceType.toString(),reloadSpeed,resourceAmount,level,anyResource);
+        return String.format("%s: Resource type: %s, reload speed: %d, capacity: %d, level: %d, Any Resource: %s, Broken %b",
+                name,resourceType.toString(),reloadSpeed,resourceAmount,level,anyResource,broken);
     }
 
     /**
@@ -205,9 +211,15 @@ public class Tower implements Purchasable {
      * Level up the tower
      */
     public void levelUp() {
+        int oldvalue = level;
         level++;
         increaseResourceAmount(rng.nextInt(level + 5, (level + 5) * 2));
         decreaseReloadInterval(rng.nextLong(500,(level * 100L + 500) * 2));
+        pcs.firePropertyChange("level", oldvalue, level);
+    }
+
+    public void addListener(PropertyChangeListener listener) {
+        pcs.addPropertyChangeListener(listener);
     }
 
     /**
@@ -232,14 +244,17 @@ public class Tower implements Purchasable {
      * @param carts The carts to be filled
      */
     public synchronized void fillCarts(List<Cart> carts) {
-        for (Cart cart: carts) {
-            if (cart.getResourceType() == resourceType) {
-                System.out.println("Filled!");
-                cart.fillAmount(resourceAmount);
-            } else if (anyResource) {
-                cart.fillAmount(resourceAmount / 5);
-            } else {
-                System.out.println("Failed to fill!");
+        if (!broken) {
+            for (Cart cart : carts) {
+                if (cart.getResourceType() == resourceType) {
+                    System.out.println("Filled!");
+                    cart.fillAmount(resourceAmount);
+                    pcs.firePropertyChange("fill", false, true);
+                } else if (anyResource) {
+                    cart.fillAmount(resourceAmount / 5);
+                } else {
+                    System.out.println("Failed to fill!");
+                }
             }
         }
     }
@@ -247,7 +262,12 @@ public class Tower implements Purchasable {
     /**
      * Sets the tower broken.
      */
-    public void setBroken() {
+    public void setBroken(boolean broken) {
+        this.broken = broken;
+    }
+
+    public boolean isBroken() {
+        return broken;
     }
 
     /**

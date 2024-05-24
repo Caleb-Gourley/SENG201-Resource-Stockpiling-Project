@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -24,6 +25,7 @@ import seng201.team56.services.util.TowerButtonListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,12 +77,17 @@ public class MainController implements PropertyChangeListener {
     private Label moneyLess;
     @FXML
     private Label moneyMore;
+    @FXML
+    private VBox resultBox;
+    @FXML
+    private Button sellItemButton;
     private int selectedTower = -1;
     private final GameEnvironment gameEnvironment;
     private final RoundService roundService;
     private final ShopService shopService;
     private List<Button> fieldButtons;
     private List<Button> resButtons;
+    private List<Label> statusLabels;
     private Button selectedButton;
     private Upgrade<?> selectedUpgrade;
     private Tower[] towers;
@@ -104,40 +111,28 @@ public class MainController implements PropertyChangeListener {
     @FXML
     public void initialize() {
         roundService.addRunningSubscriber(this);
-        shopService.updateItems(1);
-        shopListView.setCellFactory(new ShopCellFactory());
-        // shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
-        shopListView.setItems(shopService.getItems());
         moneyLess.setVisible(false);
         moneyMore.setVisible(true);
+        Inventory inventory = gameEnvironment.getPlayer().getInventory();
 
         fieldButtons = List.of(fieldTower1Button,fieldTower2Button,fieldTower3Button,fieldTower4Button,fieldTower5Button);
         resButtons = List.of(resTower1Button,resTower2Button,resTower3Button,resTower4Button,resTower5Button);
-        nameLabel.setText(gameEnvironment.getPlayer().getName());
-        coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
-        roundNumLabel.setText(String.format("%d/%d", roundService.getRoundNum(), gameEnvironment.getPlayer().getMaxRounds()));
-        upgradesView.setCellFactory(new UpgradeCellFactory());
-        upgradesView.setItems(gameEnvironment.getPlayer().getInventory().getUpgrades());
-        upgradesView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        upgradesView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<? super Upgrade<?>>) s -> {
-            selectedUpgrade = upgradesView.getSelectionModel().getSelectedItem();
-        });
 
-        difficultyLabel.setText(gameEnvironment.getPlayer().getDifficulty().toString());
-        Inventory inventory = gameEnvironment.getPlayer().getInventory();
-        inventory.getTowers().addListener(new TowerButtonListener(resButtons));
-        assignButtons(fieldButtons, inventory.getFieldTowers());
-        assignButtons(resButtons, inventory.getTowers());
-        assignButtonGraphics(fieldButtons);
-        assignButtonGraphics(resButtons);
-        assignButtonActions(fieldButtons, inventory);
-        assignButtonActions(resButtons, inventory);
+        updateStatusBar();
+        initButtons(inventory);
+        initShop(inventory);
+        initUpgradeView();
+    }
 
+    private void initShop(Inventory inventory) {
+        shopService.updateItems(roundService.getRoundNum());
+        shopListView.setCellFactory(new ShopCellFactory());
+        shopListView.setItems(shopService.getItems());
         shopListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         shopListView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Purchasable>) r -> {
-            System.out.println("Action " + r);
-            System.out.println("Current Selection: " + shopListView.getSelectionModel().getSelectedItem());
             buyItemButton.setOnAction(event -> {
+                ListChangeListener<Tower> listener = new TowerButtonListener(resButtons);
+                inventory.getTowers().addListener(listener);
                 boolean success = false;
                 try {
                     success = shopService.buyItem(shopListView.getSelectionModel().getSelectedIndex());
@@ -146,13 +141,41 @@ public class MainController implements PropertyChangeListener {
                 }
                 if (success) {
                     shopPopupTimer(moneyMore);
-                    //shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
-                    coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
+                    updateStatusBar();
                     assignButtonGraphics(resButtons);
                 } else {
                     shopPopupTimer(moneyLess);
                 }
+                inventory.getTowers().removeListener(listener);
             });
+        });
+        sellItemButton.setOnAction(event -> {
+            if (selectedButton != null && selectedButton.getUserData() != null && resButtons.contains(selectedButton)) {
+                inventory.getTowers().remove((Tower) selectedButton.getUserData());
+                shopService.sellItem((Purchasable) selectedButton.getUserData());
+                selectedButton.setUserData(null);
+                assignButtonGraphics(resButtons);
+                updateStatusBar();
+                selectedButton = null;
+            }
+        });
+    }
+
+    private void initButtons(Inventory inventory) {
+        assignButtons(fieldButtons, inventory.getFieldTowers());
+        assignButtons(resButtons, inventory.getTowers());
+        assignButtonGraphics(fieldButtons);
+        assignButtonGraphics(resButtons);
+        assignButtonActions(fieldButtons, inventory);
+        assignButtonActions(resButtons, inventory);
+    }
+
+    private void initUpgradeView() {
+        upgradesView.setCellFactory(new UpgradeCellFactory());
+        upgradesView.setItems(gameEnvironment.getPlayer().getInventory().getUpgrades());
+        upgradesView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        upgradesView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<? super Upgrade<?>>) s -> {
+            selectedUpgrade = upgradesView.getSelectionModel().getSelectedItem();
         });
     }
 
@@ -165,6 +188,7 @@ public class MainController implements PropertyChangeListener {
 
         for (int i = 0; i < towers.size(); i++) {
             buttonList.get(i).setUserData(towers.get(i));
+            towers.get(i).addListener(this);
         }
     }
 
@@ -186,7 +210,9 @@ public class MainController implements PropertyChangeListener {
         Tower tower = (Tower) button.getUserData();
         button.setStyle("");
         if (tower != null) {
-            ImageView image = new ImageView(String.format("/images/tower_%s.png", tower.getRarity().toString().toLowerCase()));
+            ImageView image = new ImageView();
+            if (tower.isBroken()) image.setImage(new Image("/images/tower_broken.png"));
+            else image.setImage(new Image(String.format("/images/tower_%s.png", tower.getRarity().toString().toLowerCase())));
             button.setGraphic(image);
             button.setTooltip(new Tooltip(tower.getDescription()));
             button.setText(tower.getName());
@@ -211,19 +237,26 @@ public class MainController implements PropertyChangeListener {
             button.setOnAction(event -> {
                 if (selectedUpgrade != null) {
                     Tower tower = (Tower) button.getUserData();
-                    inventory.getTowers().remove(tower);
-                    tower = selectedUpgrade.applyUpgrade(tower);
+                    if (inventory.getFieldTowers().contains(tower)) {
+                        inventory.getFieldTowers().remove(tower);
+                        tower = selectedUpgrade.applyUpgrade(tower);
+                        inventory.addFieldTower(tower);
+                    } else if (inventory.getTowers().contains(tower)) {
+                        inventory.getTowers().remove(tower);
+                        tower = selectedUpgrade.applyUpgrade(tower);
+                        inventory.addTower(tower);
+                    }
                     inventory.getUpgrades().remove(selectedUpgrade);
-                    inventory.addTower(tower);
                     button.setUserData(tower);
                     assignButtonGraphic(button);
-                    selectedUpgrade = upgradesView.getSelectionModel().getSelectedItem();
+                    upgradesView.getSelectionModel().clearSelection();
+                    selectedUpgrade = null;
                 } else if (selectedButton == null) {
                     selectedButton = button;
                     button.setStyle("-fx-background-color: #2fd094");
                 } else if (!buttonList.contains(selectedButton)) {
                     Tower tower = (Tower) button.getUserData();
-                    inventory.moveTower(tower);
+                    inventory.moveTower((Tower) selectedButton.getUserData());
                     button.setUserData(selectedButton.getUserData());
                     selectedButton.setUserData(tower);
                     assignButtonGraphic(button);
@@ -257,8 +290,30 @@ public class MainController implements PropertyChangeListener {
             modalStage.initModality(Modality.WINDOW_MODAL);
             modalStage.initOwner(popupButton.getScene().getWindow());
             modalStage.showAndWait();
+            if (roundService.isRoundRunning()) {
+                createStatus();
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void createStatus() {
+        statusLabels = new ArrayList<>();
+        for (Cart cart: roundService.getCurrentRound().getCarts()) {
+            Label cartLabel = new Label(String.format("%s cart:\n\tdistance: %.2f\n\tamount/full: %d/%d", cart.getResourceType(),cart.getDistance(),cart.getResourceAmount(),
+                    cart.getSize()));
+            statusLabels.add(cartLabel);
+        }
+        resultBox.getChildren().clear();
+        resultBox.getChildren().addAll(statusLabels);
+    }
+
+    private void updateStatus() {
+        for (int i = 0; i < roundService.getCurrentRound().getCarts().size(); i++) {
+            Cart cart = roundService.getCurrentRound().getCarts().get(i);
+            statusLabels.get(i).setText(String.format("%s cart:\n\tdistance: %.2f\n\tamount/full: %d/%d", cart.getResourceType(),cart.getDistance(),cart.getResourceAmount(),
+                    cart.getSize()));
         }
     }
 
@@ -271,9 +326,17 @@ public class MainController implements PropertyChangeListener {
             messageLabel.setText("No towers on the field!");
             messageLabel.setTextFill(Color.web("#c22622"));
             shopPopupTimer(messageLabel);
+        } else if (roundService.getRoundDifficulty() == null) {
+            messageLabel.setText("Please select a round difficulty!");
+            messageLabel.setTextFill(Color.web("#c22622"));
+            shopPopupTimer(messageLabel);
         } else {
             roundService.createRound();
+            for (Cart cart: roundService.getCurrentRound().getCarts()) {
+                cart.addDistanceListener(this);
+            }
             roundService.playRound();
+            createStatus();
         }
     }
 
@@ -292,30 +355,61 @@ public class MainController implements PropertyChangeListener {
 
     @FXML
     private void openRoundSummaryPopup() {
-        System.out.println("??");
         Dialog<ButtonType> dialog = new Dialog<>();
-        System.out.println("Hello!");
         dialog.setTitle("Round Summary");
         dialog.setHeaderText("Round Summary");
 
         VBox dialogContent = new VBox(10);
-        Label roundStatus = new Label("Win or Loss");
-        Label roundMonetaryGain = new Label("Money");
-        Label roundFieldTower1Xp = new Label("Xp");
-        Label roundFieldTower2Xp = new Label("Xp");
-        Label roundFieldTower3Xp = new Label("Xp");
-        Label roundFieldTower4Xp = new Label("Xp");
-        Label roundFieldTower5Xp = new Label("Xp");
-        dialogContent.getChildren().addAll(roundStatus, roundMonetaryGain, roundFieldTower1Xp, roundFieldTower2Xp, roundFieldTower3Xp, roundFieldTower4Xp, roundFieldTower5Xp);
+        String winOrLose;
+        if (roundService.isRoundWon()) {
+            winOrLose = "Round won!";
+        } else {
+            winOrLose = "Round lost!";
+        }
+        Label roundStatus = new Label(winOrLose);
+        Label roundMonetaryGain = new Label(String.format("$%d", roundService.getRoundDifficulty().monetaryReward()));
+        Label roundFieldTower1Xp = new Label();
+        Label roundFieldTower2Xp = new Label();
+        Label roundFieldTower3Xp = new Label();
+        Label roundFieldTower4Xp = new Label();
+        Label roundFieldTower5Xp = new Label();
+        String randomEvent = roundService.getRandomEvent();
+        Label randomEventLabel = new Label();
+        if (randomEvent != null) {
+            randomEventLabel.setText(randomEvent);
+        }
+        List<Label> towerLabels = List.of(roundFieldTower1Xp,roundFieldTower2Xp,roundFieldTower3Xp,roundFieldTower4Xp,roundFieldTower5Xp);
+        for (int i = 0; i < gameEnvironment.getPlayer().getInventory().getFieldTowers().size(); i++) {
+            Tower tower = gameEnvironment.getPlayer().getInventory().getFieldTowers().get(i);
+            towerLabels.get(i).setText(String.format("Xp (tower %s): %d", tower.getName(),
+                    roundService.getRoundDifficulty().xpReward() * tower.getUseCount()));
+        }
+        if (roundService.isRoundWon()) dialogContent.getChildren().addAll(roundStatus, roundMonetaryGain, roundFieldTower1Xp, roundFieldTower2Xp, roundFieldTower3Xp, roundFieldTower4Xp, roundFieldTower5Xp,randomEventLabel);
+        else dialogContent.getChildren().addAll(roundStatus, randomEventLabel);
 
+        dialog.getDialogPane().setContent(dialogContent);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
 
         dialog.showAndWait().ifPresent(buttonType -> {
             if (buttonType == ButtonType.OK) {
                 System.out.println("Clicked OK");
+                assignButtonGraphics(fieldButtons);
+                assignButtonGraphics(resButtons);
             }
         });
 
+    }
+
+    private void updateStatusBar() {
+        coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
+        roundNumLabel.setText(String.format("%d/%d", roundService.getRoundNum(), gameEnvironment.getPlayer().getMaxRounds()));
+        difficultyLabel.setText(gameEnvironment.getPlayer().getDifficulty().toString());
+        nameLabel.setText(gameEnvironment.getPlayer().getName());
+    }
+
+    private void towerLevelUp(Tower tower) {
+        messageLabel.setText(String.format("Tower %s levelled up!", tower.getName()));
+        shopPopupTimer(messageLabel);
     }
 
     @Override
@@ -327,8 +421,57 @@ public class MainController implements PropertyChangeListener {
         && oldValue && !newValue) {
             System.out.println("Popup!");
             Platform.runLater(this::openRoundSummaryPopup);
+            Platform.runLater(this::checkGameEnd);
+            Platform.runLater(this::updateStatusBar);
 
-        }
-
+        } else if (evt.getSource() instanceof Tower tower) {
+            if (evt.getPropertyName().equals("level")) {
+                Platform.runLater(() -> towerLevelUp(tower));
+            }
+        } else if (evt.getSource() instanceof Cart) {
+                if (evt.getPropertyName().equals("distance")) {
+                    Platform.runLater(this::updateStatus);
+                }
+            }
     }
+
+    private void checkGameEnd() {
+        boolean gameWon = gameEnvironment.getPlayer().getXp() <= 0;
+        boolean gameLost = roundService.getRoundNum() > gameEnvironment.getPlayer().getMaxRounds();
+        if (gameWon || gameLost) {
+            Dialog<ButtonType> dialog = buttonTypeDialog(gameWon, gameLost);
+            VBox dialogContent = new VBox(1);
+            Label playAgainLabel = new Label("Play again?");
+            dialogContent.getChildren().add(playAgainLabel);
+            dialog.getDialogPane().setContent(dialogContent);
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+
+            dialog.showAndWait().ifPresent(buttonType -> {
+                if (buttonType == ButtonType.YES) {
+                    gameEnvironment.closeMainScreen();
+                    gameEnvironment.launchSetupScreen();
+                } else if (buttonType == ButtonType.NO) {
+                    gameEnvironment.closeMainScreen();
+                }
+            });
+        }
+    }
+
+    private Dialog<ButtonType> buttonTypeDialog(boolean gameWon, boolean gameLost) {
+        String titleText = "";
+        String headerText = "";
+        if (gameWon) {
+            titleText = "You lost the game!";
+            headerText = "You lose!";
+        } else if (gameLost) {
+            titleText = "You won the game!";
+            headerText = "You win!";
+        }
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle(titleText);
+        dialog.setHeaderText(headerText);
+        return dialog;
+    }
+
+
 }

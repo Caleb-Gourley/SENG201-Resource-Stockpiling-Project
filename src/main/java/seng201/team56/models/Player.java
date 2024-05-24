@@ -12,6 +12,7 @@ public class Player {
     private Difficulty difficulty;
     private final int maxRounds;
     private int money;
+    private int xp;
 
     /**
      * Getter for maxRounds
@@ -35,6 +36,7 @@ public class Player {
         this.inventory = startInventory;
         this.maxRounds = maxRounds;
         this.money = difficulty.getStartMoney();
+        this.xp = 60;
     }
 
     /**
@@ -75,6 +77,18 @@ public class Player {
      */
     public void addMoney(int amount) {
         money += amount;
+    }
+
+    public void addXp(int amount) {
+        xp += amount;
+    }
+
+    public void subXp(int amount) {
+        xp -= amount;
+    }
+
+    public int getXp() {
+        return xp;
     }
 
     /**

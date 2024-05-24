@@ -11,23 +11,23 @@ public enum Rarity {
     /**
      * Common
      */
-    COMMON("Common",10,20,1500,3000, 10, 20, List.of(ResourceType.BCO_QUICHE,ResourceType.COQ_A_VIN)),
+    COMMON("Common",10,20,1500,3000, 10, 20, List.of(ResourceType.values())),
     /**
      * Uncommon
      */
-    UNCOMMON("Uncommon",20, 40, 800, 1400, 20, 30, List.of(ResourceType.BCO_QUICHE, ResourceType.COQ_A_VIN, ResourceType.NICOISE_SALAD)),
+    UNCOMMON("Uncommon",20, 40, 800, 1400, 20, 30, List.of(ResourceType.values())),
     /**
      * Rare
      */
-    RARE("Rare",40, 80, 300, 1000, 30, 40, List.of(ResourceType.GRUYER_CHEESE_SOUFFLE, ResourceType.BOUILLABAISSE)),
+    RARE("Rare",40, 80, 300, 1000, 30, 40, List.of(ResourceType.values())),
     /**
      * Epic
      */
-    EPIC("Epic",90, 110, 100, 250, 40, 50, List.of(ResourceType.CREME_BRULEE)),
+    EPIC("Epic",90, 110, 100, 250, 40, 50, List.of(ResourceType.values())),
     /**
      * Legendary
      */
-    LEGENDARY("Legendary",150, 200, 1, 100, 100, 200, List.of(ResourceType.RATATOUILLE));
+    LEGENDARY("Legendary",150, 200, 1, 100, 100, 200, List.of(ResourceType.values()));
     private final int resourceAmountMin;
     private final int resourceAmountMax;
     private final long speedMin;
