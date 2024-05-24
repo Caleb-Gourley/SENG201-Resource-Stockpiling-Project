@@ -56,8 +56,8 @@ public class RoundDifficulty {
         double maxSpeed = minSpeed + 3;
         cartMinSpeed = rng.nextDouble(minSpeed,maxSpeed);
         cartMaxSpeed = cartMinSpeed + 3;
-        double minTrackDistance = (double) cartMinSize / rarity.getResourceAmountMin() * numCarts / 5 * rarity.getSpeedMax() * cartMinSpeed;
-        double maxTrackDistance = (double) cartMaxSize / rarity.getResourceAmountMin() * numCarts / 5 * rarity.getSpeedMax() * cartMaxSpeed;
+        double minTrackDistance = (double) cartMinSize / rarity.getResourceAmountMin() * numCarts / 5 * ((rarity.getSpeedMax() * cartMinSpeed) / 1000);
+        double maxTrackDistance = (double) cartMaxSize / rarity.getResourceAmountMin() * numCarts / 5 * ((rarity.getSpeedMax() * cartMaxSpeed) / 1000);
         trackDistance = (minTrackDistance + maxTrackDistance) / 2;
         //trackDistance = 20 + 50 * ((roundNum - 1) % 3);
         int minMoney = 10 + 7 * (roundNum - 1);

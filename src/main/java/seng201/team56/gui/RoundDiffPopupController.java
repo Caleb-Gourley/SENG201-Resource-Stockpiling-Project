@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import seng201.team56.models.RoundDifficulty;
 import seng201.team56.services.RoundService;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class RoundDiffPopupController {
     private Label option2Label;
     @FXML
     private Label option3Label;
-    private RoundService roundService;
+    private final RoundService roundService;
     private RoundDifficulty selectedDifficulty;
 
     /**
@@ -42,6 +43,8 @@ public class RoundDiffPopupController {
     @FXML
     public void initialize() {
         List<RoundDifficulty> difficulties = roundService.generateRoundDifficulties();
+        Comparator<RoundDifficulty> difficultyComparator = Comparator.comparingDouble(RoundDifficulty::trackDistance);
+        difficulties.sort(difficultyComparator);
         selectedDifficulty = difficulties.get(0);
         List<Button> buttons = List.of(option1Button,option2Button,option3Button);
         List<Label> labels = List.of(option1Label,option2Label,option3Label);
@@ -50,9 +53,7 @@ public class RoundDiffPopupController {
             Label label = labels.get(i);
             label.setText(difficulties.get(i).toString());
             Button button = buttons.get(i);
-            button.setOnAction(event -> {
-                selectedDifficulty = difficulty;
-            });
+            button.setOnAction(event -> selectedDifficulty = difficulty);
         }
     }
 
