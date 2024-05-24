@@ -1,11 +1,13 @@
 package seng201.team56.gui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import seng201.team56.GameEnvironment;
+import seng201.team56.models.Player;
 
 import java.io.IOException;
 
@@ -26,7 +28,7 @@ public class FXWrapper {
      */
     public void init(Stage stage) {
         this.stage = stage;
-        new GameEnvironment(this::launchSetupScreen, this::launchMainScreen, this::clearPane);
+        new GameEnvironment(this::launchSetupScreen, this::launchMainScreen, this::clearPane, this::quitGame);
     }
 
     /**
@@ -64,5 +66,13 @@ public class FXWrapper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Quits the game.
+     */
+    public void quitGame() {
+        stage.close();
+        Platform.exit();
     }
 }

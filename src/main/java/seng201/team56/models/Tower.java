@@ -218,6 +218,10 @@ public class Tower implements Purchasable {
         pcs.firePropertyChange("level", oldvalue, level);
     }
 
+    /**
+     * Add a listener to this tower.
+     * @param listener the {@link PropertyChangeListener} to add
+     */
     public void addListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }
@@ -247,13 +251,10 @@ public class Tower implements Purchasable {
         if (!broken) {
             for (Cart cart : carts) {
                 if (cart.getResourceType() == resourceType) {
-                    System.out.println("Filled!");
                     cart.fillAmount(resourceAmount);
                     pcs.firePropertyChange("fill", false, true);
                 } else if (anyResource) {
                     cart.fillAmount(resourceAmount / 5);
-                } else {
-                    System.out.println("Failed to fill!");
                 }
             }
         }
@@ -261,11 +262,16 @@ public class Tower implements Purchasable {
 
     /**
      * Sets the tower broken.
+     * @param broken true if the tower is broken
      */
     public void setBroken(boolean broken) {
         this.broken = broken;
     }
 
+    /**
+     * Returns true if the tower is broken
+     * @return broken
+     */
     public boolean isBroken() {
         return broken;
     }

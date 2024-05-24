@@ -7,7 +7,7 @@ plugins {
 
 archivesBaseName = 'seng201_team56'
 group = 'seng201.team56'
-version = '1.0-SNAPSHOT'
+version = '1.0-sre114.cgo80'
 mainClassName = 'seng201.team56.App'
 
 def javaVersion = 17
