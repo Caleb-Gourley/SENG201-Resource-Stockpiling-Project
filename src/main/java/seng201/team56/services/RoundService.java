@@ -5,25 +5,15 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import javafx.application.Platform;
-import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
-import javafx.concurrent.Worker;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventType;
-import javafx.util.Duration;
 import seng201.team56.models.*;
 import seng201.team56.services.threads.CartMoveService;
 import seng201.team56.services.threads.CartMoveTask;
 import seng201.team56.services.threads.TowerFillTask;
 import seng201.team56.services.util.RandomEvent;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * A service to handle creation and running of rounds.
@@ -79,7 +69,7 @@ public class RoundService {
 			rarity = Rarity.EPIC;
 		}
 		for (int i = 0; i < 3; i++) {
-			RoundDifficulty diff = new RoundDifficulty(50,5,10,15,4,5,30,30);
+			RoundDifficulty diff = new RoundDifficulty(rng, roundNum, rarity);
 			difficulties.add(diff);
 		}
 		return difficulties;
@@ -237,12 +227,14 @@ public class RoundService {
 			randomEvent(events);
 			this.pcs.firePropertyChange("roundRunning", oldValue, false);
 			if (roundWon) {
+				System.out.println("Win");
 				roundNum++;
 				player.addMoney(roundDifficulty.monetaryReward());
 				for (Tower t: player.getInventory().getFieldTowers()) {
 					t.addXp(roundDifficulty.xpReward());
 				}
 			} else {
+				System.out.println("Lose");
 			}
 		}
 	}
