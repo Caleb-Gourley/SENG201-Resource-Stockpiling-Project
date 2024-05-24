@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seng201.team56.models.upgrades.Upgrade;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class ShopService {
     private final Player player;
-    private ObservableList<Purchasable> items;
+    private final ObservableList<Purchasable> items;
 
     /**
      * Constructor
@@ -47,9 +47,7 @@ public class ShopService {
             int cost = rng.nextInt(rarity.getCostMin() - 5, rarity.getCostMax() - 5);
             Upgrade<?> upgrade = null;
             switch (typeSelection) {
-                case 0 -> {
-                    upgrade = new RarityUpgrade(cost);
-                }
+                case 0 -> upgrade = new RarityUpgrade(cost);
                 case 1 -> {
                     long speed = rng.nextLong(20,300);
                     upgrade = new SpeedUpgrade(cost, speed);

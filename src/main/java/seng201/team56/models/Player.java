@@ -7,7 +7,7 @@ import seng201.team56.models.upgrades.Upgrade;
  * @author Sean Reitsma
  */
 public class Player {
-    private String name;
+    private final String name;
     private final Inventory inventory;
     private Difficulty difficulty;
     private final int maxRounds;
@@ -43,14 +43,6 @@ public class Player {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Setter for name.
-     * @param name the new name to set
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**

@@ -1,6 +1,5 @@
 package seng201.team56.services.threads;
 
-import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import seng201.team56.models.Cart;
@@ -14,8 +13,8 @@ import java.util.List;
  * @author Sean Reitsma
  */
 public class TowerFillTask extends Service<Boolean> {
-    private List<Cart> carts;
-    private Tower tower;
+    private final List<Cart> carts;
+    private final Tower tower;
 
     /**
      * Construct a TowerFIllTask.
@@ -32,7 +31,7 @@ public class TowerFillTask extends Service<Boolean> {
      */
     @Override
     protected Task<Boolean> createTask() {
-        return new Task<Boolean>() {
+        return new Task<>() {
             @Override
             protected Boolean call() throws Exception {
                 while (!(carts.stream().allMatch(cart -> cart.isDone() && cart.isFull()) || carts.stream().anyMatch(cart -> cart.isDone() && !cart.isFull()))) {

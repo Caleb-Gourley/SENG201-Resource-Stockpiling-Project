@@ -4,8 +4,6 @@ import javafx.concurrent.Task;
 import seng201.team56.models.Cart;
 import seng201.team56.services.RoundService;
 
-import java.util.List;
-
 /**
  * A task which moves the cart once a second while the cart is still on the track.
  */
