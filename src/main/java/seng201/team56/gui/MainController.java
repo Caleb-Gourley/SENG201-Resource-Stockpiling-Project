@@ -66,8 +66,6 @@ public class MainController implements PropertyChangeListener {
     @FXML
     private Label messageLabel;
     @FXML
-    private Polyline trackLine;
-    @FXML
     private ListView<Upgrade<?>> upgradesView;
     @FXML
     private ListView<Purchasable> shopListView;
@@ -81,7 +79,6 @@ public class MainController implements PropertyChangeListener {
     private VBox resultBox;
     @FXML
     private Button sellItemButton;
-    private int selectedTower = -1;
     private final GameEnvironment gameEnvironment;
     private final RoundService roundService;
     private final ShopService shopService;
@@ -90,8 +87,6 @@ public class MainController implements PropertyChangeListener {
     private List<Label> statusLabels;
     private Button selectedButton;
     private Upgrade<?> selectedUpgrade;
-    private Tower[] towers;
-    private Tower[] resTowers;
 
 
     /**
@@ -124,6 +119,10 @@ public class MainController implements PropertyChangeListener {
         initUpgradeView();
     }
 
+    /**
+     * Initialises the shop.
+     * @param inventory the current player inventory
+     */
     private void initShop(Inventory inventory) {
         shopService.updateItems(roundService.getRoundNum());
         shopListView.setCellFactory(new ShopCellFactory());
@@ -161,6 +160,10 @@ public class MainController implements PropertyChangeListener {
         });
     }
 
+    /**
+     * Initialises the buttons.
+     * @param inventory the current player inventory
+     */
     private void initButtons(Inventory inventory) {
         assignButtons(fieldButtons, inventory.getFieldTowers());
         assignButtons(resButtons, inventory.getTowers());
@@ -170,6 +173,9 @@ public class MainController implements PropertyChangeListener {
         assignButtonActions(resButtons, inventory);
     }
 
+    /**
+     * Initialises the upgrade ListView
+     */
     private void initUpgradeView() {
         upgradesView.setCellFactory(new UpgradeCellFactory());
         upgradesView.setItems(gameEnvironment.getPlayer().getInventory().getUpgrades());
@@ -298,6 +304,9 @@ public class MainController implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Creates the labels for information about carts in the currently running round and adds them to the resultBox VBox.
+     */
     private void createStatus() {
         statusLabels = new ArrayList<>();
         for (Cart cart: roundService.getCurrentRound().getCarts()) {
@@ -309,6 +318,10 @@ public class MainController implements PropertyChangeListener {
         resultBox.getChildren().addAll(statusLabels);
     }
 
+    /**
+     * Updates the labels in the resultBox VBox
+     * @see MainController#createStatus()
+     */
     private void updateStatus() {
         for (int i = 0; i < roundService.getCurrentRound().getCarts().size(); i++) {
             Cart cart = roundService.getCurrentRound().getCarts().get(i);
@@ -340,6 +353,10 @@ public class MainController implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Sets a label visible for 3 seconds and then hides it.
+     * @param labelPopup the label to act as a popup message
+     */
     public void shopPopupTimer(Label labelPopup) {
         Platform.runLater(() -> labelPopup.setVisible(true));
 
@@ -353,6 +370,9 @@ public class MainController implements PropertyChangeListener {
         }).start();
     }
 
+    /**
+     * Open a dialog showing the round summary at the end of the round, including alerting the player about RandomEvents.
+     */
     @FXML
     private void openRoundSummaryPopup() {
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -390,16 +410,19 @@ public class MainController implements PropertyChangeListener {
         dialog.getDialogPane().setContent(dialogContent);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
 
-        dialog.showAndWait().ifPresent(buttonType -> {
+        Platform.runLater(() -> dialog.showAndWait().ifPresent(buttonType -> {
             if (buttonType == ButtonType.OK) {
-                System.out.println("Clicked OK");
                 assignButtonGraphics(fieldButtons);
                 assignButtonGraphics(resButtons);
             }
-        });
+        }));
+
 
     }
 
+    /**
+     * Updates the status bar with the player's information.
+     */
     private void updateStatusBar() {
         coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
         roundNumLabel.setText(String.format("%d/%d", roundService.getRoundNum(), gameEnvironment.getPlayer().getMaxRounds()));
@@ -407,11 +430,25 @@ public class MainController implements PropertyChangeListener {
         nameLabel.setText(gameEnvironment.getPlayer().getName());
     }
 
+    /**
+     * Shows a message when a tower levels up.
+     * @param tower the tower which has levelled up
+     */
     private void towerLevelUp(Tower tower) {
         messageLabel.setText(String.format("Tower %s levelled up!", tower.getName()));
         shopPopupTimer(messageLabel);
     }
 
+    /**
+     * Called when a property change which this controller is listening for occurs.<br>
+     * Property changes this controller listens for consist of:
+     * <ul>
+     *     <li>The round ends</li>
+     *     <li>A tower levels up</li>
+     *     <li>A cart moves</li>
+     * </ul>
+     * @param evt the PropertyChangeEvent object
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getSource() instanceof RoundService
@@ -419,7 +456,6 @@ public class MainController implements PropertyChangeListener {
         && evt.getOldValue() instanceof Boolean oldValue
         && evt.getNewValue() instanceof Boolean newValue
         && oldValue && !newValue) {
-            System.out.println("Popup!");
             Platform.runLater(this::openRoundSummaryPopup);
             Platform.runLater(this::checkGameEnd);
             Platform.runLater(this::updateStatusBar);
@@ -435,6 +471,10 @@ public class MainController implements PropertyChangeListener {
             }
     }
 
+    /**
+     * Checks conditions for game end and asks the player if he/she wants to play again. The game ends if the player
+     * loses all xp or completes the last round.
+     */
     private void checkGameEnd() {
         boolean gameWon = gameEnvironment.getPlayer().getXp() <= 0;
         boolean gameLost = roundService.getRoundNum() > gameEnvironment.getPlayer().getMaxRounds();
@@ -452,11 +492,18 @@ public class MainController implements PropertyChangeListener {
                     gameEnvironment.launchSetupScreen();
                 } else if (buttonType == ButtonType.NO) {
                     gameEnvironment.closeMainScreen();
+                    gameEnvironment.quitGame();
                 }
             });
         }
     }
 
+    /**
+     * Creates the endgame dialog.
+     * @param gameWon true if the game has been won
+     * @param gameLost true if the game has been lost
+     * @return the dialog to show
+     */
     private Dialog<ButtonType> buttonTypeDialog(boolean gameWon, boolean gameLost) {
         String titleText = "";
         String headerText = "";

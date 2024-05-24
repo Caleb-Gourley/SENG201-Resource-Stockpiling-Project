@@ -36,7 +36,7 @@ public class Player {
         this.inventory = startInventory;
         this.maxRounds = maxRounds;
         this.money = difficulty.getStartMoney();
-        this.xp = 60;
+        this.xp = 40;
     }
 
     /**
@@ -79,14 +79,26 @@ public class Player {
         money += amount;
     }
 
+    /**
+     * Add xp to the player.
+     * @param amount the amount to add
+     */
     public void addXp(int amount) {
         xp += amount;
     }
 
+    /**
+     * Remove xp from the player.
+     * @param amount the amount to remove
+     */
     public void subXp(int amount) {
         xp -= amount;
     }
 
+    /**
+     * Getter for xp
+     * @return xp
+     */
     public int getXp() {
         return xp;
     }

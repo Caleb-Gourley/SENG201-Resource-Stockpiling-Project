@@ -29,7 +29,6 @@ public class CartMoveTask extends Task<Boolean> {
         // Continue to schedule this task as long as the cart has not reached the end of the track.
         while (!cart.isDone()) {
             cart.move();
-            System.out.println("Cart moving! " + cart.getResourceType().toString());
             Thread.sleep(1000);
         }
         roundService.endRound();

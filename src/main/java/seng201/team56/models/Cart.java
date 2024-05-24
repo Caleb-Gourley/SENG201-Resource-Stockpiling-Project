@@ -102,6 +102,10 @@ public class Cart {
         pcs.firePropertyChange("distance", oldValue, distance);
     }
 
+    /**
+     * Adds a listener on distance changes for this cart.
+     * @param listener the PropertyChangeListener to add
+     */
     public void addDistanceListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }

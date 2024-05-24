@@ -16,6 +16,7 @@ public class RandomEvent {
      * @param roundNum the current round number
      * @param action the action to be performed if the event is selected
      * @param difficulty the current game difficulty (this sets a modifier for the weight)
+     * @param description a string describing this event
      */
     public RandomEvent(int roundNum, Runnable action, Difficulty difficulty, String description) {
         this.action = action;
@@ -29,6 +30,7 @@ public class RandomEvent {
      * @param action the action to be performed if the event is selected
      * @param difficulty the current game difficulty
      * @param towerUseCount the number of times the tower which this event may apply to have been used (modifies the weight)
+     * @param description a string describing this event
      */
     public RandomEvent(int roundNum, Runnable action, Difficulty difficulty, int towerUseCount, String description) {
         this.action = action;
@@ -40,6 +42,7 @@ public class RandomEvent {
      * Constructs a RandomEvent with a specific weight.
      * @param action the action to be performed if the event is selected
      * @param weight the weight of this event (higher weight means the event is more likely to be selected)
+     * @param description a string describing this event
      */
     public RandomEvent(Runnable action, int weight, String description) {
         this.action = action;

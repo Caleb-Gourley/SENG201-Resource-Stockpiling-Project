@@ -77,6 +77,10 @@ public class RoundService {
 		return difficulties;
 	}
 
+	/**
+	 * Getter for roundDifficulty.
+	 * @return roundDifficulty
+	 */
 	public RoundDifficulty getRoundDifficulty() {
 		return roundDifficulty;
 	}
@@ -187,9 +191,10 @@ public class RoundService {
 	}
 
 	/**
-	 * Executes a random event from a weighted selection of random events.
+	 * Returns a random event from a weighted selection of random events.
 	 * @param events a list of {@link RandomEvent}s to choose from
-	 * @see  RoundService#getRandomEvents(Tower)    
+	 * @see  RoundService#getRandomEvents(Tower)
+	 * @return the selected event
  	 */
 	public RandomEvent randomEvent(List<RandomEvent> events) {
 		int total = 0;
@@ -202,6 +207,10 @@ public class RoundService {
 
 	}
 
+	/**
+	 * Getter for the description of the selected RandomEvent.
+	 * @return a string describing the RandomEvent that occurred
+	 */
 	public String getRandomEvent() {
 		return event;
 	}
@@ -218,7 +227,6 @@ public class RoundService {
 		roundWon = currentRound.getCarts().stream().allMatch(cart -> cart.isDone() && cart.isFull());
 		roundLost = currentRound.getCarts().stream().anyMatch(cart -> cart.isDone() && !cart.isFull());
 		if (roundRunning && (roundWon || roundLost)) {
-			System.out.println("Round finished!");
 			boolean oldValue = roundRunning;
 			roundRunning = false;
 			Platform.runLater(() -> shopService.updateItems(roundNum));

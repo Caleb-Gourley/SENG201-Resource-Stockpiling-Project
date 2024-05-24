@@ -160,6 +160,12 @@ public class SetupController {
 
     }
 
+    /**
+     * Update the label for the selected tower button.
+     * @param tower the selected tower
+     * @param button the selected tower button
+     * @param label the selected tower label
+     */
     public void updateSelTower(Tower tower, Button button, Label label) {
         label.setText(tower.getName());
         button.setTooltip(new Tooltip(tower.getDescription()));

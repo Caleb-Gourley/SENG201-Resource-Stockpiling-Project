@@ -12,6 +12,7 @@ public class GameEnvironment {
     private final Consumer<GameEnvironment> setupScreenLauncher;
     private final Consumer<GameEnvironment> mainScreenLauncher;
     private final Runnable clearScreen;
+    private final Runnable quitGame;
     private Player player;
 
     /**
@@ -21,11 +22,13 @@ public class GameEnvironment {
      * @param setupScreenLauncher Consumer
      * @param mainScreenLauncher Consumer
      * @param clearScreen Consumer
+     * @param quitGame Runnable
      */
-    public GameEnvironment(Consumer<GameEnvironment> setupScreenLauncher, Consumer<GameEnvironment> mainScreenLauncher, Runnable clearScreen) {
+    public GameEnvironment(Consumer<GameEnvironment> setupScreenLauncher, Consumer<GameEnvironment> mainScreenLauncher, Runnable clearScreen, Runnable quitGame) {
         this.setupScreenLauncher = setupScreenLauncher;
         this.mainScreenLauncher = mainScreenLauncher;
         this.clearScreen = clearScreen;
+        this.quitGame = quitGame;
         launchSetupScreen();
     }
 
@@ -68,5 +71,13 @@ public class GameEnvironment {
      */
     public Player getPlayer() {
         return player;
+    }
+
+    /**
+     * Quits the game.
+     */
+    public void quitGame() {
+        clearScreen.run();
+        quitGame.run();
     }
 }
