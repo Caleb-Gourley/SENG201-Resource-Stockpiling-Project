@@ -6,14 +6,14 @@ import seng201.team56.models.Tower;
  * An upgrade which makes a Tower fill a cart with any resource
  * @author Caleb Gourley
  */
-public class AnyResourceUpgrade extends Upgrade{
+public class AnyResourceUpgrade extends Upgrade<Boolean>{
 
     /**
      * Constructor
      * Sets the initial cost, modifierAmount to 0 and false, and modiferType to "Any Resource"
      * @param cost the upgrades cost
      */
-    public AnyResourceUpgrade(int cost) { super(cost, "Any Resource", false); };
+    public AnyResourceUpgrade(int cost) { super(cost, "Any Resource", false); }
 
     /**
      * Set the AnyResource of the tower to true
