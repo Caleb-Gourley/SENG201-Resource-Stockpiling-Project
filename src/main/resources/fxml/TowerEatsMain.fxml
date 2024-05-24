@@ -94,7 +94,7 @@
                                        </HBox.margin>
                                     </Label>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label id="error" fx:id="messageLabel" prefHeight="39.0" prefWidth="57.0" style="visibility: hide;" text="Error!" />
+                                    <Label id="error" fx:id="messageLabel" prefHeight="39.0" style="visibility: hide;" text="Error!" />
                                  </children>
                               </HBox>
                            </children>

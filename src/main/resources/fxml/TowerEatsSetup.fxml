@@ -84,7 +84,7 @@
             <Insets bottom="300.0" left="100.0" />
          </GridPane.margin>
       </Text>
-      <Button fx:id="SelectedTower1Button" layoutX="856.0" layoutY="639.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" scaleX="0.8" scaleY="0.8" scaleZ="0.8" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <Button fx:id="SelectedTower1Button" layoutX="856.0" layoutY="639.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" scaleX="0.8" scaleY="0.8" scaleZ="0.8" wrapText="true" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -92,7 +92,7 @@
             <Insets bottom="100.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="SelectedTower2Button" layoutX="1428.0" layoutY="642.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" scaleX="0.8" scaleY="0.8" scaleZ="0.8" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <Button fx:id="SelectedTower2Button" layoutX="1428.0" layoutY="642.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" scaleX="0.8" scaleY="0.8" scaleZ="0.8" wrapText="true" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -100,7 +100,7 @@
             <Insets bottom="100.0" left="180.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="SelectedTower3Button" layoutX="1628.0" layoutY="642.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" scaleX="0.8" scaleY="0.8" scaleZ="0.8" text="Button" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <Button fx:id="SelectedTower3Button" layoutX="1628.0" layoutY="642.0" mnemonicParsing="false" prefHeight="151.0" prefWidth="163.0" scaleX="0.8" scaleY="0.8" scaleZ="0.8" wrapText="true" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="27.0" />
          </font>
@@ -160,7 +160,7 @@
                   <Font size="27.0" />
                </font>
             </Button>
-            <Button fx:id="Tower4Button" mnemonicParsing="false" prefWidth="60.0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="Tower4Button" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
                   <Font size="27.0" />
                </font>

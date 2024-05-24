@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ import seng201.team56.models.upgrades.Upgrade;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.ShopService;
 
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -78,6 +80,9 @@ public class MainController implements PropertyChangeListener {
     private final GameEnvironment gameEnvironment;
     private final RoundService roundService;
     private final ShopService shopService;
+    private List<Button> fieldButtons;
+    private List<Button> resButtons;
+    private Button selectedButton;
 
     /**
      * Construct a MainController, initialises a new {@link RoundService} and {@link ShopService}.
@@ -98,34 +103,21 @@ public class MainController implements PropertyChangeListener {
         roundService.addRunningSubscriber(this);
         shopService.updateItems(1);
         shopListView.setCellFactory(new ShopCellFactory());
-        shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
+       // shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
+        shopListView.setItems(shopService.getItems());
         moneyLess.setVisible(false);
         moneyMore.setVisible(true);
 
-        shopListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        shopListView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Purchasable>) r -> {
-            System.out.println("Action " + r);
-            System.out.println("Current Selection: " + shopListView.getSelectionModel().getSelectedItem());
-            buyItemButton.setOnAction(event -> {
-                if (shopService.buyItem(shopListView.getSelectionModel().getSelectedIndex())) {
-                    shopPopupTimer(moneyMore);
-                    shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
-                    coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
-                } else {
-                    shopService.buyItem((shopListView.getSelectionModel().getSelectedIndex()));
-                    shopPopupTimer(moneyLess);
-                }
-            });
-        });
-
+        fieldButtons = List.of(fieldTower1Button,fieldTower2Button,fieldTower3Button,fieldTower4Button,fieldTower5Button);
+        resButtons = List.of(resTower1Button,resTower2Button,resTower3Button,resTower4Button,resTower5Button);
         nameLabel.setText(gameEnvironment.getPlayer().getName());
         coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
         roundNumLabel.setText(String.format("%d/%d", roundService.getRoundNum(), gameEnvironment.getPlayer().getMaxRounds()));
         upgradesView.setCellFactory(new UpgradeCellFactory());
-        upgradesView.setItems(FXCollections.observableArrayList(gameEnvironment.getPlayer().getInventory().getUpgrades()));
+        upgradesView.setItems(gameEnvironment.getPlayer().getInventory().getUpgrades());
+        upgradesView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
         difficultyLabel.setText(gameEnvironment.getPlayer().getDifficulty().toString());
-        List<Button> fieldButtons = List.of(fieldTower1Button,fieldTower2Button,fieldTower3Button,fieldTower4Button,fieldTower5Button);
-        List<Button> resButtons = List.of(resTower1Button,resTower2Button,resTower3Button,resTower4Button,resTower5Button);
         Tower[] resTowers = new Tower[5];
         Tower[] fieldTowers = new Tower[5];
         Inventory inventory = gameEnvironment.getPlayer().getInventory();
@@ -140,6 +132,33 @@ public class MainController implements PropertyChangeListener {
         assignButtonActions(fieldButtons, fieldTowers, resTowers, resButtons, inventory);
         assignButtonActions(resButtons, resTowers, fieldTowers, fieldButtons, inventory);
 
+        shopListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        shopListView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Purchasable>) r -> {
+            System.out.println("Action " + r);
+            System.out.println("Current Selection: " + shopListView.getSelectionModel().getSelectedItem());
+            buyItemButton.setOnAction(event -> {
+                boolean success = false;
+                try {
+                    success = shopService.buyItem(shopListView.getSelectionModel().getSelectedIndex());
+                } catch (ArrayStoreException exception) {
+                    shopPopupTimer(moneyLess);
+                }
+                if (success) {
+                    shopPopupTimer(moneyMore);
+                    //shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
+                    coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
+                    Tower[] towers = inventory.getTowers().toArray(new Tower[5]);
+                    assignButtonGraphics(resButtons, towers);
+                    assignButtonActions(resButtons, towers, fieldTowers, fieldButtons, inventory);
+                    assignButtonActions(fieldButtons, fieldTowers, towers, resButtons, inventory);
+                } else {
+                    shopPopupTimer(moneyLess);
+                }
+            });
+        });
+
+
+
     }
 
     /**
@@ -153,8 +172,8 @@ public class MainController implements PropertyChangeListener {
             Tower tower = towers[i];
             ImageView image = new ImageView(String.format("/images/tower_%s.png", tower.getRarity().toString().toLowerCase()));
             buttonList.get(i).setGraphic(image);
-            buttonList.get(i).setContentDisplay(ContentDisplay.TOP);
             buttonList.get(i).setTooltip(new Tooltip(tower.getDescription()));
+            buttonList.get(i).setText(tower.getName());
         }
     }
 
@@ -175,15 +194,23 @@ public class MainController implements PropertyChangeListener {
             int finalI = i;
             button.setOnAction(event -> {
                 if (selectedTower == -1) {
-                    if (towers[finalI] != null) selectedTower = finalI;
-                } else if (otherTowers[selectedTower] != null) {
+                    if (towers[finalI] != null) {
+                        button.setStyle("-fx-background-color: #2fd094");
+                        selectedButton = (Button) event.getSource();
+                        selectedTower = finalI;
+                    }
+                } else if ((selectedButton == null || !buttonList.contains(selectedButton)) && otherTowers[selectedTower] != null) {
                     Tower tower = otherTowers[selectedTower];
                     Button otherButton = otherButtonList.get(selectedTower);
+                    button.setStyle("");
+                    otherButton.setStyle("");
                     otherTowers[selectedTower] = towers[finalI];
                     towers[finalI] = tower;
                     Node otherButtonGraphic = otherButton.getGraphic();
                     otherButton.setGraphic(button.getGraphic());
+                    otherButton.setText(button.getText());
                     button.setGraphic(otherButtonGraphic);
+                    button.setText(tower.getName());
                     Tooltip otherButtonTooltip = otherButton.getTooltip();
                     otherButton.setTooltip(button.getTooltip());
                     button.setTooltip(otherButtonTooltip);
@@ -198,7 +225,6 @@ public class MainController implements PropertyChangeListener {
             });
         }
     }
-
     /**
      * Shows a popup to let the player select a difficulty for the upcoming round.
      */
@@ -228,8 +254,14 @@ public class MainController implements PropertyChangeListener {
      */
     @FXML
     public void playRound() {
-        roundService.createRound();
-        roundService.playRound();
+        if(gameEnvironment.getPlayer().getInventory().getFieldTowers().isEmpty()) {
+            messageLabel.setText("No towers on the field!");
+            messageLabel.setTextFill(Color.web("#c22622"));
+            shopPopupTimer(messageLabel);
+        } else {
+            roundService.createRound();
+            roundService.playRound();
+        }
     }
 
     public void shopPopupTimer(Label labelPopup) {
@@ -247,7 +279,9 @@ public class MainController implements PropertyChangeListener {
 
     @FXML
     private void openRoundSummaryPopup() {
+        System.out.println("??");
         Dialog<ButtonType> dialog = new Dialog<>();
+        System.out.println("Hello!");
         dialog.setTitle("Round Summary");
         dialog.setHeaderText("Round Summary");
 
@@ -278,7 +312,8 @@ public class MainController implements PropertyChangeListener {
         && evt.getOldValue() instanceof Boolean oldValue
         && evt.getNewValue() instanceof Boolean newValue
         && oldValue && !newValue) {
-            openRoundSummaryPopup();
+            System.out.println("Popup!");
+            Platform.runLater(this::openRoundSummaryPopup);
 
         }
 

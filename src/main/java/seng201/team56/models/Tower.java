@@ -1,5 +1,6 @@
 package seng201.team56.models;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
@@ -51,7 +52,7 @@ public class Tower implements Purchasable {
             "Masa's Wine Bar & Kitchen",
             "Maxim's Paris",
             "Mimi's Cafe",
-            "Mr & Mrs Bund, Shanghai, China",
+            "Mr & Mrs Bund",
             "L'Opéra restaurant",
             "Ortolan, Los Angeles",
             "Le Papillon",
@@ -233,7 +234,10 @@ public class Tower implements Purchasable {
     public synchronized void fillCarts(List<Cart> carts) {
         for (Cart cart: carts) {
             if (cart.getResourceType() == resourceType) {
+                System.out.println("Filled!");
                 cart.fillAmount(resourceAmount);
+            } else {
+                System.out.println("Failed to fill!");
             }
         }
     }

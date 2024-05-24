@@ -42,6 +42,7 @@ public class RoundDiffPopupController {
     @FXML
     public void initialize() {
         List<RoundDifficulty> difficulties = roundService.generateRoundDifficulties();
+        selectedDifficulty = difficulties.get(0);
         List<Button> buttons = List.of(option1Button,option2Button,option3Button);
         List<Label> labels = List.of(option1Label,option2Label,option3Label);
         for (int i = 0; i < difficulties.size(); i++) {

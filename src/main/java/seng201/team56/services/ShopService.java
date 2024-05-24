@@ -1,6 +1,12 @@
 package seng201.team56.services;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seng201.team56.models.*;
+import seng201.team56.models.upgrades.CapacityUpgrade;
+import seng201.team56.models.upgrades.RarityUpgrade;
+import seng201.team56.models.upgrades.SpeedUpgrade;
+import seng201.team56.models.upgrades.Upgrade;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,7 +16,7 @@ import java.util.Random;
  */
 public class ShopService {
     private final Player player;
-    private ArrayList<Purchasable> items;
+    private ObservableList<Purchasable> items;
 
     /**
      * Constructor
@@ -18,7 +24,7 @@ public class ShopService {
      */
     public ShopService(Player player) {
         this.player = player;
-        this.items = new ArrayList<>();
+        this.items = FXCollections.observableArrayList();
     }
 
     /**
@@ -33,6 +39,27 @@ public class ShopService {
             Rarity rarity = Rarity.pickRarity(roundNumber, player.getMaxRounds());
             Tower tower = new Tower(rarity);
             items.add(tower);
+        }
+        int numUpgrades = rng.nextInt(5,8);
+        for (int i = 0; i < numUpgrades; i++) {
+            int typeSelection = rng.nextInt(3);
+            Rarity rarity = Rarity.pickRarity(roundNumber, player.getMaxRounds());
+            int cost = rng.nextInt(rarity.getCostMin() - 5, rarity.getCostMax() - 5);
+            Upgrade<?> upgrade = null;
+            switch (typeSelection) {
+                case 0 -> {
+                    upgrade = new RarityUpgrade(cost);
+                }
+                case 1 -> {
+                    long speed = rng.nextLong(20,300);
+                    upgrade = new SpeedUpgrade(cost, speed);
+                }
+                case 2 -> {
+                    int resourceAmount = rng.nextInt(5,40);
+                    upgrade = new CapacityUpgrade(cost, resourceAmount);
+                }
+            }
+            items.add(upgrade);
         }
 
 
@@ -68,7 +95,7 @@ public class ShopService {
      * Getter for the list of items in the shop
      * @return items
      */
-    public ArrayList<Purchasable> getItems() {
+    public ObservableList<Purchasable> getItems() {
         return items;
     }
 }

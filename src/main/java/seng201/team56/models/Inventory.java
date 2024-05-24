@@ -1,5 +1,7 @@
 package seng201.team56.models;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seng201.team56.models.upgrades.Upgrade;
 
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.List;
 public class Inventory {
 
     private final ArrayList<Tower> towers;
-    private final ArrayList<Upgrade<?>> upgrades;
+    private final ObservableList<Upgrade<?>> upgrades;
     private final ArrayList<Tower> fieldTowers;
 
     /**
@@ -27,7 +29,7 @@ public class Inventory {
         } else {
             throw new ArrayStoreException("Max number of towers reached");
         }
-        this.upgrades = new ArrayList<>();
+        this.upgrades = FXCollections.observableArrayList();
         this.fieldTowers = new ArrayList<>(5);
     }
 
@@ -86,7 +88,7 @@ public class Inventory {
      * Getter for upgrades.
      * @return upgrades
      */
-    public ArrayList<Upgrade<?>> getUpgrades() { return upgrades; }
+    public ObservableList<Upgrade<?>> getUpgrades() { return upgrades; }
 
     /**
      * Getter for fieldTowers.

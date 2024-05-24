@@ -5,10 +5,20 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import javafx.application.Platform;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Service;
+import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventType;
+import javafx.util.Duration;
 import seng201.team56.models.*;
+import seng201.team56.services.threads.CartMoveService;
 import seng201.team56.services.threads.CartMoveTask;
 import seng201.team56.services.threads.TowerFillTask;
 import seng201.team56.services.util.RandomEvent;
@@ -24,12 +34,12 @@ public class RoundService {
 	private Round currentRound;
 	private int roundNum;
 	private final Player player;
-	private ScheduledExecutorService pool;
-	private final ShopService shopService;
+    private final ShopService shopService;
     private RoundDifficulty roundDifficulty;
 	private boolean roundRunning = false;
 	private boolean roundWon = false;
 	private boolean roundLost = false;
+	private List<Service<Boolean>> services = new ArrayList<>();
 	private final Random rng;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
@@ -69,7 +79,7 @@ public class RoundService {
 			rarity = Rarity.EPIC;
 		}
 		for (int i = 0; i < 3; i++) {
-			RoundDifficulty diff = new RoundDifficulty(rng,roundNum,rarity);
+			RoundDifficulty diff = new RoundDifficulty(50,5,10,15,4,5,30,30);
 			difficulties.add(diff);
 		}
 		return difficulties;
@@ -89,8 +99,8 @@ public class RoundService {
 	 */
 	//Should this just be in the round constructor?
 	public void createRound() {
-		this.pool = Executors.newScheduledThreadPool(roundDifficulty.numCarts() + player.getInventory().getFieldTowers().size());
-		this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
+        Executors.newScheduledThreadPool(roundDifficulty.numCarts() + player.getInventory().getFieldTowers().size());
+        this.currentRound = new Round(roundDifficulty.trackDistance(), roundNum);
 		for (int i = 0; i < roundDifficulty.numCarts(); i++) {
 			int size = rng.nextInt(roundDifficulty.cartMinSize(),roundDifficulty.cartMaxSize());
 			double speed = rng.nextDouble(roundDifficulty.cartMinSpeed(),roundDifficulty.cartMaxSpeed());
@@ -104,16 +114,19 @@ public class RoundService {
 	 * Play a round. Adds {@link CartMoveTask} tasks to the pool.
 	 */
 	public void playRound() {
+
 		// Check that the round has been created first
 		if (currentRound != null && !roundRunning) {
 			// Begin moving all carts
 			for (Cart cart : currentRound.getCarts()) {
-				CartMoveTask task = new CartMoveTask(cart, pool, this);
-				pool.schedule(task, 0, TimeUnit.SECONDS);
+				CartMoveService moveService = new CartMoveService(cart, this);
+				moveService.start();
+				services.add(moveService);
+				//pool.schedule(task, 0, TimeUnit.SECONDS);
 			}
 			for (Tower tower: player.getInventory().getFieldTowers()) {
 				TowerFillTask towerTask = new TowerFillTask(currentRound.getCarts(), tower);
-				pool.scheduleAtFixedRate(towerTask, 0, tower.getReloadSpeed(), TimeUnit.MILLISECONDS);
+				towerTask.start();
 			}
 			boolean oldValue = roundRunning;
 			roundRunning = true;
@@ -213,10 +226,10 @@ public class RoundService {
 		roundWon = currentRound.getCarts().stream().allMatch(cart -> cart.isDone() && cart.isFull());
 		roundLost = currentRound.getCarts().stream().anyMatch(cart -> cart.isDone() && !cart.isFull());
 		if (roundRunning && (roundWon || roundLost)) {
+			System.out.println("Round finished!");
 			boolean oldValue = roundRunning;
 			roundRunning = false;
-			pool.shutdownNow();
-			shopService.updateItems(roundNum);
+			Platform.runLater(() -> shopService.updateItems(roundNum));
 			player.getInventory().incFieldTowers();
 			int i = rng.nextInt(player.getInventory().getFieldTowers().size());
 			Tower tower = player.getInventory().getFieldTowers().get(i);
@@ -229,6 +242,7 @@ public class RoundService {
 				for (Tower t: player.getInventory().getFieldTowers()) {
 					t.addXp(roundDifficulty.xpReward());
 				}
+			} else {
 			}
 		}
 	}

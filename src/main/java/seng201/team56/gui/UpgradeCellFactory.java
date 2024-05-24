@@ -1,5 +1,6 @@
 package seng201.team56.gui;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -7,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import seng201.team56.models.Tower;
 import seng201.team56.models.upgrades.Upgrade;
 
 /**

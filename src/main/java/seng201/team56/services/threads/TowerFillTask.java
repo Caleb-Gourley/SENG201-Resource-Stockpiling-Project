@@ -1,5 +1,8 @@
 package seng201.team56.services.threads;
 
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import seng201.team56.models.Cart;
 import seng201.team56.models.Tower;
 
@@ -10,7 +13,7 @@ import java.util.List;
  *
  * @author Sean Reitsma
  */
-public class TowerFillTask implements Runnable{
+public class TowerFillTask extends Service<Boolean> {
     private List<Cart> carts;
     private Tower tower;
 
@@ -28,7 +31,17 @@ public class TowerFillTask implements Runnable{
      * Runs {@link Tower#fillCarts(List)}.
      */
     @Override
-    public void run() {
-        tower.fillCarts(carts);
+    protected Task<Boolean> createTask() {
+        return new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                while (!(carts.stream().allMatch(cart -> cart.isDone() && cart.isFull()) || carts.stream().anyMatch(cart -> cart.isDone() && !cart.isFull()))) {
+                    tower.fillCarts(carts);
+                    Thread.sleep(tower.getReloadSpeed());
+
+                }
+                return true;
+            }
+        };
     }
 }

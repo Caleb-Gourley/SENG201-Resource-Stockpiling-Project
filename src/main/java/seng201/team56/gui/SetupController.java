@@ -110,12 +110,18 @@ public class SetupController {
 
         for (int i = 0; i < selectedTowerButtons.size(); i++) {
             int finalI = i;
-           selectedTowerButtons.get(finalI).setText(selectedTowers.get(finalI).getName());
-            selectedTowerButtons.get(i).setOnAction(event -> {
-                if (SelectedTowerIndex != -1 && !selectedTowers.contains(towers.get(SelectedTowerIndex))) {
-                    selectedTowerButtons.get(finalI).setText(towers.get(SelectedTowerIndex).getName());
-                    selectedTowers.set(finalI, towers.get(SelectedTowerIndex));
-                }
+           //selectedTowerButtons.get(finalI).setText(selectedTowers.get(finalI).getName());
+           ImageView image = new ImageView(String.format("/images/tower_%s.png", selectedTowers.get(finalI).getRarity().toString().toLowerCase()));
+           selectedTowerButtons.get(finalI).setGraphic(image);
+           selectedTowerButtons.get(i).setOnAction(event -> {
+               updateStats(selectedTowers.get(finalI));
+               if (SelectedTowerIndex != -1 && !selectedTowers.contains(towers.get(SelectedTowerIndex))) {
+                   ImageView imageView = new ImageView(String.format("/images/tower_%s.png", towers.get(SelectedTowerIndex).getRarity().toString().toLowerCase()));
+                   selectedTowerButtons.get(finalI).setGraphic(imageView);
+                   //selectedTowerButtons.get(finalI).setText(towers.get(SelectedTowerIndex).getName());
+                   selectedTowers.set(finalI, towers.get(SelectedTowerIndex));
+                   updateStats(towers.get(SelectedTowerIndex));
+               }
             });
         }
 
