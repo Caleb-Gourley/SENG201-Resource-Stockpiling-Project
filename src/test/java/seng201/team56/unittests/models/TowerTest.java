@@ -49,4 +49,28 @@ public class TowerTest {
         );
         assertEquals(rarity, tower.getRarity());
     }
+
+    @Test
+    void decrementReloadTest() {
+        tower.decreaseReloadInterval(5);
+        assertEquals(0,tower.getReloadSpeed());
+    }
+
+    @Test
+    void decrementReloadTestOver() {
+        tower.decreaseReloadInterval(6);
+        assertEquals(5,tower.getReloadSpeed());
+    }
+
+    @Test
+    void decrementCapacityTest() {
+        tower.decreaseResourceAmount(6);
+        assertEquals(0,tower.getResourceAmount());
+    }
+
+    @Test
+    void decrementCapacityTestOver() {
+        tower.decreaseResourceAmount(7);
+        assertEquals(6,tower.getResourceAmount());
+    }
 }

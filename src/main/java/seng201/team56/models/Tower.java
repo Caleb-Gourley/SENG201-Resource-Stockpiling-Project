@@ -283,7 +283,7 @@ public class Tower implements Purchasable {
      * @param amount the amount to subtract
      */
     public void decreaseResourceAmount(int amount) {
-        if(this.resourceAmount > amount) {
+        if(this.resourceAmount >= amount) {
             this.resourceAmount -= amount;
         }
     }
@@ -301,7 +301,7 @@ public class Tower implements Purchasable {
      * @param amount the amount (in milliseconds) to add to the interval
      */
     public void decreaseReloadInterval(long amount) {
-        if (this.reloadSpeed > amount) {
+        if (this.reloadSpeed >= amount) {
             this.reloadSpeed -= amount;
         }
     }

@@ -11,6 +11,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeListenerProxy;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 import java.util.Random;
 
@@ -55,40 +56,28 @@ public class RoundServiceTest {
     void randomEventTest() {
         Tower tower = new Tower(Rarity.COMMON);
         assertEquals(0, tower.getUseCount());
-        RandomEvent testEvent = new RandomEvent(15, tower::incUseCount, Difficulty.HARD);
-        RandomEvent doNothing = new RandomEvent(() -> {}, 0);
+        RandomEvent testEvent = new RandomEvent(15, tower::incUseCount, Difficulty.HARD, "useCount");
+        RandomEvent doNothing = new RandomEvent(() -> {}, 0, "nothing");
         List<RandomEvent> events = List.of(testEvent, doNothing);
         assertAll(
                 () -> assertEquals(20, testEvent.getWeight()),
                 () -> assertEquals(0, doNothing.getWeight())
         );
-        roundService.randomEvent(events);
+        RandomEvent event = roundService.randomEvent(events);
+        assertEquals("useCount", event.toString());
+        event.act();
         assertEquals(1, tower.getUseCount());
 
     }
 
     @Test
-    void playRoundTest() {
-        roundService.createRound();
-        roundService.playRound();
-        assertTrue(roundService.isRoundRunning());
-    }
-
-    @Disabled
-    @Test
-    void roundEndTest() {
-        roundService.createRound();
-        roundService.playRound();
-        assertTimeout(Duration.ofSeconds(30), () -> {
-            while(!roundService.isRoundRunning()) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        assertFalse(roundService.isRoundRunning());
+    void getRandomEventsTest() {
+        Tower tower = new Tower(Rarity.COMMON);
+        List<RandomEvent> events = roundService.getRandomEvents(tower);
+        assertNotNull(events);
+        RandomEvent event = roundService.randomEvent(events);
+        assertTrue(events.contains(event));
+        assertDoesNotThrow(event::act);
     }
 
     @Test

@@ -86,7 +86,11 @@ public enum Rarity {
      * @return the next Rarity
      */
     public static Rarity getNextRarity(Rarity rarity) {
-        return VALUES.get(VALUES.indexOf(rarity) + 1);
+        int index = VALUES.indexOf(rarity) + 1;
+        if (index >= VALUES.size()) {
+            index = VALUES.size() - 1;
+        }
+        return VALUES.get(index);
     }
 
     /**
