@@ -24,4 +24,4 @@ build/
 
 # vim
 *.swp
-/proj_extras/.~lock.*.odt#
+/proj_extras/.~lock.*
