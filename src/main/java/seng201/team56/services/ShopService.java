@@ -3,10 +3,7 @@ package seng201.team56.services;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seng201.team56.models.*;
-import seng201.team56.models.upgrades.CapacityUpgrade;
-import seng201.team56.models.upgrades.RarityUpgrade;
-import seng201.team56.models.upgrades.SpeedUpgrade;
-import seng201.team56.models.upgrades.Upgrade;
+import seng201.team56.models.upgrades.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -42,7 +39,7 @@ public class ShopService {
         }
         int numUpgrades = rng.nextInt(5,8);
         for (int i = 0; i < numUpgrades; i++) {
-            int typeSelection = rng.nextInt(3);
+            int typeSelection = rng.nextInt(4);
             Rarity rarity = Rarity.pickRarity(roundNumber, player.getMaxRounds());
             int cost = rng.nextInt(rarity.getCostMin() - 5, rarity.getCostMax() - 5);
             Upgrade<?> upgrade = null;
@@ -55,6 +52,9 @@ public class ShopService {
                 case 2 -> {
                     int resourceAmount = rng.nextInt(5,40);
                     upgrade = new CapacityUpgrade(cost, resourceAmount);
+                }
+                case 3 -> {
+                    upgrade = new AnyResourceUpgrade(cost);
                 }
             }
             items.add(upgrade);

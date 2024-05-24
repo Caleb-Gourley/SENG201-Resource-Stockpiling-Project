@@ -1,6 +1,5 @@
 package seng201.team56.models;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
@@ -83,6 +82,7 @@ public class Tower implements Purchasable {
     private String name;
     private Rarity rarity;
     private int useCount;
+    private boolean anyResource;
     private final Random rng = new Random();
 
     /**
@@ -154,8 +154,8 @@ public class Tower implements Purchasable {
      */
     @Override
     public String getDescription() {
-        return String.format("%s: Resource type: %s, reload speed: %d, capacity: %d, level: %d",
-                name,resourceType.toString(),reloadSpeed,resourceAmount,level);
+        return String.format("%s: Resource type: %s, reload speed: %d, capacity: %d, level: %d, Any Resource: %s",
+                name,resourceType.toString(),reloadSpeed,resourceAmount,level,anyResource);
     }
 
     /**
@@ -236,6 +236,8 @@ public class Tower implements Purchasable {
             if (cart.getResourceType() == resourceType) {
                 System.out.println("Filled!");
                 cart.fillAmount(resourceAmount);
+            } else if (anyResource) {
+                cart.fillAmount(resourceAmount / 5);
             } else {
                 System.out.println("Failed to fill!");
             }
@@ -297,4 +299,10 @@ public class Tower implements Purchasable {
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * Setter for anyResource
+     * @param anyResource boolean for the state
+     */
+    public void setAnyResource(boolean anyResource) { this.anyResource = anyResource; }
 }
