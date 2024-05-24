@@ -25,6 +25,14 @@ public class RarityUpgrade extends Upgrade<Rarity>{
      */
     @Override
     public Tower applyUpgrade(Tower tower) {
-        return new Tower(Rarity.getNextRarity(tower.getRarity()));
+        if (!tower.isBroken()) {
+            return new Tower(Rarity.getNextRarity(tower.getRarity()));
+        } else {
+            return tower;
+        }
+    }
+
+    public String getDescription() {
+        return "Rarity";
     }
 }

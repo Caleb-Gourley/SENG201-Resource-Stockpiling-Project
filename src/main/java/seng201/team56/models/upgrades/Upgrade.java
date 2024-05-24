@@ -42,7 +42,7 @@ public abstract class Upgrade<T> implements Purchasable {
      * Getter for Description
      * @return modiferType
      */
-    public String getDescription() { return modifierType; }
+    public String getDescription() { return modifierType + ": " + modifierAmount.toString(); }
 
     /**
      * Getter for modifierAmount

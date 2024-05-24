@@ -26,7 +26,9 @@ public class CapacityUpgrade extends Upgrade<Integer>{
      */
     @Override
     public Tower applyUpgrade(Tower tower) {
-        tower.increaseResourceAmount(getModifierAmount());
+        if (!tower.isBroken()) {
+            tower.increaseResourceAmount(getModifierAmount());
+        }
         return tower;
     }
 }

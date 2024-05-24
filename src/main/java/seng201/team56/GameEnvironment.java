@@ -48,6 +48,13 @@ public class GameEnvironment {
     public void launchMainScreen() { mainScreenLauncher.accept(this); }
 
     /**
+     * Close the main screen
+     */
+    public void closeMainScreen() {
+        clearScreen.run();
+    }
+
+    /**
      * Sets the current player object
      * @param player the current player object for the game
      */

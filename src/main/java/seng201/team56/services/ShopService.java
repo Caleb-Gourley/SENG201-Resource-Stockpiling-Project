@@ -39,7 +39,7 @@ public class ShopService {
         }
         int numUpgrades = rng.nextInt(5,8);
         for (int i = 0; i < numUpgrades; i++) {
-            int typeSelection = rng.nextInt(4);
+            int typeSelection = rng.nextInt(5);
             Rarity rarity = Rarity.pickRarity(roundNumber, player.getMaxRounds());
             int cost = rng.nextInt(rarity.getCostMin() - 5, rarity.getCostMax() - 5);
             Upgrade<?> upgrade = null;
@@ -53,9 +53,8 @@ public class ShopService {
                     int resourceAmount = rng.nextInt(5,40);
                     upgrade = new CapacityUpgrade(cost, resourceAmount);
                 }
-                case 3 -> {
-                    upgrade = new AnyResourceUpgrade(cost);
-                }
+                case 3 -> upgrade = new AnyResourceUpgrade(cost);
+                case 4 -> upgrade = new FixUpgrade(cost);
             }
             items.add(upgrade);
         }

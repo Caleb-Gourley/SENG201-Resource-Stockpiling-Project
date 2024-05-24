@@ -51,7 +51,8 @@ public class ShopCellFactory implements Callback<ListView<Purchasable>, ListCell
                         imageView.setFitWidth(50);
                         imageView.setFitHeight(50);
                         vBox.getChildren().addAll(
-                                new Label(upgrade.getDescription())
+                                new Label(upgrade.getDescription()),
+                                new Label("Price: " + upgrade.getBuyPrice())
                         );
                     }
 

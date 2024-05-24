@@ -14,6 +14,7 @@ public class Cart {
     private double trackDistance;
     private ResourceType resourceType;
     private int resourceAmount;
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     /**
      * Constructor.
      * Sets the initial resourceAmount to 0.
@@ -96,7 +97,13 @@ public class Cart {
      * Fires a {@link PropertyChangeSupport#firePropertyChange(String, Object, Object)} to notify listeners that the cart has moved.
      */
     public synchronized void move() {
+        double oldValue = distance;
         distance += speed;
+        pcs.firePropertyChange("distance", oldValue, distance);
+    }
+
+    public void addDistanceListener(PropertyChangeListener listener) {
+        pcs.addPropertyChangeListener(listener);
     }
 
 

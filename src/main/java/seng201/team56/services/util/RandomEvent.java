@@ -9,6 +9,7 @@ import seng201.team56.models.Difficulty;
 public class RandomEvent {
     private int weight;
     private final Runnable action;
+    private String description;
 
     /**
      * Constructs a RandomEvent.
@@ -16,8 +17,9 @@ public class RandomEvent {
      * @param action the action to be performed if the event is selected
      * @param difficulty the current game difficulty (this sets a modifier for the weight)
      */
-    public RandomEvent(int roundNum, Runnable action, Difficulty difficulty) {
+    public RandomEvent(int roundNum, Runnable action, Difficulty difficulty, String description) {
         this.action = action;
+        this.description = description;
         this.weight = difficulty.getProbabilityModifier() + roundNum;
     }
 
@@ -28,8 +30,9 @@ public class RandomEvent {
      * @param difficulty the current game difficulty
      * @param towerUseCount the number of times the tower which this event may apply to have been used (modifies the weight)
      */
-    public RandomEvent(int roundNum, Runnable action, Difficulty difficulty, int towerUseCount) {
+    public RandomEvent(int roundNum, Runnable action, Difficulty difficulty, int towerUseCount, String description) {
         this.action = action;
+        this.description = description;
         this.weight = difficulty.getProbabilityModifier() + roundNum + towerUseCount;
     }
 
@@ -38,9 +41,10 @@ public class RandomEvent {
      * @param action the action to be performed if the event is selected
      * @param weight the weight of this event (higher weight means the event is more likely to be selected)
      */
-    public RandomEvent(Runnable action, int weight) {
+    public RandomEvent(Runnable action, int weight, String description) {
         this.action = action;
         this.weight = weight;
+        this.description = description;
     }
 
     /**
@@ -72,9 +76,6 @@ public class RandomEvent {
      */
     @Override
     public String toString() {
-        return "RandomEvent{" +
-                "weight=" + weight +
-                ", action=" + action +
-                '}';
+        return description;
     }
 }
