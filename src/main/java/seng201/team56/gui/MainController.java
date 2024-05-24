@@ -1,11 +1,10 @@
 package seng201.team56.gui;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -20,8 +19,8 @@ import seng201.team56.models.*;
 import seng201.team56.models.upgrades.Upgrade;
 import seng201.team56.services.RoundService;
 import seng201.team56.services.ShopService;
+import seng201.team56.services.util.TowerButtonListener;
 
-import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -83,6 +82,10 @@ public class MainController implements PropertyChangeListener {
     private List<Button> fieldButtons;
     private List<Button> resButtons;
     private Button selectedButton;
+    private Upgrade<?> selectedUpgrade;
+    private Tower[] towers;
+    private Tower[] resTowers;
+
 
     /**
      * Construct a MainController, initialises a new {@link RoundService} and {@link ShopService}.
@@ -103,7 +106,7 @@ public class MainController implements PropertyChangeListener {
         roundService.addRunningSubscriber(this);
         shopService.updateItems(1);
         shopListView.setCellFactory(new ShopCellFactory());
-       // shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
+        // shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
         shopListView.setItems(shopService.getItems());
         moneyLess.setVisible(false);
         moneyMore.setVisible(true);
@@ -116,21 +119,19 @@ public class MainController implements PropertyChangeListener {
         upgradesView.setCellFactory(new UpgradeCellFactory());
         upgradesView.setItems(gameEnvironment.getPlayer().getInventory().getUpgrades());
         upgradesView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        upgradesView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<? super Upgrade<?>>) s -> {
+            selectedUpgrade = upgradesView.getSelectionModel().getSelectedItem();
+        });
 
         difficultyLabel.setText(gameEnvironment.getPlayer().getDifficulty().toString());
-        Tower[] resTowers = new Tower[5];
-        Tower[] fieldTowers = new Tower[5];
         Inventory inventory = gameEnvironment.getPlayer().getInventory();
-        for (int i = 0; i < inventory.getTowers().size(); i++) {
-            resTowers[i] = inventory.getTowers().get(i);
-        }
-        for (int i = 0; i < inventory.getFieldTowers().size(); i++) {
-            fieldTowers[i] = inventory.getFieldTowers().get(i);
-        }
-        assignButtonGraphics(fieldButtons, fieldTowers);
-        assignButtonGraphics(resButtons, resTowers);
-        assignButtonActions(fieldButtons, fieldTowers, resTowers, resButtons, inventory);
-        assignButtonActions(resButtons, resTowers, fieldTowers, fieldButtons, inventory);
+        inventory.getTowers().addListener(new TowerButtonListener(resButtons));
+        assignButtons(fieldButtons, inventory.getFieldTowers());
+        assignButtons(resButtons, inventory.getTowers());
+        assignButtonGraphics(fieldButtons);
+        assignButtonGraphics(resButtons);
+        assignButtonActions(fieldButtons, inventory);
+        assignButtonActions(resButtons, inventory);
 
         shopListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         shopListView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Purchasable>) r -> {
@@ -147,33 +148,52 @@ public class MainController implements PropertyChangeListener {
                     shopPopupTimer(moneyMore);
                     //shopListView.setItems(FXCollections.observableArrayList(shopService.getItems()));
                     coinsLabel.setText(String.format("$%d", gameEnvironment.getPlayer().getMoney()));
-                    Tower[] towers = inventory.getTowers().toArray(new Tower[5]);
-                    assignButtonGraphics(resButtons, towers);
-                    assignButtonActions(resButtons, towers, fieldTowers, fieldButtons, inventory);
-                    assignButtonActions(fieldButtons, fieldTowers, towers, resButtons, inventory);
+                    assignButtonGraphics(resButtons);
                 } else {
                     shopPopupTimer(moneyLess);
                 }
             });
         });
-
-
-
     }
 
     /**
-     * Assigns images to each of the tower buttons. The tower at index i in towers
-     * should be assigned to the button at index i in buttonList.
+     * Assigns each tower in towers to a button in buttonList using button.setUserData(tower).
      * @param buttonList the list of buttons to assign
-     * @param towers the array of towers
+     * @param towers the list of towers to assign
      */
-    private void assignButtonGraphics(List<Button> buttonList,Tower[] towers) {
-        for (int i = 0; i < towers.length && towers[i] != null; i++) {
-            Tower tower = towers[i];
+    private void assignButtons(List<Button> buttonList, ObservableList<? extends Tower> towers) {
+
+        for (int i = 0; i < towers.size(); i++) {
+            buttonList.get(i).setUserData(towers.get(i));
+        }
+    }
+
+    /**
+     * Assigns images to each of the tower buttons.
+     * @param buttonList the list of buttons to assign
+     */
+    private void assignButtonGraphics(List<Button> buttonList) {
+        for (Button button: buttonList) {
+            assignButtonGraphic(button);
+        }
+    }
+
+    /**
+     * Assign the graphic of the button to its assigned tower.
+     * @param button the button to set the graphic for
+     */
+    private void assignButtonGraphic(Button button) {
+        Tower tower = (Tower) button.getUserData();
+        button.setStyle("");
+        if (tower != null) {
             ImageView image = new ImageView(String.format("/images/tower_%s.png", tower.getRarity().toString().toLowerCase()));
-            buttonList.get(i).setGraphic(image);
-            buttonList.get(i).setTooltip(new Tooltip(tower.getDescription()));
-            buttonList.get(i).setText(tower.getName());
+            button.setGraphic(image);
+            button.setTooltip(new Tooltip(tower.getDescription()));
+            button.setText(tower.getName());
+        } else {
+            button.setText("Empty");
+            button.setGraphic(null);
+            button.setTooltip(null);
         }
     }
 
@@ -183,48 +203,41 @@ public class MainController implements PropertyChangeListener {
      * moving the tower from one inventory group to another.
      *
      * @param buttonList      the list of buttons to assign actions to
-     * @param towers          the list of towers to which the buttons in buttonsList are assigned
-     * @param otherTowers     the opposing list of towers
-     * @param otherButtonList the opposing list of buttons
      * @param inventory       the inventory object the towers belong to
      */
-    private void assignButtonActions(List<Button> buttonList, Tower[] towers, Tower[] otherTowers, List<Button> otherButtonList, Inventory inventory) {
+    private void assignButtonActions(List<Button> buttonList, Inventory inventory) {
         for (int i = 0; i < buttonList.size(); i++) {
             Button button = buttonList.get(i);
-            int finalI = i;
             button.setOnAction(event -> {
-                if (selectedTower == -1) {
-                    if (towers[finalI] != null) {
-                        button.setStyle("-fx-background-color: #2fd094");
-                        selectedButton = (Button) event.getSource();
-                        selectedTower = finalI;
-                    }
-                } else if ((selectedButton == null || !buttonList.contains(selectedButton)) && otherTowers[selectedTower] != null) {
-                    Tower tower = otherTowers[selectedTower];
-                    Button otherButton = otherButtonList.get(selectedTower);
-                    button.setStyle("");
-                    otherButton.setStyle("");
-                    otherTowers[selectedTower] = towers[finalI];
-                    towers[finalI] = tower;
-                    Node otherButtonGraphic = otherButton.getGraphic();
-                    otherButton.setGraphic(button.getGraphic());
-                    otherButton.setText(button.getText());
-                    button.setGraphic(otherButtonGraphic);
-                    button.setText(tower.getName());
-                    Tooltip otherButtonTooltip = otherButton.getTooltip();
-                    otherButton.setTooltip(button.getTooltip());
-                    button.setTooltip(otherButtonTooltip);
-                    selectedTower = -1;
-                    try {
-                        inventory.moveTower(tower);
-                    } catch (ArrayStoreException exception) {
-                        messageLabel.setVisible(true);
-                        messageLabel.setText(exception.getMessage());
-                    }
+                if (selectedUpgrade != null) {
+                    Tower tower = (Tower) button.getUserData();
+                    inventory.getTowers().remove(tower);
+                    tower = selectedUpgrade.applyUpgrade(tower);
+                    inventory.getUpgrades().remove(selectedUpgrade);
+                    inventory.addTower(tower);
+                    button.setUserData(tower);
+                    assignButtonGraphic(button);
+                    selectedUpgrade = upgradesView.getSelectionModel().getSelectedItem();
+                } else if (selectedButton == null) {
+                    selectedButton = button;
+                    button.setStyle("-fx-background-color: #2fd094");
+                } else if (!buttonList.contains(selectedButton)) {
+                    Tower tower = (Tower) button.getUserData();
+                    inventory.moveTower(tower);
+                    button.setUserData(selectedButton.getUserData());
+                    selectedButton.setUserData(tower);
+                    assignButtonGraphic(button);
+                    assignButtonGraphic(selectedButton);
+                    selectedButton = null;
+                } else {
+                    assignButtonGraphic(selectedButton);
+                    selectedButton = button;
+                    button.setStyle("-fx-background-color: #2fd094");
                 }
             });
         }
     }
+
     /**
      * Shows a popup to let the player select a difficulty for the upcoming round.
      */

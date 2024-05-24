@@ -74,8 +74,8 @@ public class ShopService {
     public boolean buyItem(int index) {
         Purchasable item = items.get(index);
         if (player.spendMoney(item.getBuyPrice())) {
-            items.remove(index);
             player.addItem(item);
+            items.remove(index);
             return true;
         } else {
             return false;

@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class Inventory {
 
-    private final ArrayList<Tower> towers;
+    private final ObservableList<Tower> towers;
     private final ObservableList<Upgrade<?>> upgrades;
-    private final ArrayList<Tower> fieldTowers;
+    private final ObservableList<Tower> fieldTowers;
 
     /**
      * Initialises an Inventory object with a list of starting towers.
@@ -23,14 +23,14 @@ public class Inventory {
      * @throws ArrayStoreException if there are more than 5 towers
      */
     public Inventory(List<Tower> startTowers) throws ArrayStoreException{
-        this.towers = new ArrayList<>(5);
+        this.towers = FXCollections.observableArrayList();
         if (startTowers.size() <= 5) {
             this.towers.addAll(startTowers);
         } else {
             throw new ArrayStoreException("Max number of towers reached");
         }
         this.upgrades = FXCollections.observableArrayList();
-        this.fieldTowers = new ArrayList<>(5);
+        this.fieldTowers = FXCollections.observableArrayList();
     }
 
     /**
@@ -82,7 +82,7 @@ public class Inventory {
      * Getter for towers.
      * @return towers
      */
-    public ArrayList<Tower> getTowers() { return towers; }
+    public ObservableList<Tower> getTowers() { return towers; }
 
     /**
      * Getter for upgrades.
@@ -94,7 +94,7 @@ public class Inventory {
      * Getter for fieldTowers.
      * @return fieldTowers
      */
-    public ArrayList<Tower> getFieldTowers() { return fieldTowers; }
+    public ObservableList<Tower> getFieldTowers() { return fieldTowers; }
 
     /**
      * Toggles a tower from one group to another. If the tower is not in either group this method does nothing.
