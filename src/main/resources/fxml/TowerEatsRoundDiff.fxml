@@ -23,9 +23,9 @@
         </rowConstraints>
          <children>
             <Label text="Select your round difficulty!" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" />
-            <Button fx:id="option1Button" mnemonicParsing="false" text="Option 1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button fx:id="option2Button" mnemonicParsing="false" text="Option 2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button fx:id="option3Button" mnemonicParsing="false" text="Option 3" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="option1Button" mnemonicParsing="false" text="Easy" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="option2Button" mnemonicParsing="false" text="Medium" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="option3Button" mnemonicParsing="false" text="Hard" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Label fx:id="option1Label" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Label fx:id="option2Label" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Label fx:id="option3Label" text="Label" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
