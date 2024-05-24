@@ -162,14 +162,6 @@ public class RoundService {
 	}
 
 	/**
-	 * Getter for roundLost.
-	 * @return true if the player has lost the round
-	 */
-	public boolean isRoundLost() {
-		return roundLost;
-	}
-
-	/**
 	 * Creates a list of random events. Possible random events consist of:
 	 * <ul>
 	 *     <li>A tower's capacity decreases</li>
@@ -239,7 +231,6 @@ public class RoundService {
 			if (event != null) event.act();
 			this.pcs.firePropertyChange("roundRunning", oldValue, false);
 			if (roundWon) {
-				System.out.println("Win");
 				roundNum++;
 				player.addMoney(roundDifficulty.monetaryReward());
 				player.addXp(roundDifficulty.xpReward());
@@ -248,7 +239,6 @@ public class RoundService {
 				}
 			} else {
 				player.subXp(roundDifficulty.xpReward() / 2);
-				System.out.println("Lose");
 			}
 		}
 	}

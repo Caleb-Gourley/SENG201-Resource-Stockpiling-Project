@@ -55,9 +55,9 @@ public class Inventory {
     public void addFieldTower(Tower tower) throws ArrayStoreException {
         if (!fieldTowers.contains(tower) && fieldTowers.size() < 5) {
             fieldTowers.add(tower);
-        } else if (towers.contains(tower)) {
+        } else if (fieldTowers.contains(tower)) {
             throw new ArrayStoreException("Tower already in inventory");
-        } else if (towers.size() >= 5) {
+        } else if (fieldTowers.size() >= 5) {
             throw new ArrayStoreException("Max number of towers reached");
         }
     }
