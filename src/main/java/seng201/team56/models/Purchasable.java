@@ -10,13 +10,13 @@ public interface Purchasable {
      * Getter for BuyPrice
      * @return buyPrice
      */
-    public double getBuyPrice();
+    public int getBuyPrice();
 
     /**
      * Getter for SellPrice
      * @return sellPrice
      */
-    public double getSellPrice();
+    public int getSellPrice();
 
     /**
      * Getter for Description

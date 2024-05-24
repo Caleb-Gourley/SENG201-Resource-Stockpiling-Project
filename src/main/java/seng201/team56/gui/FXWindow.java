@@ -9,28 +9,29 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Class starts the javaFX application window
- * @author seng201 teaching team
+ * FXWrapper window class which sets up the main window.
+ *
+ * @author Caleb Gourley
  */
-public class MainWindow extends Application {
+public class FXWindow extends Application {
 
     /**
-     * Opens the gui with the fxml content specified in resources/fxml/main.fxml
+     * Opens the gui with the fxml content specified in resources/fxml/fx_wrapper.fxml
      * @param primaryStage The current fxml stage, handled by javaFX Application class
      * @throws IOException if there is an issue loading fxml file
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/fx_wrapper.fxml"));
         Parent root = baseLoader.load();
-
-        MainController baseController = baseLoader.getController();
-        baseController.init(primaryStage);
-
-        primaryStage.setTitle("SENG201 Example App");
-        Scene scene = new Scene(root, 600, 400);
+        FXWrapper fxWrapper = baseLoader.getController();
+        Scene scene = new Scene(root, 1920, 1080);
+        primaryStage.setMaximized(true);
+        primaryStage.setResizable(false);
+        primaryStage.setTitle("Tower Eats");
         primaryStage.setScene(scene);
         primaryStage.show();
+        fxWrapper.init(primaryStage);
     }
 
     /**
@@ -41,5 +42,4 @@ public class MainWindow extends Application {
     public static void launchWrapper(String [] args) {
         launch(args);
     }
-
 }

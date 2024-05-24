@@ -1,12 +1,14 @@
 package seng201.team56.unittests.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import seng201.team56.models.Cart;
 
 import org.junit.jupiter.api.Test;
 import seng201.team56.models.ResourceType;
+import seng201.team56.models.Tower;
 
 /**
  * Unit tests for the cart model
@@ -20,7 +22,7 @@ class CartTest {
      */
     @BeforeEach
     public void setUpTest() {
-        cart = new Cart(100, 10, ResourceType.BOUILLABAISSE);
+        cart = new Cart(30, 10, ResourceType.BOUILLABAISSE, 100);
     }
 
     /**
@@ -28,7 +30,7 @@ class CartTest {
      */
     @Test
     void fillExactTest() {
-        assertEquals(0, cart.fillAmount(10));
+        cart.fillAmount(10);
         assertEquals(10, cart.getResourceAmount());
     }
 
@@ -37,7 +39,7 @@ class CartTest {
      */
     @Test
     void fillOverTest() {
-        assertEquals(1, cart.fillAmount(11));
+        cart.fillAmount(11);
         assertEquals(10, cart.getResourceAmount());
     }
 
@@ -46,8 +48,30 @@ class CartTest {
      */
     @Test
     void fillUnderTest() {
-        assertEquals(0, cart.fillAmount(9));
+        cart.fillAmount(9);
         assertEquals(9, cart.getResourceAmount());
 
+    }
+
+    @Test
+    void moveTest() {
+        cart.move();
+        assertEquals(30, cart.getDistance());
+    }
+
+    @Test
+    void finishTest() {
+        for (int i = 0; i < 4; i++) {
+            cart.move();
+        }
+        assertEquals(120, cart.getDistance());
+        assertTrue(cart.isDone());
+    }
+
+    @Test
+    void fillFullTest() {
+        cart.fillAmount(10);
+        assertEquals(10, cart.getResourceAmount());
+        assertTrue(cart.isFull());
     }
 }

@@ -1,56 +1,115 @@
 package seng201.team56.models;
 
-import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import seng201.team56.models.upgrades.Upgrade;
+
+import java.util.List;
 
 /**
- * Represents a players inventory.
+ * Represents a player's inventory.
  * @author Caleb Gourley
  */
 public class Inventory {
 
-    private ArrayList<Tower> towers = new ArrayList<>();
-    private ArrayList<Upgrade> upgrades = new ArrayList<>();
-    private ArrayList<Tower> fieldTowers = new ArrayList<>();
+    private final ObservableList<Tower> towers;
+    private final ObservableList<Upgrade<?>> upgrades;
+    private final ObservableList<Tower> fieldTowers;
 
     /**
-     * Adds tower objects to towers ArrayList that are in the players inventory
-     * @param tower the tower object to be added to the ArrayList
+     * Initialises an Inventory object with a list of starting towers.
+     * @param startTowers the list of starting towers
+     * @throws ArrayStoreException if there are more than 5 towers
      */
-    public void addTower(Tower tower) { towers.add(tower); }
+    public Inventory(List<Tower> startTowers) throws ArrayStoreException{
+        this.towers = FXCollections.observableArrayList();
+        if (startTowers.size() <= 5) {
+            this.towers.addAll(startTowers);
+        } else {
+            throw new ArrayStoreException("Max number of towers reached");
+        }
+        this.upgrades = FXCollections.observableArrayList();
+        this.fieldTowers = FXCollections.observableArrayList();
+    }
 
     /**
-     * Adds tower objects to field_towers ArrayList that are placed into the field
+     * Adds tower objects to towers ArrayList that are in the player's inventory.
      * @param tower the tower object to be added to the ArrayList
+     * @throws ArrayStoreException if the tower object is already in the towers list or the player already has 5 towers.
      */
-    public void addFieldTower(Tower tower) { fieldTowers.add(tower); }
+    public void addTower(Tower tower) throws ArrayStoreException {
+        if(!towers.contains(tower) && towers.size() < 5) {
+            towers.add(tower);
+        } else if (towers.contains(tower)) {
+            throw new ArrayStoreException("Tower already in inventory");
+        } else if (towers.size() >= 5) {
+            throw new ArrayStoreException("Max number of towers reached");
+        }
+    }
 
     /**
-     * Adds upgrade objects to upgrades ArrayList that are in the players inventory
+     * Adds tower objects to fieldTowers ArrayList that are placed into the field.
+     * @param tower the tower object to be added to the ArrayList
+     * @throws ArrayStoreException if the tower object is already in the towers list or the player already has 5 field towers.
+     */
+    public void addFieldTower(Tower tower) throws ArrayStoreException {
+        if (!fieldTowers.contains(tower) && fieldTowers.size() < 5) {
+            fieldTowers.add(tower);
+        } else if (towers.contains(tower)) {
+            throw new ArrayStoreException("Tower already in inventory");
+        } else if (towers.size() >= 5) {
+            throw new ArrayStoreException("Max number of towers reached");
+        }
+    }
+
+    /**
+     * Increment tower use counts.
+     */
+    public void incFieldTowers() {
+        for (Tower tower : fieldTowers) {
+            tower.incUseCount();
+        }
+    }
+
+    /**
+     * Adds upgrade objects to upgrades ArrayList that are in the player's inventory.
      * @param upgrade the upgrade object to be added to the ArrayList
      */
-    public void addUpgrade(Upgrade upgrade) { upgrades.add(upgrade); }
+    public void addUpgrade(Upgrade<?> upgrade) { upgrades.add(upgrade); }
 
     /**
-     * Getter for towers
+     * Getter for towers.
      * @return towers
      */
-    public ArrayList<Tower> getTowers() { return towers; }
+    public ObservableList<Tower> getTowers() { return towers; }
 
     /**
-     * Getter for upgrades
+     * Getter for upgrades.
      * @return upgrades
      */
-    public ArrayList<Upgrade> getUpgrades() { return upgrades; }
+    public ObservableList<Upgrade<?>> getUpgrades() { return upgrades; }
 
     /**
-     * Getter for field_towers
-     * @return field_towers
+     * Getter for fieldTowers.
+     * @return fieldTowers
      */
-    public ArrayList<Tower> getFieldTowers() { return fieldTowers; }
+    public ObservableList<Tower> getFieldTowers() { return fieldTowers; }
 
     /**
-     * Remove tower object when tower is removed from the field
-     * @param tower the tower object to be removed from field_towers ArrayList
+     * Toggles a tower from one group to another. If the tower is not in either group this method does nothing.
+     * @param tower the tower to move
+     * @throws ArrayStoreException if the group the tower is moved to is full or already contains the tower
+     * @see Inventory#addFieldTower(Tower)
+     * @see Inventory#addTower(Tower)
      */
-    public void removeFieldTowers(Tower tower) { fieldTowers.remove(tower); }
+    public void moveTower(Tower tower) throws ArrayStoreException{
+        if (towers.contains(tower)) {
+            towers.remove(tower);
+            addFieldTower(tower);
+        } else if (fieldTowers.contains(tower)) {
+            fieldTowers.remove(tower);
+            addTower(tower);
+        }
+    }
+
 }

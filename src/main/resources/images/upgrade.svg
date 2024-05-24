@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="60mm"
+   height="60mm"
+   viewBox="0 0 60 60"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="upgrade.svg"
+   inkscape:export-filename="/csse/users/sre114/SENG201/intellij/team-56/src/main/resources/images/upgrade.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     width="60mm"
+     inkscape:object-nodes="false"
+     inkscape:zoom="1.5019781"
+     inkscape:cx="-69.90781"
+     inkscape:cy="34.953905"
+     inkscape:window-width="1920"
+     inkscape:window-height="1025"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g10537"
+       transform="matrix(1.0564666,0.0549381,-0.05538425,1.0479562,-2.1237703,-0.20941454)">
+      <g
+         id="g11965">
+        <rect
+           style="fill:#666666;stroke:none;stroke-width:1.66354;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect7748"
+           width="8.618825"
+           height="47.999722"
+           x="38.223537"
+           y="-8.0421181"
+           ry="6.0568109"
+           transform="matrix(0.78779675,0.61593529,-0.66987794,0.74247125,0,0)" />
+        <path
+           style="fill:#666666;stroke:none;stroke-width:4.50142;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path8406"
+           sodipodi:type="arc"
+           sodipodi:cx="43.062107"
+           sodipodi:cy="-13.402952"
+           sodipodi:rx="10.582361"
+           sodipodi:ry="10.582361"
+           sodipodi:start="0"
+           sodipodi:end="3.1415927"
+           sodipodi:arc-type="slice"
+           d="m 53.644468,-13.402952 a 10.582361,10.582361 0 0 1 -5.29118,9.1645935 10.582361,10.582361 0 0 1 -10.582362,-2e-7 10.582361,10.582361 0 0 1 -5.29118,-9.1645933 h 10.582361 z"
+           transform="rotate(39.841304)" />
+        <path
+           style="fill:none;stroke:#666666;stroke-width:3.265;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 34.594701,11.795981 43.629952,0.87184202"
+           id="path8521" />
+        <path
+           style="fill:none;stroke:#666666;stroke-width:3.265;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 39.075422,15.184882 48.110673,4.2607441"
+           id="path8521-6" />
+        <path
+           style="fill:none;stroke:#666666;stroke-width:3.265;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 43.792194,18.682099 52.827445,7.7579614"
+           id="path8521-7" />
+        <path
+           style="fill:none;stroke:#666666;stroke-width:3.265;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           d="M 48.610333,22.903007 57.645584,11.978868"
+           id="path8521-5" />
+      </g>
+    </g>
+    <g
+       id="g11957"
+       transform="matrix(1.2514432,0,0,1.1150754,-7.5415213,-3.817898)">
+      <rect
+         style="fill:#666666;stroke:#666666;stroke-width:4.32511;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+         id="rect10572"
+         width="5.7037973"
+         height="58.323822"
+         x="1.1274695"
+         y="17.032969"
+         ry="2.8518987"
+         transform="matrix(0.18267041,-0.98317421,0.67110419,0.74136305,0,0)"
+         rx="2.8518987" />
+      <path
+         style="fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 11.339757,12.398804 c 1.758631,10.813847 11.796481,14.562153 11.796481,14.562153 z"
+         id="path10786" />
+    </g>
+  </g>
+</svg>
